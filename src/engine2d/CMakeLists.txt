@@ -16,7 +16,9 @@ include_directories ( "${PROJECT_SOURCE_DIR}" )
 include_directories ( ${SDL_INCLUDE_DIRS} )
 
 add_library ( engine2d cgobject.cpp
-                       cdrawingtool.cpp )
+                       cdrawingtool.cpp
+                       cscene.cpp
+                       cevent.cpp )
 
 target_link_libraries ( engine2d ${LOG4CPLUS_LIBRARIES}
                                  ${GSL_LIBRARIES}
