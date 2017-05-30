@@ -53,8 +53,6 @@ private:
     * two different composite objects
     */
    CGObject(const CGObject &copyObj);
-   
-   
 };
 
 #endif // CGOBJECT

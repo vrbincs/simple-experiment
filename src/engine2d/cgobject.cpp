@@ -10,11 +10,13 @@ public:
    
    bool addChild(CGObject *child)
    {
+      // TODO
       return false;
    }
    
    bool removeChild(CGObject *child)
    {
+      // TODO
       return false;
    }
    

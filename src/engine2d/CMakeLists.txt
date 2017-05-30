@@ -15,9 +15,9 @@ pkg_check_modules ( SDL       REQUIRED sdl )
 include_directories ( "${PROJECT_SOURCE_DIR}" )
 include_directories ( ${SDL_INCLUDE_DIRS} )
 
-add_library ( 2drender cgobject.cpp
+add_library ( engine2d cgobject.cpp
                        cdrawingtool.cpp )
 
-target_link_libraries ( 2drender ${LOG4CPLUS_LIBRARIES}
+target_link_libraries ( engine2d ${LOG4CPLUS_LIBRARIES}
                                  ${GSL_LIBRARIES}
                                  ${SDL_LIBRARIES} )
