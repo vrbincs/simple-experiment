@@ -6,7 +6,7 @@ include ( FindPkgConfig )
 set ( 2d_render_VERSION_MAJOR 1 )
 set ( 2d_render_VERSION_MINOR 0 )
 
-include_directories ( "${PROJECT_SOURCE_DIR}/../../engine2d" )
+include_directories ( "${PROJECT_SOURCE_DIR}/../../../src/engine2d" )
 
 pkg_check_modules ( GTEST REQUIRED gtest )
 pkg_check_modules ( SDL   REQUIRED sdl )
