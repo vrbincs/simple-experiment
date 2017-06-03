@@ -4,22 +4,22 @@
 
 #include "cdrawingtool.h"
 #include "cevent.h"
-#include "cgobject.h"
+#include "csceneitem.h"
 
-class CGObjectPriv
+class CSceneItemPriv
 {
 public:
-   CGObjectPriv()
+   CSceneItemPriv()
       : m_scene(NULL)
    {
    }
    
-   bool addChild(CGObject *child)
+   bool addChild(CSceneItem *child)
    {
       auto it_child = m_children.find(child);
       if(it_child == m_children.end())
       {
-         m_children.insert(std::pair<CGObject *, CGObject *>(child, child));
+         m_children.insert(std::pair<CSceneItem *, CSceneItem *>(child, child));
          return true;
       }
       else
@@ -28,33 +28,33 @@ public:
       }
    }
    
-   bool removeChild(CGObject *child)
+   bool removeChild(CSceneItem *child)
    {
       return m_children.erase(child);
    }
    
    CScene *getScene() const;
    
-   std::map<CGObject *, CGObject *> m_children;
+   std::map<CSceneItem *, CSceneItem *> m_children;
    CScene *m_scene;
-   friend class CGObject;
+   friend class CSceneItem;
 };
 
-static CGObjectPriv *m_cgobject = new CGObjectPriv();
+static CSceneItemPriv *m_cgobject = new CSceneItemPriv();
 
 
-CGObject::CGObject(CGObject *parent)
+CSceneItem::CSceneItem(CSceneItem *parent)
    : m_parent(NULL),
-     m_cgobjectPriv(new CGObjectPriv())
+     m_cgobjectPriv(new CSceneItemPriv())
 {
    setParent(parent);
 }
 
-CGObject::~CGObject()
+CSceneItem::~CSceneItem()
 {
 }
 
-bool CGObject::setParent(CGObject *parent)
+bool CSceneItem::setParent(CSceneItem *parent)
 {
    if(m_parent)
    {
@@ -76,12 +76,12 @@ bool CGObject::setParent(CGObject *parent)
    return true;
 }
 
-CGObject *CGObject::getParent() const
+CSceneItem *CSceneItem::getParent() const
 {
    return m_parent;
 }
 
-void CGObject::update()
+void CSceneItem::update()
 {
    CScene *scene = getScene();
    
@@ -91,11 +91,11 @@ void CGObject::update()
    }
 }
 
-CScene *CGObject::getScene() const
+CScene *CSceneItem::getScene() const
 {
    return m_cgobjectPriv->m_scene;
 }
 
-void CGObject::onEvent(CEvent &event)
+void CSceneItem::onEvent(CEvent &event)
 {
 }

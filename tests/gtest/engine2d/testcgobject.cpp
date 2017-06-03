@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 
 #include <crect.h>
-#include <cgobject.h>
+#include <csceneitem.h>
 
 
-class TestCGObject : public CGObject
+class TestCSceneItem : public CSceneItem
 {
 public:
-   TestCGObject(TestCGObject *testcgobject = NULL) : CGObject(testcgobject){}
-   ~TestCGObject(){}
+   TestCSceneItem(TestCSceneItem *testcgobject = NULL) : CSceneItem(testcgobject){}
+   ~TestCSceneItem(){}
    
    CRectI objectRegion() const
    {
@@ -22,11 +22,11 @@ protected:
 };
 
 
-TEST(TestCGObject, TestParentIsSet)
+TEST(TestCSceneItem, TestParentIsSet)
 {
-   TestCGObject parent;
-   TestCGObject child1(&parent);
-   TestCGObject child2;
+   TestCSceneItem parent;
+   TestCSceneItem child1(&parent);
+   TestCSceneItem child2;
    
    EXPECT_TRUE(child2.setParent(&child1));
    EXPECT_TRUE((child2.getParent() == &child1));

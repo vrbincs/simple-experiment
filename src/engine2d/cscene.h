@@ -1,12 +1,12 @@
 #ifndef CSCENE_H
    #define CSCENE_H
 
-class CGObject;
+class CSceneItem;
 
 class CScene
 {
 public:
-   void updateObject(CGObject *object);
+   void updateObject(CSceneItem *object);
 };
 
 #endif // CSCENE_H

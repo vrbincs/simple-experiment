@@ -1,5 +1,5 @@
 #include "cscene.h"
 
-void CScene::updateObject(CGObject *object)
+void CScene::updateObject(CSceneItem *object)
 {
 }

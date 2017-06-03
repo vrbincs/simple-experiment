@@ -6,7 +6,7 @@
 #include <crect.h>
 
 class CDrawingTool;
-class CGObjectPriv;
+class CSceneItemPriv;
 class CEvent;
 
 /**
@@ -14,18 +14,18 @@ class CEvent;
  * build a tree of items in child parent manner. It implements the
  * composite pattern.
  */
-class CGObject
+class CSceneItem
 {
 public:
    /**
     * \brief constructor
     */
-   CGObject(CGObject *parent = NULL);
+   CSceneItem(CSceneItem *parent = NULL);
    
    /**
     * \brief virtual destructor
     */
-   virtual ~CGObject();
+   virtual ~CSceneItem();
    
    /**
     * \brief Every object has position and size. This is the essential
@@ -39,13 +39,13 @@ public:
     * \return return true if the child was added successfully to the
     * parent; false, otherwise.
     */
-   bool setParent(CGObject *parent);
+   bool setParent(CSceneItem *parent);
    
    /**
     * \brief return a pointer to the parent object;
     * \return return a pointer to the parent object;
     */
-   CGObject *getParent() const;
+   CSceneItem *getParent() const;
 protected:
    /**
     * \brief This is the exciting part of the object where all painting
@@ -68,15 +68,15 @@ protected:
    
    virtual void onEvent(CEvent &event);
 private:
-   CGObject *m_parent;
-   CGObjectPriv *m_cgobjectPriv;
+   CSceneItem *m_parent;
+   CSceneItemPriv *m_cgobjectPriv;
    
    friend class CScene;
    /**
     * \brief Copy constructor is disable as we do not want an object to be part
     * two different composite objects
     */
-   CGObject(const CGObject &copyObj);
+   CSceneItem(const CSceneItem &copyObj);
    
    void setScene(CScene *scene);
 };
