@@ -11,7 +11,6 @@ public:
    virtual ~CEngine2d();
    static IEngineDevice *createDevice(IVideoDevice::DeviceType renderType,
                                       const CSizeI &resolution);
-   static void releaseDevice();
 private:
    CEngine2d();
 };

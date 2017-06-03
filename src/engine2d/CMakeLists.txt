@@ -20,7 +20,8 @@ add_library ( engine2d cengine2d.cpp
                        cscene.cpp
                        cdrawingtool.cpp
                        cevent.cpp
-                       cenginedevicelinux.cpp )
+                       cenginedevicelinux.cpp
+                       cvideodevicesdl.cpp )
 
 target_link_libraries ( engine2d ${LOG4CPLUS_LIBRARIES}
                                  ${GSL_LIBRARIES}

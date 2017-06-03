@@ -9,7 +9,14 @@ public:
       DeviceTypeSdl
    };
    
-   virtual ~IVideoDevice();
+   virtual ~IVideoDevice(){}
+   
+   virtual DeviceType type() const = 0;
+   
+   /**
+    * \brief Draw image on the device
+    */
+   //virtual void drawImage() = 0;
 };
 
 #endif // IVIDEODEVICE_H
