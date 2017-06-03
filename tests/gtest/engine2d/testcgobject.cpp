@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <crect.h>
+#include <cscene.h>
 #include <csceneitem.h>
 
 
@@ -10,7 +11,7 @@ public:
    TestCSceneItem(TestCSceneItem *testcgobject = NULL) : CSceneItem(testcgobject){}
    ~TestCSceneItem(){}
    
-   CRectI objectRegion() const
+   CRectI itemRegion() const
    {
       return CRectI();
    }

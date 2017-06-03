@@ -1,8 +1,6 @@
-#ifndef CGOBJECT_H
-   #define CGOBJECT_H
+#ifndef CSCENEITEM_H
+   #define CSCENEITEM_H
 
-#include <engine2d.h>
-#include <cscene.h>
 #include <crect.h>
 
 class CDrawingTool;
@@ -32,7 +30,7 @@ public:
     * information for the optimizer to only updates certain parts of
     * the visible drawing region and not the entire one.
     */
-   virtual CRectI objectRegion() const = 0;
+   virtual CRectI itemRegion() const = 0;
    
    /**
     * \brief set parent
@@ -50,13 +48,13 @@ protected:
    /**
     * \brief This is the exciting part of the object where all painting
     * is carried out. Make sure that drawing is confined inside the 
-    * region returned by objectRegion()
+    * region returned by itemRegion()
     */
    virtual void repaint(CDrawingTool *drawingTool) = 0;
    
    /**
     * \brief This tells the scene that this object needs to be
-    * re-painted. This will add the object to the list of object that
+    * re-painted. This will add the item to the list of items that
     * needs to be repained only if it is in the current scene view.
     */
    void update();
@@ -69,7 +67,7 @@ protected:
    virtual void onEvent(CEvent &event);
 private:
    CSceneItem *m_parent;
-   CSceneItemPriv *m_cgobjectPriv;
+   CSceneItemPriv *m_sceneItemPriv;
    
    friend class CScene;
    /**
@@ -81,4 +79,4 @@ private:
    void setScene(CScene *scene);
 };
 
-#endif // CGOBJECT
+#endif // CSCENEITEM_H

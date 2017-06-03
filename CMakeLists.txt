@@ -14,3 +14,4 @@ project (simple-experiment)
  
 add_subdirectory(src/engine2d)
 add_subdirectory(tests/gtest/engine2d)
+add_subdirectory(tests/quicktests/ballmove)

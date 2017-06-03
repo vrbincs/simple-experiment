@@ -1,9 +1,11 @@
 #include <map>
 
+
 #include "logging.h"
 
 #include "cdrawingtool.h"
 #include "cevent.h"
+#include "cscene.h"
 #include "csceneitem.h"
 
 class CSceneItemPriv
@@ -45,7 +47,7 @@ static CSceneItemPriv *m_cgobject = new CSceneItemPriv();
 
 CSceneItem::CSceneItem(CSceneItem *parent)
    : m_parent(NULL),
-     m_cgobjectPriv(new CSceneItemPriv())
+     m_sceneItemPriv(new CSceneItemPriv())
 {
    setParent(parent);
 }
@@ -58,14 +60,14 @@ bool CSceneItem::setParent(CSceneItem *parent)
 {
    if(m_parent)
    {
-      m_parent->m_cgobjectPriv->removeChild(this);
+      m_parent->m_sceneItemPriv->removeChild(this);
    }
    
    m_parent = NULL;
    
    if(parent)
    {
-      if(!parent->m_cgobjectPriv->addChild(this))
+      if(!parent->m_sceneItemPriv->addChild(this))
       {
          return false;
       }
@@ -93,7 +95,7 @@ void CSceneItem::update()
 
 CScene *CSceneItem::getScene() const
 {
-   return m_cgobjectPriv->m_scene;
+   return m_sceneItemPriv->m_scene;
 }
 
 void CSceneItem::onEvent(CEvent &event)

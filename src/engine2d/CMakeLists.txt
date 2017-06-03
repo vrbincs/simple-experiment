@@ -15,10 +15,12 @@ pkg_check_modules ( SDL       REQUIRED sdl )
 include_directories ( "${PROJECT_SOURCE_DIR}" )
 include_directories ( ${SDL_INCLUDE_DIRS} )
 
-add_library ( engine2d csceneitem.cpp
+add_library ( engine2d cengine2d.cpp
+                       csceneitem.cpp
                        cscene.cpp
                        cdrawingtool.cpp
-                       cevent.cpp )
+                       cevent.cpp
+                       cenginedevicelinux.cpp )
 
 target_link_libraries ( engine2d ${LOG4CPLUS_LIBRARIES}
                                  ${GSL_LIBRARIES}
