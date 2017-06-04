@@ -1,6 +1,7 @@
 #ifndef CVIDEODEVICESDL_H
    #define CVIDEODEVICESDL_H
 
+#include <ipaintdevice.h>
 #include <ivideodevice.h>
 #include <csize.h>
 
@@ -11,8 +12,11 @@ public:
    ~CVideoDeviceSDL();
    
    DeviceType type() const;
+   
+   IPaintDevice *getPaintDevice();
+   IPaintDevice *createPaintDevice(const CSizeI &size);
 private:
-   CSizeI m_resolution;
+   IPaintDevice *m_paintDevice;
 };
 
 #endif // CVIDEODEVICESDL_H
