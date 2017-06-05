@@ -14,7 +14,7 @@ public:
    DeviceType type() const;
    
    IPaintDevice *getPaintDevice();
-   IPaintDevice *createPaintDevice(const CSizeI &size);
+   IPaintDevice *createPaintDevice(CPixmap *pixmap);
 private:
    IPaintDevice *m_paintDevice;
 };

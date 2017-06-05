@@ -17,7 +17,7 @@ public:
    virtual DeviceType type() const = 0;
    
    virtual IPaintDevice *getPaintDevice() = 0;
-   virtual IPaintDevice *createPixmap(const CSizeI &size) = 0;
+   virtual IPaintDevice *createPaintDevice(CPixmap *pixmap) = 0;
    
    /**
     * \brief Draw image on the device

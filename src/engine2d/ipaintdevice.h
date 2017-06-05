@@ -1,14 +1,17 @@
 #ifndef IPAINTDEVICE_H
    #define IPAINTDEVICE_H
 
-#include <cpixmap.h>
+#include <crect.h>
 
 class IPaintDevice
 {
 public:
    virtual ~IPaintDevice() {}
    
-   virtual int height() const = 0;
+   virtual int getHeight() const = 0;
+   virtual int getWidth() const = 0;
+   
+   virtual void drawRect(const CRectI &rect) = 0;
 };
 
 #endif // IPAINTDEVICE_H

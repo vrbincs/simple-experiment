@@ -17,7 +17,7 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 
    if(pixmap)
    {
-      m_paintDevice = createPaintDevice(pixmap);
+      m_paintDevice = createPaintDevice(surface);
    }
 }
 
@@ -36,10 +36,9 @@ IPaintDevice *CVideoDeviceSDL::getPaintDevice()
    return m_paintDevice;
 }
 
-IPaintDevice *CVideoDeviceSDL::createPaintDevice(const CSizeI &size)
+IPaintDevice *CVideoDeviceSDL::createPaintDevice(CPixmap *pixmap)
 {
-   //SDL_CreateRGBSurface
-   return NULL;
+   return new CVideoDeviceSDL(pixmap);
 }
 
 CPixmap *CVideoDeviceSDL::createPixmap(const CSizeI &size)
