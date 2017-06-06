@@ -1,3 +1,5 @@
+#include "logging.h"
+
 #include "cengine2d.h"
 #include "cpixmap.h"
 
@@ -16,26 +18,33 @@ static IVideoDevice *getVideoDevice()
 
 CPixmap::CPixmap(int width, int height, int bpp)
    : m_size(width, height),
-     m_bpp(bpp)
+     m_bitsPerPixel(bpp),
+     m_pixelBuffer(NULL)
 {
    allocateBuffer();
 }
 
 CPixmap::CPixmap(const CSizeI &size, int bpp)
    : m_size(size),
-     m_bpp(bpp)
+     m_bitsPerPixel(bpp),
+     m_pixelBuffer(NULL)
 {
    allocateBuffer();
 }
 
 CPixmap::~CPixmap()
 {
-   delete [] m_pPixelBuffer;
+   delete m_pixelBuffer;
 }
 
-void *CPixmap::getBuffer()
+const void *CPixmap::getBuffer()
 {
-   return m_pPixelBuffer;
+   if(m_pixelBuffer)
+   {
+      return m_pixelBuffer->getBuffer();
+   }
+   
+   return NULL;
 }
    
 CSizeI CPixmap::getSize() const
@@ -55,13 +64,27 @@ int CPixmap::getHeight() const
 
 int CPixmap::getBpp() const
 {
-   return m_bpp;
+   return m_bitsPerPixel;
+}
+
+CPixelBuffer *CPixmap::getPixelBuffer()
+{
+   return m_pixelBuffer;
 }
 
 bool CPixmap::allocateBuffer()
 {
-   /*unsigned int bufferSize = (getWidth() * getHeight() * getBpp());
-   m_pPixelBuffer = new uint8_t[bufferSize];*/
-   if()
+   if(getVideoDevice())
+   {
+      m_pixelBuffer = getVideoDevice()->allocatePixmap(getWidth(), 
+                                                       getHeight(),
+                                                       getBpp());
+   }
+   else
+   {
+      LOGGER_ERROR("Pixmap buffer cannot be created before CEngine2d is constructed.");
+   }
+   
+   return m_pixelBuffer;
 }
 

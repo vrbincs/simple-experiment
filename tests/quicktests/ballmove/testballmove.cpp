@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
       return false;
    }
    
-   while(engineDevice->run())
+   IPaintDevice *paintDevice = videoDevice->getPaintDevice();
+   while(engineDevice->run() && paintDevice)
    {
       LOGGER_INFO("Runnig at FPS =");
    }

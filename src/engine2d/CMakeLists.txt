@@ -12,7 +12,8 @@ pkg_check_modules ( LOG4CPLUS REQUIRED log4cplus )
 pkg_check_modules ( GSL       REQUIRED gsl )
 pkg_check_modules ( SDL       REQUIRED sdl )
 
-include_directories ( "${PROJECT_SOURCE_DIR}" )
+include_directories ( "${PROJECT_SOURCE_DIR}"
+                      "${PROJECT_SOURCE_DIR}/sdl")
 include_directories ( ${SDL_INCLUDE_DIRS} )
 
 add_library ( engine2d cengine2d.cpp
@@ -22,8 +23,9 @@ add_library ( engine2d cengine2d.cpp
                        cevent.cpp
                        cenginedevicelinux.cpp
                        cpixmap.cpp
+                       cpixelbuffer.cpp
                        sdl/cvideodevicesdl.cpp
-                       sdl/cpaintsurfacesdl.cpp )
+                       sdl/cpaintdevicesdl.cpp )
 
 target_link_libraries ( engine2d ${LOG4CPLUS_LIBRARIES}
                                  ${GSL_LIBRARIES}
