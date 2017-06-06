@@ -7,13 +7,11 @@
 
 class Pixmap;
 
-class CPaintDeviceSDL : public IPaintDevice
+class CPaintSurfaceSDL : public IPaintDevice
 {
 public:
    int getHeight() const;
    int getWidth() const;
-   void drawRect(const CRectI &rect);
-   
 private:
    SDL_Surface *m_pSurface;
    

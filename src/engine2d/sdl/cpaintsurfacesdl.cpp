@@ -2,12 +2,20 @@
 
 int CPaintDeviceSDL::getWidth() const
 {
-   return pSurface->width;
+   if(pSurface)
+   {
+      return pSurface->width;
+   }
+   return 0;
 }
 
 int CPaintDeviceSDL::getHeight() const
 {
-   return pSurface->height;
+   if(pSurface)
+   {
+      return pSurface->height;
+   }
+   return 0;
 }
 
 void CPaintDeviceSDL::drawRect(const CRectI &rect)

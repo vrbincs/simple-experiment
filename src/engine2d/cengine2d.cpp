@@ -41,6 +41,11 @@ IEngineDevice *CEngine2d::createDevice(IVideoDevice::DeviceType renderType,
    return l_activeEngineDevice;
 }
 
+IEngineDevice *CEngine2d::instance()
+{
+   return l_activeEngineDevice;
+}
+
 
 CEngine2d::CEngine2d()
 {

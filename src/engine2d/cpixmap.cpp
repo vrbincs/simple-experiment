@@ -1,4 +1,18 @@
+#include "cengine2d.h"
 #include "cpixmap.h"
+
+static IVideoDevice *getVideoDevice()
+{
+   IVideoDevice *videoDevice = NULL;
+   IEngineDevice *engine = CEngine2d::instance();
+   
+   if(engine)
+   {
+      videoDevice = engine->getVideoDevice();
+   }
+   
+   return videoDevice;
+}
 
 CPixmap::CPixmap(int width, int height, int bpp)
    : m_size(width, height),
@@ -46,7 +60,8 @@ int CPixmap::getBpp() const
 
 bool CPixmap::allocateBuffer()
 {
-   unsigned int bufferSize = (getWidth() * getHeight() * getBpp());
-   m_pPixelBuffer = new uint8_t[bufferSize];
+   /*unsigned int bufferSize = (getWidth() * getHeight() * getBpp());
+   m_pPixelBuffer = new uint8_t[bufferSize];*/
+   if()
 }
 

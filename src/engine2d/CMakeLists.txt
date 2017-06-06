@@ -23,7 +23,7 @@ add_library ( engine2d cengine2d.cpp
                        cenginedevicelinux.cpp
                        cpixmap.cpp
                        sdl/cvideodevicesdl.cpp
-                       sdl/cpaintdevicesdl.cpp )
+                       sdl/cpaintsurfacesdl.cpp )
 
 target_link_libraries ( engine2d ${LOG4CPLUS_LIBRARIES}
                                  ${GSL_LIBRARIES}
