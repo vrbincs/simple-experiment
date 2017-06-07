@@ -1,7 +1,7 @@
 #include "logging.h"
 
 #include "cpixmap.h"
-#include "cpixelbuffersdl.h"
+#include "cpaintsurfacesdl.h"
 #include "cpaintdevicesdl.h"
 
 CPaintDeviceSDL::CPaintDeviceSDL(CPixmap *pixmap)
@@ -35,11 +35,13 @@ bool CPaintDeviceSDL::end()
 {
    if(m_pPixmap)
    {
-      CPixelBufferSDL *pixmapBuffer = dynamic_cast<CPixelBufferSDL *>(m_pPixmap->getPixelBuffer());
+      CPaintSurfaceSDL *paintSurface = dynamic_cast<CPaintSurfaceSDL *>(m_pPixmap->getPaintSurface());
       
-      if(pixmapBuffer)
+      if(paintSurface)
       {
-         SDL_Flip(pixmapBuffer->getSurface());
+         SDL_Flip(paintSurface->getSDLSurface());
       }
    }
+   
+   return true;
 }

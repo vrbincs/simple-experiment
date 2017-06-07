@@ -1,12 +1,12 @@
 #include <SDL.h>
 
-#include "cpixelbuffersdl.h"
+#include "cpaintsurfacesdl.h"
 #include "cpaintdevicesdl.h"
 #include "cvideodevicesdl.h"
 
 
 CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
-   : m_basePixelBuffer(NULL),
+   : m_basePaintSurface(NULL),
      m_paintDevice(NULL)
 {
    SDL_Init(SDL_INIT_EVERYTHING);
@@ -20,7 +20,7 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 
    if(surface)
    {
-      m_basePixelBuffer = new CPixelBufferSDL(surface);
+      m_basePaintSurface = new CPaintSurfaceSDL(surface);
    }
 }
 
@@ -34,14 +34,22 @@ IVideoDevice::DeviceType CVideoDeviceSDL::type() const
    return DeviceTypeSdl;
 }
 
+IPaintSurface *CVideoDeviceSDL::createPaintSurface() const
+{
+   return new CPaintSurfaceSDL();
+}
+
 IPaintDevice *CVideoDeviceSDL::getPaintDevice()
 {
    return m_paintDevice;
 }
 
-CPixelBuffer *CVideoDeviceSDL::allocatePixmap(uint32_t width, 
-                                              uint32_t height,
-                                              uint8_t depth)
+bool CVideoDeviceSDL::start()
 {
-   return new CPixelBufferSDL(width, height, depth);
+   return false;
+}
+
+bool CVideoDeviceSDL::end()
+{
+   return false;
 }

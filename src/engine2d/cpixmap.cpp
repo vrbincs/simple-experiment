@@ -16,75 +16,70 @@ static IVideoDevice *getVideoDevice()
    return videoDevice;
 }
 
-CPixmap::CPixmap(int width, int height, int bpp)
-   : m_size(width, height),
-     m_bitsPerPixel(bpp),
-     m_pixelBuffer(NULL)
+CPixmap::CPixmap()
+   : m_paintSurface(NULL)
 {
-   allocateBuffer();
+   allocatePaintSurface(0,0,32);
+}
+
+CPixmap::CPixmap(int width, int height, int bpp)
+   : m_paintSurface(NULL)
+{
+   allocatePaintSurface(width, height, bpp);
 }
 
 CPixmap::CPixmap(const CSizeI &size, int bpp)
-   : m_size(size),
-     m_bitsPerPixel(bpp),
-     m_pixelBuffer(NULL)
+   : m_paintSurface(NULL)
 {
-   allocateBuffer();
+   allocatePaintSurface(size.getWidth(), size.getHeight(), bpp);
+}
+
+CPixmap::CPixmap(IPaintSurface *paintSurface)
+   : m_paintSurface(paintSurface)
+{
 }
 
 CPixmap::~CPixmap()
 {
-   delete m_pixelBuffer;
+   delete m_paintSurface;
 }
 
-const void *CPixmap::getBuffer()
-{
-   if(m_pixelBuffer)
-   {
-      return m_pixelBuffer->getBuffer();
-   }
-   
-   return NULL;
-}
-   
 CSizeI CPixmap::getSize() const
 {
-   return m_size;
+   return CSizeI(m_paintSurface->getWidth(), m_paintSurface->getHeight());
 }
 
 int CPixmap::getWidth() const
 {
-   return m_size.getWidth();
+   return m_paintSurface->getWidth();
 }
 
 int CPixmap::getHeight() const
 {
-   return m_size.getHeight();
+   return m_paintSurface->getHeight();
 }
 
 int CPixmap::getBpp() const
 {
-   return m_bitsPerPixel;
+   return m_paintSurface->getBitsPerPixels();
 }
 
-CPixelBuffer *CPixmap::getPixelBuffer()
-{
-   return m_pixelBuffer;
-}
-
-bool CPixmap::allocateBuffer()
+bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
 {
    if(getVideoDevice())
    {
-      m_pixelBuffer = getVideoDevice()->allocatePixmap(getWidth(), 
-                                                       getHeight(),
-                                                       getBpp());
+      m_paintSurface = getVideoDevice()->createPaintSurface();
+      
+      if(m_paintSurface)
+      {
+         m_paintSurface->allocate(width, height, bpp);
+      }
    }
    else
    {
       LOGGER_ERROR("Pixmap buffer cannot be created before CEngine2d is constructed.");
    }
    
-   return m_pixelBuffer;
+   return m_paintSurface;
 }
 

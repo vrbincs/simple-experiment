@@ -16,11 +16,11 @@ public:
    
    virtual DeviceType type() const = 0;
    
-   virtual CPixelBuffer *allocatePixmap(uint32_t width, 
-                                        uint32_t height,
-                                        uint8_t depth) = 0;
-
+   virtual IPaintSurface *createPaintSurface() const = 0;
    virtual IPaintDevice *getPaintDevice() = 0;
+   
+   virtual bool start() = 0;
+   virtual bool end() = 0;
 };
 
 #endif // IVIDEODEVICE_H

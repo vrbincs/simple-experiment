@@ -5,8 +5,8 @@
 #include <ivideodevice.h>
 #include <csize.h>
 
-#include <cpixelbuffer.h>
-#include <cpixelbuffersdl.h>
+#include <ipaintsurface.h>
+#include <cpaintsurfacesdl.h>
 
 class CVideoDeviceSDL : public IVideoDevice
 {
@@ -15,11 +15,13 @@ public:
    ~CVideoDeviceSDL();
    
    DeviceType type() const;
-   
-   CPixelBuffer *allocatePixmap(uint32_t width, uint32_t height, uint8_t depth);
+   IPaintSurface *createPaintSurface() const;
    IPaintDevice *getPaintDevice();
+   
+   bool start();
+   bool end();
 private:
-   CPixelBufferSDL *m_basePixelBuffer;
+   CPaintSurfaceSDL *m_basePaintSurface;
    IPaintDevice *m_paintDevice;
 };
 

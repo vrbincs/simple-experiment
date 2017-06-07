@@ -21,7 +21,9 @@ int main(int argc, char *argv[])
    
    while(engineDevice->run())
    {
+      videoDevice->start();
       LOGGER_INFO("Runnig at FPS =");
+      videoDevice->end();
    }
 
    return 0;
