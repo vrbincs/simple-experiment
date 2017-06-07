@@ -4,7 +4,7 @@
 int main(int argc, char *argv[])
 {
    IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl,
-                                                         CSizeI(1920, 1280));
+                                                         CSizeI(1280, 800));
 
    if(!engineDevice)
    {
@@ -19,8 +19,7 @@ int main(int argc, char *argv[])
       return false;
    }
    
-   IPaintDevice *paintDevice = videoDevice->getPaintDevice();
-   while(engineDevice->run() && paintDevice)
+   while(engineDevice->run())
    {
       LOGGER_INFO("Runnig at FPS =");
    }

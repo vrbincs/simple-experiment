@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <cstddef>
 
 #include "logging.h"
@@ -54,7 +56,8 @@ CEngineDeviceLinux::~CEngineDeviceLinux()
 
 bool CEngineDeviceLinux::run()
 {
-   return false;
+   sleep(1);
+   return true;
 }
 
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()
