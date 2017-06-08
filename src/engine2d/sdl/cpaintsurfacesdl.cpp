@@ -2,7 +2,7 @@
 
 #include "cpaintsurfacesdl.h"
 
-CPaintSurfaceSDL::CPaintSurfaceSDL(SDL_Surface *surface = NULL)
+CPaintSurfaceSDL::CPaintSurfaceSDL(SDL_Surface *surface)
    : m_sdlSurface(surface),
      m_width(0),
      m_height(0)
@@ -36,6 +36,8 @@ bool CPaintSurfaceSDL::allocate(uint32_t width, uint32_t height, uint8_t bpp)
                                        0x00FF0000,
                                        0x0000FF00,
                                        0x000000FF);
+
+   return m_sdlSurface;
 }
 
 uint8_t CPaintSurfaceSDL::getBitsPerPixels() const

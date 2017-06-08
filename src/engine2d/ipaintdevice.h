@@ -9,11 +9,9 @@ class IPaintDevice
 public:
    virtual ~IPaintDevice() {}
    
-   virtual bool start(CPixmap *pixmap) = 0;
+   virtual bool start(IPaintSurface *destSurface) = 0;
    virtual void drawRect(const CRectI &rect) = 0;
    virtual bool end() = 0;
-   
-   virtual IPaintSurface *createPaintSurface() const = 0;
 };
 
 #endif // IPAINTDEVICE_H

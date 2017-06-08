@@ -17,7 +17,7 @@ public:
    DeviceType type() const;
    
    IPaintSurface *createPaintSurface() const;
-   IPaintDevice *createPaintDevice(CPixmap *) const;
+   IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const;
    IPaintDevice *getPaintDevice();
    
    bool start();

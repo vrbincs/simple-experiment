@@ -25,7 +25,7 @@ bool CPaintTool::start(CPixmap *pixmap)
          
          if(videoDevice)
          {
-            m_pPaintDevice = videoDevice->createPaintDevice(pixmap);
+            m_pPaintDevice = videoDevice->createPaintDevice(pixmap->getPaintSurface());
             
             if(m_pPaintDevice)
             {

@@ -97,6 +97,12 @@ bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
    return false;
 }
 
+
+IPaintSurface *CPixmap::getPaintSurface()
+{
+   return m_paintSurface;
+}
+
 IVideoDevice *CPixmap::getVideoDevice()
 {
    return NULL;

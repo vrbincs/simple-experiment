@@ -5,19 +5,19 @@
 
 #include <ipaintdevice.h>
 
+class IPaintSurface;
+
 class CPaintDeviceSDL : public IPaintDevice
 {
 public:
-   CPaintDeviceSDL(CPixmap *destPixmap);
+   CPaintDeviceSDL(IPaintSurface *destSurface);
    ~CPaintDeviceSDL();
    
-   bool start(CPixmap *destPixmap);
+   bool start(IPaintSurface *destSurface);
    void drawRect(const CRectI &rect);
    bool end();
-   
-   IPaintSurface *createPaintSurface() const;
 private:
-   CPixmap *m_pDestPixmap;
+   CPaintSurfaceSDL *m_pDestSurface;
 };
 
 #endif //CPAINTDEVICESDL_H

@@ -28,6 +28,8 @@ private:
    bool allocatePaintSurface(int width, int height, int bpp);
    
    IVideoDevice *getVideoDevice();
+   IPaintSurface *getPaintSurface();
+   
    friend class CPaintTool;
 };
 

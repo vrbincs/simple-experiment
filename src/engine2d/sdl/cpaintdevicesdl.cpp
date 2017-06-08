@@ -4,26 +4,29 @@
 #include "cpaintsurfacesdl.h"
 #include "cpaintdevicesdl.h"
 
-CPaintDeviceSDL::CPaintDeviceSDL(CPixmap *pixmap)
-   : m_pDestPixmap(pixmap)
+CPaintDeviceSDL::CPaintDeviceSDL(IPaintSurface *destSurface)
+   : m_pDestSurface(NULL)
 {
+   m_pDestSurface = dynamic_cast<CPaintSurfaceSDL *>(destSurface);
 }
 
 CPaintDeviceSDL::~CPaintDeviceSDL()
 {
 }
 
-bool CPaintDeviceSDL::start(CPixmap *pixmap)
+bool CPaintDeviceSDL::start(IPaintSurface *destSurface)
 {
-   if(m_pDestPixmap == NULL)
+   m_pDestSurface = dynamic_cast<CPaintSurfaceSDL *>(destSurface);
+   
+   if(m_pDestSurface != NULL)
    {
-      m_pDestPixmap = pixmap;
+      m_pDestSurface->lock();
       return true;
    }
    else
    {
+      LOGGER_WARN("The destination surface is invalid.");
       return false;
-      LOGGER_WARN("This paint device has already stared");
    }
 }
 
@@ -33,25 +36,13 @@ void CPaintDeviceSDL::drawRect(const CRectI &rect)
 
 bool CPaintDeviceSDL::end()
 {
-   if(m_pDestPixmap)
+   if(m_pDestSurface)
    {
-      CPaintSurfaceSDL *paintSurface = dynamic_cast<CPaintSurfaceSDL *>(m_pDestPixmap->getPaintSurface());
-      
-      if(paintSurface)
-      {
-         SDL_Flip(paintSurface->getSDLSurface());
-      }
+      m_pDestSurface->unlock();
+      return true;
    }
-   
-   return true;
-}
-
-IPaintSurface *CPaintDeviceSDL::createPaintSurface() const
-{
-   return new CPaintSurfaceSDL();
-}
-
-IPaintDevice *CPaintDeviceSDL::getPaintDevice() const
-{
-   
+   else
+   {
+      return false;
+   }
 }

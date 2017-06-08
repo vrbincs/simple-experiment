@@ -45,9 +45,9 @@ IPaintSurface *CVideoDeviceSDL::createPaintSurface() const
    return new CPaintSurfaceSDL();
 }
 
-IPaintDevice *CVideoDeviceSDL::createPaintDevice(CPixmap *pixmap) const
+IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *paintSurface) const
 {
-   return new CPaintDeviceSDL(pixmap);
+   return new CPaintDeviceSDL(paintSurface);
 }
 
 IPaintDevice *CVideoDeviceSDL::getPaintDevice()
@@ -62,5 +62,13 @@ bool CVideoDeviceSDL::start()
 
 bool CVideoDeviceSDL::end()
 {
-   return false;
+   if(l_screenSurface)
+   {
+      SDL_Flip(l_screenSurface->getSDLSurface());
+      return true;
+   }
+   else
+   {
+      return false;
+   }
 }
