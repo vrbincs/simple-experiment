@@ -6,9 +6,15 @@
 
 CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
    : m_basePaintSurface(NULL),
-     m_paintDevice(NULL)
+     m_window(NULL),
+     m_renderer(NULL)
 {
    SDL_Init(SDL_INIT_EVERYTHING);
+   SDL_CreateWindowAndRenderer(resolution.getWidth(), 
+                               resolution.getHeight(),
+                               0,
+                               &m_window,
+                               &m_renderer);
    
    SDL_Surface *surface = SDL_SetVideoMode(resolution.getWidth(), 
                                            resolution.getHeight(),
@@ -25,6 +31,8 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 
 CVideoDeviceSDL::~CVideoDeviceSDL()
 {
+   SDL_DestroyRenderer(m_renderer);
+   SDL_DestroyWindow(m_window);
    SDL_Quit();
 }
 

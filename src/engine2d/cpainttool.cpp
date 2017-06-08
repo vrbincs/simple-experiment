@@ -20,6 +20,7 @@ bool CPaintTool::start(CPixmap *pixmap)
       if(pixmap)
       {
          m_pPixmap  = pixmap;
+         return true;
       }
       else
       {
@@ -30,6 +31,7 @@ bool CPaintTool::start(CPixmap *pixmap)
    {
       LOGGER_ERROR("This paint tool has already associated pixmap.");
    }
+   return false;
 }
 
 void CPaintTool::drawRect(const CRectI &rect)
@@ -56,4 +58,5 @@ void CPaintTool::drawRect(const CRectI &rect)
 bool CPaintTool::end()
 {
    m_pPixmap = NULL;
+   return true;
 }

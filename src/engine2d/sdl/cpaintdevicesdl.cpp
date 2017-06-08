@@ -5,8 +5,7 @@
 #include "cpaintdevicesdl.h"
 
 CPaintDeviceSDL::CPaintDeviceSDL(CPixmap *pixmap)
-   : m_pPixmap(pixmap),
-     m_pPaintDevice();
+   : m_pDestPixmap(pixmap)
 {
 }
 

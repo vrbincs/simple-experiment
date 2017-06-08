@@ -5,7 +5,9 @@
 #include <cstddef>
 
 #include <csize.h>
-#include <ipaintsurface.h>
+
+class IVideoDevice;
+class IPaintSurface;
 
 class CPixmap
 {

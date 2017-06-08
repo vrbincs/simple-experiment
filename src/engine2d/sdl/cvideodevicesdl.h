@@ -23,6 +23,8 @@ public:
    bool end();
 private:
    CPaintSurfaceSDL *m_basePaintSurface;
+   SDL_Window *m_window;
+   SDL_Renderer *m_renderer;
 };
 
 #endif // CVIDEODEVICESDL_H
