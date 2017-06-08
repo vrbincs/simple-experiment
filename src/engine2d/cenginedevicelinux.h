@@ -13,15 +13,16 @@ public:
    bool run();
    IVideoDevice *getVideoDevice();
    std::list<CSizeI> getVideoModeList();
-   bool supportsRender(IVideoDevice::DeviceType renderType);
-
+   
+   bool setRenderer(IVideoDevice::DeviceType renderType,
+                    const CSizeI &resolution);
 private:
-   bool start(IVideoDevice::DeviceType renderType, const CSizeI &resolution);
-   IEngineDevice *instance();
+   IVideoDevice *m_videoDevice;
    
    CEngineDeviceLinux();
-   CEngineDeviceLinuxPriv *m_engineDevicePriv;
-   friend class CEngineDeviceLinuxPriv;
+   void releaseVideoDevice();
+   
+   friend class IEngineDevice;
 };
 
 #endif

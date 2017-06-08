@@ -6,52 +6,16 @@
 #include "cvideodevicesdl.h"
 #include "cenginedevicelinux.h"
 
-class CEngineDeviceLinuxPriv
-{
-public:
-   IVideoDevice *m_videoDevice;
-   
-   
-   CEngineDeviceLinuxPriv()
-      : m_videoDevice(NULL)
-   {
-   }
-   
-   virtual ~CEngineDeviceLinuxPriv()
-   {
-      delete m_videoDevice;
-   }
-   
-   static CEngineDeviceLinux *createInstance()
-   {
-      return new CEngineDeviceLinux();
-   }
-   
-   void releaseVideoDevice()
-   {
-      if(m_videoDevice)
-      {
-         delete m_videoDevice;
-         m_videoDevice = NULL;
-      }
-   }
-   
-   bool createSDLDevice(const CSizeI &resolution)
-   {
-      m_videoDevice = new CVideoDeviceSDL(resolution);
-      return m_videoDevice;
-   }
-};
-
-static IEngineDevice *l_engineDeviceInstance = CEngineDeviceLinuxPriv::createInstance();
+static IEngineDevice *l_engineDeviceInstance = NULL;
 
 CEngineDeviceLinux::CEngineDeviceLinux()
-   : m_engineDevicePriv(new CEngineDeviceLinuxPriv())
+   : m_videoDevice(NULL)
 {
 }
 
 CEngineDeviceLinux::~CEngineDeviceLinux()
 {
+   releaseVideoDevice();
 }
 
 bool CEngineDeviceLinux::run()
@@ -62,7 +26,7 @@ bool CEngineDeviceLinux::run()
 
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()
 {
-   return m_engineDevicePriv->m_videoDevice;
+   return m_videoDevice;
 }
 
 std::list<CSizeI> CEngineDeviceLinux::getVideoModeList()
@@ -70,41 +34,41 @@ std::list<CSizeI> CEngineDeviceLinux::getVideoModeList()
    return std::list<CSizeI>();
 }
 
-bool CEngineDeviceLinux::supportsRender(IVideoDevice::DeviceType renderType)
+bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,
+                                     const CSizeI &resolution)
 {
-   switch(renderType)
-   {
-      case IVideoDevice::DeviceTypeSdl:
-      {
-         return true;
-      }
-      break;
-      default:
-      {
-         return false;
-      }
-   }
-}
-
-bool CEngineDeviceLinux::start(IVideoDevice::DeviceType renderType, 
-                               const CSizeI &resolution)
-{
-   m_engineDevicePriv->releaseVideoDevice();
+   releaseVideoDevice();
    
    switch(renderType)
    {
       case IVideoDevice::DeviceTypeSdl:
       {
-         return m_engineDevicePriv->createSDLDevice(resolution);
+         m_videoDevice = new CVideoDeviceSDL(resolution);
+         return true;
       }
       break;
       default:
       break;
    }
+   
    return false;
 }
 
 IEngineDevice *IEngineDevice::instance()
 {
+   if(l_engineDeviceInstance == NULL)
+   {
+      l_engineDeviceInstance = new CEngineDeviceLinux();
+   }
+   
    return l_engineDeviceInstance;
+}
+
+void CEngineDeviceLinux::releaseVideoDevice()
+{
+   if(m_videoDevice)
+   {
+      delete m_videoDevice;
+      m_videoDevice = NULL;
+   }
 }

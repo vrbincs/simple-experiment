@@ -17,16 +17,9 @@ IEngineDevice *CEngine2d::createDevice(IVideoDevice::DeviceType renderType,
    
    if(device)
    {
-      if(device->supportsRender(renderType))
+      if(device->setRenderer(renderType, resolution))
       {
-         if(device->start(renderType, resolution))
-         {
-            l_activeEngineDevice = device;
-         }
-         else
-         {
-            LOGGER_ERROR("Unable to start the engine.");
-         }
+         l_activeEngineDevice = device;
       }
       else
       {
