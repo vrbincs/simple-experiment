@@ -1,11 +1,13 @@
 #include "logging.h"
 
+#include "ivideodevice.h"
+#include "ipaintsurface.h"
 #include "cpainttool.h"
 
 CPaintTool::CPaintTool(CPixmap *pixmap)
-   : m_pPixmap(NULL)
+   : m_pPaintDevice(NULL)
 {
-   start(m_pPixmap);
+   start(pixmap);
 }
 
 CPaintTool::~CPaintTool()
@@ -15,12 +17,30 @@ CPaintTool::~CPaintTool()
 
 bool CPaintTool::start(CPixmap *pixmap)
 {
-   if(m_pPixmap)
+   if(!m_pPaintDevice)
    {
       if(pixmap)
       {
-         m_pPixmap  = pixmap;
-         return true;
+         IVideoDevice *videoDevice = pixmap->getVideoDevice();
+         IPaintSurface *paintSurface = pixmap->getPaintSurface();
+         
+         if(videoDevice && paintSurface)
+         {
+            m_pPaintDevice = videoDevice->createPaintDevice(paintSurface);
+            
+            if(m_pPaintDevice)
+            {
+               return true;
+            }
+            else
+            {
+               LOGGER_WARN("Error while creating a paint device.");
+            }
+         }
+         else
+         {
+            LOGGER_WARN("Unable to get video device.");
+         }
       }
       else
       {
@@ -31,32 +51,26 @@ bool CPaintTool::start(CPixmap *pixmap)
    {
       LOGGER_ERROR("This paint tool has already associated pixmap.");
    }
+   
    return false;
 }
 
 void CPaintTool::drawRect(const CRectI &rect)
 {
-   if(m_pPixmap)
+   if(m_pPaintDevice)
    {
-      IPaintDevice *paintDevice = m_pPixmap->getPaintDevice();
-      
-      if(paintDevice)
-      {
-         paintDevice->drawRect(rect);
-      }
-      else
-      {
-         LOGGER_WARN("No paint device associate with the pixamap has been found.");
-      }
+      m_pPaintDevice->drawRect(rect);
    }
    else
    {
-      LOGGER_WARN("Unable to draw rectangle without valid pixmap.");
+      LOGGER_WARN("No paint device associate with the pixamap has been found.");
    }
 }
 
 bool CPaintTool::end()
 {
-   m_pPixmap = NULL;
+   delete m_pPaintDevice;
+   m_pPaintDevice = NULL;
+   
    return true;
 }

@@ -46,6 +46,11 @@ IPaintSurface *CVideoDeviceSDL::createPaintSurface() const
    return new CPaintSurfaceSDL(this);
 }
 
+IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *surface const
+{
+   return new CPaintDeviceSDL(surface);
+}
+
 IPaintDevice *CVideoDeviceSDL::getPaintDevice()
 {
    return m_paintDevice;

@@ -4,6 +4,8 @@
 #include <crect.h>
 #include <cpixmap.h>
 
+class IPaintDevice;
+
 class CPaintTool
 {
 public:
@@ -14,7 +16,7 @@ public:
    void drawRect(const CRectI &rect);
    bool end();
 private:
-   CPixmap *m_pPixmap;
+   IPaintDevice *m_pPaintDevice;
 };
 
 #endif // CPAINTTOOL_H

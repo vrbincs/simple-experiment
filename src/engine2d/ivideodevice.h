@@ -17,6 +17,8 @@ public:
    virtual DeviceType type() const = 0;
    
    virtual IPaintSurface *createPaintSurface() const = 0;
+   virtual IPaintDevice *createPaintDevice(IPaintSurface *) const = 0;
+   
    virtual IPaintDevice *getPaintDevice() = 0;
    
    virtual bool start() = 0;
