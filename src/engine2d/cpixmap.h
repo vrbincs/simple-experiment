@@ -21,6 +21,7 @@ public:
    int getBpp() const;
    
    IPaintSurface *getPaintSurface();
+   IVideoDevice *getVideoDevice();
    
    virtual ~CPixmap();
 private:

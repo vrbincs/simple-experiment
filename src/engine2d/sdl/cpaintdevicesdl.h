@@ -14,6 +14,9 @@ public:
    bool start(CPixmap *pixmap);
    void drawRect(const CRectI &rect);
    bool end();
+   
+   IPaintSurface *createPaintSurface() const;
+   IPaintDevice *getPaintDevice() const;
 private:
    CPixmap *m_pPixmap;
 };

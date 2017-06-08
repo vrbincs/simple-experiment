@@ -21,6 +21,7 @@ add_library ( engine2d cengine2d.cpp
                        cscene.cpp
                        cdrawingtool.cpp
                        cevent.cpp
+                       cpainttool.cpp
                        cenginedevicelinux.cpp
                        cpixmap.cpp
                        sdl/cvideodevicesdl.cpp

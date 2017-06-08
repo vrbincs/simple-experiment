@@ -4,7 +4,6 @@
 #include "cpaintdevicesdl.h"
 #include "cvideodevicesdl.h"
 
-
 CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
    : m_basePaintSurface(NULL),
      m_paintDevice(NULL)
@@ -36,7 +35,7 @@ IVideoDevice::DeviceType CVideoDeviceSDL::type() const
 
 IPaintSurface *CVideoDeviceSDL::createPaintSurface() const
 {
-   return new CPaintSurfaceSDL();
+   return new CPaintSurfaceSDL(this);
 }
 
 IPaintDevice *CVideoDeviceSDL::getPaintDevice()

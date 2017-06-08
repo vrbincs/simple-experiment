@@ -15,6 +15,7 @@ public:
    ~CVideoDeviceSDL();
    
    DeviceType type() const;
+   
    IPaintSurface *createPaintSurface() const;
    IPaintDevice *getPaintDevice();
    
@@ -22,7 +23,6 @@ public:
    bool end();
 private:
    CPaintSurfaceSDL *m_basePaintSurface;
-   IPaintDevice *m_paintDevice;
 };
 
 #endif // CVIDEODEVICESDL_H

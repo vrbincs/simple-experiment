@@ -66,13 +66,26 @@ int CPixmap::getBpp() const
 
 bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
 {
-   if(getVideoDevice())
+   IVideoDevice *videoDevice = getVideoDevice();
+   
+   if(videoDevice)
    {
-      m_paintSurface = getVideoDevice()->createPaintSurface();
+      m_paintSurface = videoDevice->createPaintSurface();
       
       if(m_paintSurface)
       {
-         m_paintSurface->allocate(width, height, bpp);
+         if(m_paintSurface->allocate(width, height, bpp))
+         {
+            return true;
+         }
+         else
+         {
+            TLOG_ERROR("Out of memory. Unable to allocate paint surface.");
+         }
+      }
+      else
+      {
+         TLOG_ERROR("Paint surface not initialized.");
       }
    }
    else
@@ -80,6 +93,6 @@ bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
       LOGGER_ERROR("Pixmap buffer cannot be created before CEngine2d is constructed.");
    }
    
-   return m_paintSurface;
+   return false;
 }
 

@@ -2,8 +2,10 @@
 
 #include "cpaintsurfacesdl.h"
 
-CPaintSurfaceSDL::CPaintSurfaceSDL(SDL_Surface *surface)
-   : m_sdlSurface(surface),
+CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice, 
+                                   SDL_Surface *surface = NULL)
+   : m_videoDevice(videoDevice),
+     m_sdlSurface(surface),
      m_width(0),
      m_height(0)
 {

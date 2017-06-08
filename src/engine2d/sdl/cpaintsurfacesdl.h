@@ -5,6 +5,8 @@
 
 #include <ipaintsurface.h>
 
+class CVideoDeviceSDL;
+
 class CPaintSurfaceSDL : public IPaintSurface
 {
 public:
@@ -20,10 +22,11 @@ public:
    
    SDL_Surface *getSDLSurface();
 protected:
-   CPaintSurfaceSDL(SDL_Surface *surface = NULL);
+   CPaintSurfaceSDL(CVideoDeviceSDL *, SDL_Surface *surface = NULL);
    
    void freeSurface();
 private:
+   CPaintSurfaceSDL *m_videoDevice;
    SDL_Surface *m_sdlSurface;
    uint32_t m_width;
    uint32_t m_height;

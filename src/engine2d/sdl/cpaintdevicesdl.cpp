@@ -5,7 +5,8 @@
 #include "cpaintdevicesdl.h"
 
 CPaintDeviceSDL::CPaintDeviceSDL(CPixmap *pixmap)
-   : m_pPixmap(pixmap)
+   : m_pPixmap(pixmap),
+     m_pPaintDevice();
 {
 }
 
@@ -44,4 +45,14 @@ bool CPaintDeviceSDL::end()
    }
    
    return true;
+}
+
+IPaintSurface *CPaintDeviceSDL::createPaintSurface() const
+{
+   return new CPaintSurfaceSDL();
+}
+
+IPaintDevice *CPaintDeviceSDL::getPaintDevice() const
+{
+   
 }
