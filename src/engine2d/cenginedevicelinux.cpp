@@ -56,7 +56,7 @@ CEngineDeviceLinux::~CEngineDeviceLinux()
 
 bool CEngineDeviceLinux::run()
 {
-   sleep(1);
+   usleep(1000000);
    return true;
 }
 

@@ -17,16 +17,16 @@ public:
    CPixmap(const CSizeI &size, int bpp = 32);
    CPixmap(IPaintSurface *paintSurface);
    
+   virtual ~CPixmap();
+   
    CSizeI getSize() const;
    int getWidth() const;
    int getHeight() const;
    int getBpp() const;
-   
-   virtual ~CPixmap();
 private:
    IPaintSurface *m_paintSurface;
-   bool allocatePaintSurface(int width, int height, int bpp);
    
+   bool allocatePaintSurface(int width, int height, int bpp);
    IVideoDevice *getVideoDevice();
    IPaintSurface *getPaintSurface();
    

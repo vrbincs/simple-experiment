@@ -18,7 +18,7 @@ public:
    
    IPaintSurface *createPaintSurface() const;
    IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const;
-   IPaintDevice *getPaintDevice();
+   IPaintSurface *getScreenSurface();
    
    bool start();
    bool end();

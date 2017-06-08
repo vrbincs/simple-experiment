@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>738</x>
-      <y>1512</y>
+      <x>702</x>
+      <y>1656</y>
       <w>522</w>
       <h>396</h>
     </coordinates>
@@ -17,8 +17,8 @@ CRectF </panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>342</x>
-      <y>234</y>
+      <x>306</x>
+      <y>378</y>
       <w>1008</w>
       <h>270</h>
     </coordinates>
@@ -34,8 +34,8 @@ uint8_t getBpp() const;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1692</x>
-      <y>666</y>
+      <x>1656</x>
+      <y>810</y>
       <w>522</w>
       <h>198</h>
     </coordinates>
@@ -48,8 +48,8 @@ uint8_t getBpp() const;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1944</x>
-      <y>432</y>
+      <x>1908</x>
+      <y>576</y>
       <w>54</w>
       <h>270</h>
     </coordinates>
@@ -59,8 +59,8 @@ uint8_t getBpp() const;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>378</x>
-      <y>756</y>
+      <x>342</x>
+      <y>900</y>
       <w>882</w>
       <h>252</h>
     </coordinates>
@@ -72,8 +72,8 @@ uint8_t getBpp() const;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>828</x>
-      <y>486</y>
+      <x>792</x>
+      <y>630</y>
       <w>54</w>
       <h>306</h>
     </coordinates>
@@ -83,8 +83,8 @@ uint8_t getBpp() const;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1332</x>
-      <y>360</y>
+      <x>1296</x>
+      <y>504</y>
       <w>396</w>
       <h>54</h>
     </coordinates>
@@ -94,8 +94,8 @@ uint8_t getBpp() const;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1242</x>
-      <y>432</y>
+      <x>1206</x>
+      <y>576</y>
       <w>486</w>
       <h>360</h>
     </coordinates>
@@ -105,8 +105,8 @@ uint8_t getBpp() const;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1692</x>
-      <y>252</y>
+      <x>1656</x>
+      <y>396</y>
       <w>936</w>
       <h>198</h>
     </coordinates>

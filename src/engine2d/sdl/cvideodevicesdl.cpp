@@ -50,7 +50,7 @@ IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *paintSurface) co
    return new CPaintDeviceSDL(paintSurface);
 }
 
-IPaintDevice *CVideoDeviceSDL::getPaintDevice()
+IPaintSurface *CVideoDeviceSDL::getScreenSurface()
 {
    return NULL;
 }
