@@ -1,9 +1,10 @@
 #include "logging.h"
 
 #include "cengine2d.h"
+#include "ipaintsurface.h"
 #include "cpixmap.h"
 
-static IVideoDevice *getVideoDevice()
+static IVideoDevice *acquireVideoDevice()
 {
    IVideoDevice *videoDevice = NULL;
    IEngineDevice *engine = CEngine2d::instance();
@@ -66,7 +67,7 @@ int CPixmap::getBpp() const
 
 bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
 {
-   IVideoDevice *videoDevice = getVideoDevice();
+   IVideoDevice *videoDevice = acquireVideoDevice();
    
    if(videoDevice)
    {
@@ -80,12 +81,12 @@ bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
          }
          else
          {
-            TLOG_ERROR("Out of memory. Unable to allocate paint surface.");
+            LOGGER_ERROR("Out of memory. Unable to allocate paint surface.");
          }
       }
       else
       {
-         TLOG_ERROR("Paint surface not initialized.");
+         LOGGER_ERROR("Paint surface not initialized.");
       }
    }
    else
@@ -94,5 +95,10 @@ bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
    }
    
    return false;
+}
+
+IVideoDevice *CPixmap::getVideoDevice()
+{
+   return NULL;
 }
 

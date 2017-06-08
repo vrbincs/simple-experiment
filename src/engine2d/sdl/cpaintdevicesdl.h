@@ -16,7 +16,6 @@ public:
    bool end();
    
    IPaintSurface *createPaintSurface() const;
-   IPaintDevice *getPaintDevice() const;
 private:
    CPixmap *m_pDestPixmap;
 };

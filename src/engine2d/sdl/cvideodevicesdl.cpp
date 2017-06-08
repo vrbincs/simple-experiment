@@ -1,38 +1,37 @@
 #include <SDL.h>
 
+#include "logging.h"
 #include "cpaintsurfacesdl.h"
 #include "cpaintdevicesdl.h"
 #include "cvideodevicesdl.h"
 
+static CPaintSurfaceSDL *l_screenSurface = NULL;
+
 CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
-   : m_basePaintSurface(NULL),
-     m_window(NULL),
-     m_renderer(NULL)
 {
-   SDL_Init(SDL_INIT_EVERYTHING);
-   SDL_CreateWindowAndRenderer(resolution.getWidth(), 
-                               resolution.getHeight(),
-                               0,
-                               &m_window,
-                               &m_renderer);
-   
-   SDL_Surface *surface = SDL_SetVideoMode(resolution.getWidth(), 
-                                           resolution.getHeight(),
-                                           32,
-                                           SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_NOFRAME);
-
-   
-
-   if(surface)
+   if(l_screenSurface == NULL)
    {
-      m_basePaintSurface = new CPaintSurfaceSDL(surface);
+      SDL_Init(SDL_INIT_EVERYTHING);
+      
+      SDL_Surface *surface = SDL_SetVideoMode(resolution.getWidth(), 
+                                              resolution.getHeight(),
+                                              32,
+                                              SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_NOFRAME);
+
+      if(surface)
+      {
+         l_screenSurface = new CPaintSurfaceSDL(surface);
+      }
+   }
+   else
+   {
+      LOGGER_ERROR("SDL screen has already been initialized.");
    }
 }
 
 CVideoDeviceSDL::~CVideoDeviceSDL()
 {
-   SDL_DestroyRenderer(m_renderer);
-   SDL_DestroyWindow(m_window);
+   delete l_screenSurface;
    SDL_Quit();
 }
 
@@ -43,17 +42,17 @@ IVideoDevice::DeviceType CVideoDeviceSDL::type() const
 
 IPaintSurface *CVideoDeviceSDL::createPaintSurface() const
 {
-   return new CPaintSurfaceSDL(this);
+   return new CPaintSurfaceSDL();
 }
 
-IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *surface const
+IPaintDevice *CVideoDeviceSDL::createPaintDevice(CPixmap *pixmap) const
 {
-   return new CPaintDeviceSDL(surface);
+   return new CPaintDeviceSDL(pixmap);
 }
 
 IPaintDevice *CVideoDeviceSDL::getPaintDevice()
 {
-   return m_paintDevice;
+   return NULL;
 }
 
 bool CVideoDeviceSDL::start()

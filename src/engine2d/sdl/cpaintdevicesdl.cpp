@@ -15,9 +15,9 @@ CPaintDeviceSDL::~CPaintDeviceSDL()
 
 bool CPaintDeviceSDL::start(CPixmap *pixmap)
 {
-   if(!m_pPixmap)
+   if(m_pDestPixmap == NULL)
    {
-      m_pPixmap = pixmap;
+      m_pDestPixmap = pixmap;
       return true;
    }
    else
@@ -33,9 +33,9 @@ void CPaintDeviceSDL::drawRect(const CRectI &rect)
 
 bool CPaintDeviceSDL::end()
 {
-   if(m_pPixmap)
+   if(m_pDestPixmap)
    {
-      CPaintSurfaceSDL *paintSurface = dynamic_cast<CPaintSurfaceSDL *>(m_pPixmap->getPaintSurface());
+      CPaintSurfaceSDL *paintSurface = dynamic_cast<CPaintSurfaceSDL *>(m_pDestPixmap->getPaintSurface());
       
       if(paintSurface)
       {

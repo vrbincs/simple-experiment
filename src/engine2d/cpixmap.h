@@ -22,14 +22,12 @@ public:
    int getHeight() const;
    int getBpp() const;
    
-   IVideoDevice *getVideoDevice();
-   
    virtual ~CPixmap();
 private:
    IPaintSurface *m_paintSurface;
    bool allocatePaintSurface(int width, int height, int bpp);
    
-   IPaintSurface *getPaintSurface();
+   IVideoDevice *getVideoDevice();
    friend class CPaintTool;
 };
 

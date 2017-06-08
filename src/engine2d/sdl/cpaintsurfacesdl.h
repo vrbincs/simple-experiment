@@ -22,11 +22,10 @@ public:
    
    SDL_Surface *getSDLSurface();
 protected:
-   CPaintSurfaceSDL(CVideoDeviceSDL *, SDL_Surface *surface = NULL);
+   CPaintSurfaceSDL(SDL_Surface *surface = NULL);
    
    void freeSurface();
 private:
-   CPaintSurfaceSDL *m_videoDevice;
    SDL_Surface *m_sdlSurface;
    uint32_t m_width;
    uint32_t m_height;

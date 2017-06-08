@@ -22,11 +22,10 @@ bool CPaintTool::start(CPixmap *pixmap)
       if(pixmap)
       {
          IVideoDevice *videoDevice = pixmap->getVideoDevice();
-         IPaintSurface *paintSurface = pixmap->getPaintSurface();
          
-         if(videoDevice && paintSurface)
+         if(videoDevice)
          {
-            m_pPaintDevice = videoDevice->createPaintDevice(paintSurface);
+            m_pPaintDevice = videoDevice->createPaintDevice(pixmap);
             
             if(m_pPaintDevice)
             {
