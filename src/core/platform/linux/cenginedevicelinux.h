@@ -8,6 +8,7 @@ class CEngineDeviceLinuxPriv;
 class CEngineDeviceLinux : public IEngineDevice
 {
 public:
+   CEngineDeviceLinux();
    virtual ~CEngineDeviceLinux();
    
    bool run();
@@ -18,8 +19,6 @@ public:
                     const CSizeI &resolution);
 private:
    IVideoDevice *m_videoDevice;
-   
-   CEngineDeviceLinux();
    void releaseVideoDevice();
    
    friend class IEngineDevice;

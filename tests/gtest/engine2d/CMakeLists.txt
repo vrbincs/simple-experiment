@@ -6,7 +6,7 @@ include ( FindPkgConfig )
 set ( testengine2d_VERSION_MAJOR 1 )
 set ( testengine2d_VERSION_MINOR 0 )
 
-include_directories ( "${PROJECT_SOURCE_DIR}/../../../src/engine2d" )
+include_directories ( ${engine2dcore_SOURCE_DIR} )
 
 pkg_check_modules ( GTEST REQUIRED gtest )
 pkg_check_modules ( SDL   REQUIRED sdl )
@@ -18,7 +18,7 @@ target_link_libraries ( testengine2d ${GTEST_LIBRARIES}
                                      ${SDL_LIBRARIES}
                                      ${UUID_LIBRARIES} 
                                      -lgtest_main
-                                     ${engine2d_BINARY_DIR}/libengine2d.a )
+                                     seEngine2d )
 
 include_directories ( ${GTEST_INCLUDE_DIRS}
                       ${UUID_INCLUDE_DIRS} )
