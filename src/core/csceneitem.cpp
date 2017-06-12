@@ -3,7 +3,6 @@
 
 #include "logging.h"
 
-#include "cdrawingtool.h"
 #include "cevent.h"
 #include "cscene.h"
 #include "csceneitem.h"

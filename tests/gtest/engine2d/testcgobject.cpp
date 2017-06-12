@@ -16,7 +16,7 @@ public:
       return CRectI();
    }
 protected:
-   void repaint(CDrawingTool *)
+   void repaint(CPaintTool *)
    {
       
    }

@@ -3,7 +3,7 @@
 
 #include <crect.h>
 
-class CDrawingTool;
+class CPaintTool;
 class CSceneItemPriv;
 class CEvent;
 
@@ -50,7 +50,7 @@ protected:
     * is carried out. Make sure that drawing is confined inside the 
     * region returned by itemRegion()
     */
-   virtual void repaint(CDrawingTool *drawingTool) = 0;
+   virtual void repaint(CPaintTool *paintTool) = 0;
    
    /**
     * \brief This tells the scene that this object needs to be
