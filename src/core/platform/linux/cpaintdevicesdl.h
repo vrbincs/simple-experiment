@@ -18,6 +18,7 @@ public:
    bool end();
 private:
    CPaintSurfaceSDL *m_pDestSurface;
+   SDL_Renderer *m_pSdlRenderer;
 };
 
 #endif //CPAINTDEVICESDL_H

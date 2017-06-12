@@ -35,7 +35,10 @@ private:
    uint32_t m_height;
    uint8_t m_bpp;
    
+   bool createTexture();
+   
    friend class CVideoDeviceSDL;
+   friend class CPaintDeviceSDL;
 };
 
 #endif // CPAINTSURFACESDL_H

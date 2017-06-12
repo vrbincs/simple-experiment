@@ -18,7 +18,7 @@ public:
    virtual IPaintSurface *createPaintSurface() = 0;
    virtual IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const = 0;
    
-   virtual IPaintSurface *getScreenSurface() = 0;
+   virtual IPaintDevice *getScreenPaintDevice() const = 0;
 
    virtual bool start() = 0;
    virtual bool end() = 0;

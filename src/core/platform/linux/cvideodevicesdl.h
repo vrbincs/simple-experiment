@@ -8,6 +8,8 @@
 #include <ipaintsurface.h>
 #include <cpaintsurfacesdl.h>
 
+class CPaintDeviceSDL;
+
 class CVideoDeviceSDL : public IVideoDevice
 {
 public:
@@ -18,13 +20,14 @@ public:
    
    IPaintSurface *createPaintSurface();
    IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const;
-   IPaintSurface *getScreenSurface();
+   IPaintDevice *getScreenPaintDevice() const;
    
    bool start();
    bool end();
 private:
    SDL_Renderer *getSDLRenderer() const;
    friend class CPaintSurfaceSDL;
+   friend class CPaintDeviceSDL;
 };
 
 #endif // CVIDEODEVICESDL_H

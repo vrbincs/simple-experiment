@@ -16,6 +16,8 @@ CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
       m_width = m_sdlSurface->w;
       m_height = m_sdlSurface->h;
       m_bpp = m_sdlSurface->format->BitsPerPixel;
+      
+      createTexture();
    }
 }
 
@@ -36,7 +38,6 @@ bool CPaintSurfaceSDL::allocate(uint32_t width,
    
    if(m_bpp == 32)
    {
-   
       m_sdlSurface = SDL_CreateRGBSurface(0,
                                           width,
                                           height,
@@ -46,11 +47,7 @@ bool CPaintSurfaceSDL::allocate(uint32_t width,
                                           0x0000FF00,
                                           0x000000FF);
 
-      m_sdlTexture = SDL_CreateTexture(m_videoDevice->getSDLRenderer(),
-                                       SDL_PIXELFORMAT_RGBA8888,
-                                       SDL_TEXTUREACCESS_STREAMING, // note that STREAMING is a hint that tells the renderer to upate the pixels frequently
-                                       width,
-                                       height);
+      createTexture();
    }
    else
    {
@@ -100,6 +97,30 @@ void CPaintSurfaceSDL::freeSurface()
 {
    m_width = m_height = m_bpp = 0;
    
-   SDL_FreeSurface(m_sdlSurface);
-   SDL_DestroyTexture(m_sdlTexture);
+   if(m_sdlSurface)
+   {
+      SDL_FreeSurface(m_sdlSurface);
+   }
+   
+   if(m_sdlTexture)
+   {
+      SDL_DestroyTexture(m_sdlTexture);
+   }
+}
+
+bool CPaintSurfaceSDL::createTexture()
+{
+   m_sdlTexture = SDL_CreateTexture(m_videoDevice->getSDLRenderer(),
+                                    SDL_PIXELFORMAT_RGBA8888,
+                                    SDL_TEXTUREACCESS_STREAMING, // note that STREAMING is a hint that tells the renderer to upate the pixels frequently
+                                    m_width,
+                                    m_height);
+
+   if(m_sdlTexture == NULL)
+   {
+      LOGGER_ERROR("Unable to create SDL texture");
+      return false;
+   }
+   
+   return true;
 }
