@@ -1,9 +1,13 @@
 #include <SDL.h>
 
+#include "logging.h"
 #include "cpaintsurfacesdl.h"
+#include "cvideodevicesdl.h"
 
-CPaintSurfaceSDL::CPaintSurfaceSDL(SDL_Surface *surface)
-   : m_sdlSurface(surface),
+CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
+                                   SDL_Surface *surface)
+   : m_videoDevice(videoDevice),
+     m_sdlSurface(surface),
      m_width(0),
      m_height(0)
 {
@@ -20,7 +24,9 @@ CPaintSurfaceSDL::~CPaintSurfaceSDL()
    freeSurface();
 }
 
-bool CPaintSurfaceSDL::allocate(uint32_t width, uint32_t height, uint8_t bpp)
+bool CPaintSurfaceSDL::allocate(uint32_t width, 
+                                uint32_t height,
+                                uint8_t bpp)
 {
    freeSurface();
    
@@ -28,14 +34,28 @@ bool CPaintSurfaceSDL::allocate(uint32_t width, uint32_t height, uint8_t bpp)
    m_height = height;
    m_bpp = bpp;
    
-   m_sdlSurface = SDL_CreateRGBSurface(0,
+   if(m_bpp == 32)
+   {
+   
+      m_sdlSurface = SDL_CreateRGBSurface(0,
+                                          width,
+                                          height,
+                                          bpp,
+                                          0xFF000000,
+                                          0x00FF0000,
+                                          0x0000FF00,
+                                          0x000000FF);
+
+      m_sdlTexture = SDL_CreateTexture(m_videoDevice->getSDLRenderer(),
+                                       SDL_PIXELFORMAT_RGBA8888,
+                                       SDL_TEXTUREACCESS_STREAMING, // note that STREAMING is a hint that tells the renderer to upate the pixels frequently
                                        width,
-                                       height,
-                                       bpp,
-                                       0xFF000000,
-                                       0x00FF0000,
-                                       0x0000FF00,
-                                       0x000000FF);
+                                       height);
+   }
+   else
+   {
+      LOGGER_WARN("The requested depth for the surface not supported. depth=" << m_bpp);
+   }
 
    return m_sdlSurface;
 }
@@ -81,4 +101,5 @@ void CPaintSurfaceSDL::freeSurface()
    m_width = m_height = m_bpp = 0;
    
    SDL_FreeSurface(m_sdlSurface);
+   SDL_DestroyTexture(m_sdlTexture);
 }

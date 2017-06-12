@@ -21,10 +21,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 
 pkg_check_modules ( LOG4CPLUS REQUIRED log4cplus )
 pkg_check_modules ( GSL       REQUIRED gsl )
-pkg_check_modules ( SDL       REQUIRED sdl )
+pkg_check_modules ( SDL2      REQUIRED sdl2 )
 
 include_directories ( "${PROJECT_SOURCE_DIR}" )
-include_directories ( ${SDL_INCLUDE_DIRS} )
+include_directories ( ${SDL2_INCLUDE_DIRS} )
  
 
 set ( SOURCES cengine2d.cpp

@@ -21,12 +21,16 @@ public:
    void unlock();
    
    SDL_Surface *getSDLSurface();
+   SDL_Texture *getSDLTexture();
 protected:
-   CPaintSurfaceSDL(SDL_Surface *surface = NULL);
+   CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
+                    SDL_Surface *surface = NULL);
    
    void freeSurface();
 private:
+   CVideoDeviceSDL *m_videoDevice;
    SDL_Surface *m_sdlSurface;
+   SDL_Texture *m_sdlTexture;
    uint32_t m_width;
    uint32_t m_height;
    uint8_t m_bpp;

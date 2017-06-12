@@ -15,7 +15,7 @@ public:
    virtual ~IVideoDevice(){}
    
    virtual DeviceType type() const = 0;   
-   virtual IPaintSurface *createPaintSurface() const = 0;
+   virtual IPaintSurface *createPaintSurface() = 0;
    virtual IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const = 0;
    
    virtual IPaintSurface *getScreenSurface() = 0;

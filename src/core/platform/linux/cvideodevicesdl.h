@@ -16,12 +16,15 @@ public:
    
    DeviceType type() const;
    
-   IPaintSurface *createPaintSurface() const;
+   IPaintSurface *createPaintSurface();
    IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const;
    IPaintSurface *getScreenSurface();
    
    bool start();
    bool end();
+private:
+   SDL_Renderer *getSDLRenderer() const;
+   friend class CPaintSurfaceSDL;
 };
 
 #endif // CVIDEODEVICESDL_H
