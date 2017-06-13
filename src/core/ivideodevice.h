@@ -3,6 +3,7 @@
 
 #include <ipaintdevice.h>
 #include <cpixmap.h>
+#include <ccolour.h>
 
 class IVideoDevice
 {
@@ -20,7 +21,7 @@ public:
    
    virtual IPaintDevice *getScreenPaintDevice() const = 0;
 
-   virtual bool start() = 0;
+   virtual bool start(const CColour &colour = CColour(0,0,0,255)) = 0;
    virtual bool end() = 0;
 };
 
