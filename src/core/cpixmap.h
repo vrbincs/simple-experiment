@@ -13,9 +13,10 @@ class CPixmap
 {
 public:
    CPixmap();
-   CPixmap(int width, int height, int bpp = 32);
-   CPixmap(const CSizeI &size, int bpp = 32);
+   CPixmap(uint8_t *pixelBuffer, int width, int height, int bpp = 32);
+   CPixmap(uint8_t *pixelBuffer, const CSizeI &size, int bpp = 32);
    CPixmap(IPaintSurface *paintSurface);
+   CPixmap(const std::string &fileName, const std::string &fileType);
    
    virtual ~CPixmap();
    
@@ -23,12 +24,18 @@ public:
    int getWidth() const;
    int getHeight() const;
    int getBpp() const;
+   
+   bool isNull() const;
 private:
    IPaintSurface *m_paintSurface;
    
-   bool allocatePaintSurface(int width, int height, int bpp);
-   IVideoDevice *getVideoDevice();
-   IPaintSurface *getPaintSurface();
+   void free();
+   bool allocatePaintSurface(uint8_t *pixelBuffer, 
+                             int width,
+                             int height,
+                             int bpp);
+   
+   IPaintSurface *getPaintSurface() const;
    
    friend class CPaintTool;
 };

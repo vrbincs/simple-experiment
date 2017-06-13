@@ -21,7 +21,7 @@ public:
    
    IPaintSurface *createPaintSurface();
    IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const;
-   IPaintDevice *getScreenPaintDevice() const;
+   IPaintSurface *getScreenSurface() const;
    
    bool start(const CColour &colour = CColour(0,0,0,255));
    bool end();
@@ -29,6 +29,8 @@ private:
    SDL_Renderer *getSDLRenderer() const;
    friend class CPaintSurfaceSDL;
    friend class CPaintDeviceSDL;
+   
+   void clearRenderBuffer(const CColour &colour = CColour(0,0,0,255));
 };
 
 #endif // CVIDEODEVICESDL_H

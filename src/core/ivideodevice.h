@@ -19,7 +19,7 @@ public:
    virtual IPaintSurface *createPaintSurface() = 0;
    virtual IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const = 0;
    
-   virtual IPaintDevice *getScreenPaintDevice() const = 0;
+   virtual IPaintSurface *getScreenSurface() const = 0;
 
    virtual bool start(const CColour &colour = CColour(0,0,0,255)) = 0;
    virtual bool end() = 0;

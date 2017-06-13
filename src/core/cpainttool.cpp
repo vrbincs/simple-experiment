@@ -4,10 +4,10 @@
 #include "ipaintsurface.h"
 #include "cpainttool.h"
 
-CPaintTool::CPaintTool(CPixmap *pixmap)
+CPaintTool::CPaintTool(IPaintSurface *paintSurface)
    : m_pPaintDevice(NULL)
 {
-   start(pixmap);
+   start(paintSurface);
 }
 
 CPaintTool::~CPaintTool()
@@ -15,17 +15,17 @@ CPaintTool::~CPaintTool()
    end();
 }
 
-bool CPaintTool::start(CPixmap *pixmap)
+bool CPaintTool::start(IPaintSurface *paintSurface)
 {
    if(!m_pPaintDevice)
    {
-      if(pixmap)
+      if(paintSurface)
       {
-         IVideoDevice *videoDevice = pixmap->getVideoDevice();
+         IVideoDevice *videoDevice = paintSurface->getVideoDevice();
          
          if(videoDevice)
          {
-            m_pPaintDevice = videoDevice->createPaintDevice(pixmap->getPaintSurface());
+            m_pPaintDevice = videoDevice->createPaintDevice(paintSurface);
             
             if(m_pPaintDevice)
             {
@@ -63,6 +63,14 @@ void CPaintTool::drawRect(const CRectI &rect)
    else
    {
       LOGGER_WARN("No paint device associate with the pixamap has been found.");
+   }
+}
+
+void CPaintTool::drawPixmap(const CPixmap &pixmap, const CPointI &pos)
+{
+   if(m_pPaintDevice)
+   {
+      m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), pos);
    }
 }
 

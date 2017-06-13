@@ -9,7 +9,6 @@
 static SDL_Window *l_sdlWindow = NULL;
 static SDL_Renderer *l_sdlRenderer = NULL;
 static CPaintSurfaceSDL *l_sdlPaintSurface = NULL;
-static CPaintDeviceSDL *l_sdlPaintDevice = NULL;
 
 CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 {
@@ -46,26 +45,14 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
       return;
    }
    
-   
-   SDL_SetRenderDrawColor(l_sdlRenderer, 0, 0, 0, 255);
-   SDL_RenderClear(l_sdlRenderer);
+   clearRenderBuffer();
    SDL_RenderPresent(l_sdlRenderer);
    
-   l_sdlPaintSurface = dynamic_cast<CPaintSurfaceSDL *>(createPaintSurface());
-   
-   if(!(l_sdlPaintSurface && l_sdlPaintSurface->allocate(resolution.getWidth(),
-                                                         resolution.getHeight(),
-                                                         32)))
+   l_sdlPaintSurface = new CPaintSurfaceSDL(this, SDL_GetWindowSurface(l_sdlWindow));
+   if(!l_sdlPaintSurface)
    {
       LOGGER_ERROR("Failed to create paint surface.");
       return;
-   }
-   
-   l_sdlPaintDevice = dynamic_cast<CPaintDeviceSDL *>(createPaintDevice(l_sdlPaintSurface));
-   
-   if(!l_sdlPaintDevice)
-   {
-      LOGGER_ERROR("Failed to create screen paint device.");
    }
 }
 
@@ -99,21 +86,16 @@ IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *paintSurface) co
    return new CPaintDeviceSDL(paintSurface);
 }
 
-IPaintDevice *CVideoDeviceSDL::getScreenPaintDevice() const
+IPaintSurface *CVideoDeviceSDL::getScreenSurface() const
 {
-   return l_sdlPaintDevice;
+   return l_sdlPaintSurface;
 }
 
 bool CVideoDeviceSDL::start(const CColour &colour)
 {
    if(l_sdlRenderer)
    {
-      SDL_SetRenderDrawColor(l_sdlRenderer, 
-                             colour.getRed(),
-                             colour.getGreen(),
-                             colour.getBlue(),
-                             colour.getAlpha());
-      SDL_RenderClear(l_sdlRenderer);
+      clearRenderBuffer(colour);
    }
    return false;
 }
@@ -122,7 +104,7 @@ bool CVideoDeviceSDL::end()
 {
    if(l_sdlRenderer)
    {
-      SDL_RenderPresent(l_sdlRenderer);
+      SDL_UpdateWindowSurface(l_sdlWindow);
       return true;
    }
    else
@@ -134,4 +116,17 @@ bool CVideoDeviceSDL::end()
 SDL_Renderer *CVideoDeviceSDL::getSDLRenderer() const
 {
    return l_sdlRenderer;
+}
+
+void CVideoDeviceSDL::clearRenderBuffer(const CColour &colour)
+{
+   if(l_sdlRenderer)
+   {
+      SDL_SetRenderDrawColor(l_sdlRenderer, 
+                             colour.getRed(),
+                             colour.getGreen(),
+                             colour.getBlue(),
+                             colour.getAlpha());
+      SDL_RenderClear(l_sdlRenderer);
+   }
 }

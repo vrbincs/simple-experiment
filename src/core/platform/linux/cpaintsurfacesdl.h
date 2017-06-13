@@ -12,16 +12,16 @@ class CPaintSurfaceSDL : public IPaintSurface
 public:
    ~CPaintSurfaceSDL();
    
-   bool allocate(uint32_t width, uint32_t height, uint8_t bpp);
-   
    uint8_t getBitsPerPixels() const;
    uint32_t getHeight() const;
    uint32_t getWidth() const;
    void lock();
    void unlock();
    
-   SDL_Surface *getSDLSurface();
-   SDL_Texture *getSDLTexture();
+   IVideoDevice *getVideoDevice() const;
+   
+   SDL_Surface *getSDLSurface() const;
+   SDL_Texture *getSDLTexture() const;
 protected:
    CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
                     SDL_Surface *surface = NULL);
@@ -34,8 +34,15 @@ private:
    uint32_t m_width;
    uint32_t m_height;
    uint8_t m_bpp;
+   uint8_t *m_pixelBuffer;
    
    bool createTexture();
+   bool allocateFromBuffer(uint8_t *pixelBuffer,
+                           uint32_t width,
+                           uint32_t height,
+                           uint8_t bpp);
+   bool allocateFromFile(const std::string &fileName,
+                        const std::string &type);
    
    friend class CVideoDeviceSDL;
    friend class CPaintDeviceSDL;

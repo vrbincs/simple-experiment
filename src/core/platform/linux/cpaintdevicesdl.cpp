@@ -53,12 +53,34 @@ void CPaintDeviceSDL::drawRect(const CRectI &rect)
    SDL_SetRenderDrawColor(m_pSdlRenderer, 255, 0, 0, 255);
    SDL_Rect sdlRect;
    
-   sdlRect.x = rect.getX();
-   sdlRect.y = rect.getY();
-   sdlRect.w = rect.getWidth();
-   sdlRect.h = rect.getHeight();
+   setSdlRect(sdlRect, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
    
    SDL_RenderFillRect(m_pSdlRenderer, &sdlRect);
+}
+
+void CPaintDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
+                                  const CPointI &pos)
+{
+   const CPaintSurfaceSDL *paintSurfaceSdl = dynamic_cast<const CPaintSurfaceSDL *>(&paintSurface);
+   if(paintSurfaceSdl)
+   {
+      SDL_Rect sdlRect;
+      setSdlRect(sdlRect, 
+                 pos.getX(),
+                 pos.getY(),
+                 paintSurface.getWidth(),
+                 paintSurface.getHeight());
+      
+      LOGGER_ERROR("RECT=" << pos.getX() << ":" << pos.getY() << ":" << paintSurface.getWidth() << ":" << paintSurface.getHeight());
+      
+      if(SDL_BlitSurface(paintSurfaceSdl->getSDLSurface(),
+                         NULL,
+                         m_pDestSurface->getSDLSurface(),
+                         &sdlRect) != 0)
+      {
+         LOGGER_ERROR("Unable to blit surface. err=" << SDL_GetError());
+      }
+   }
 }
 
 bool CPaintDeviceSDL::end()

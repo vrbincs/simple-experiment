@@ -20,19 +20,19 @@ static IVideoDevice *acquireVideoDevice()
 CPixmap::CPixmap()
    : m_paintSurface(NULL)
 {
-   allocatePaintSurface(0,0,32);
+   allocatePaintSurface(NULL, 0, 0, 32);
 }
 
-CPixmap::CPixmap(int width, int height, int bpp)
+CPixmap::CPixmap(uint8_t *pixelBuffer, int width, int height, int bpp)
    : m_paintSurface(NULL)
 {
-   allocatePaintSurface(width, height, bpp);
+   allocatePaintSurface(pixelBuffer, width, height, bpp);
 }
 
-CPixmap::CPixmap(const CSizeI &size, int bpp)
+CPixmap::CPixmap(uint8_t *pixelBuffer, const CSizeI &size, int bpp)
    : m_paintSurface(NULL)
 {
-   allocatePaintSurface(size.getWidth(), size.getHeight(), bpp);
+   allocatePaintSurface(pixelBuffer, size.getWidth(), size.getHeight(), bpp);
 }
 
 CPixmap::CPixmap(IPaintSurface *paintSurface)
@@ -40,9 +40,33 @@ CPixmap::CPixmap(IPaintSurface *paintSurface)
 {
 }
 
+CPixmap::CPixmap(const std::string &fileName, const std::string &fileType)
+{
+   IVideoDevice *videoDevice = acquireVideoDevice();
+   
+   if(videoDevice)
+   {
+      m_paintSurface = videoDevice->createPaintSurface();
+      
+      if(m_paintSurface)
+      {
+         if(m_paintSurface->allocateFromFile(fileName, fileType))
+         {
+            return;
+         }
+         else
+         {
+            LOGGER_WARN("Unable to allocate surface from file. fileName=" << fileName << ", fileType=" << fileType );
+         }
+      }
+      
+      free();
+   }
+}
+
 CPixmap::~CPixmap()
 {
-   delete m_paintSurface;
+   free();
 }
 
 CSizeI CPixmap::getSize() const
@@ -65,7 +89,16 @@ int CPixmap::getBpp() const
    return m_paintSurface->getBitsPerPixels();
 }
 
-bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
+void CPixmap::free()
+{
+   delete m_paintSurface;
+   m_paintSurface = NULL;
+}
+
+bool CPixmap::allocatePaintSurface(uint8_t *pixelBuffer,
+                                   int width,
+                                   int height,
+                                   int bpp)
 {
    IVideoDevice *videoDevice = acquireVideoDevice();
    
@@ -75,7 +108,7 @@ bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
       
       if(m_paintSurface)
       {
-         if(m_paintSurface->allocate(width, height, bpp))
+         if(m_paintSurface->allocateFromBuffer(pixelBuffer, width, height, bpp))
          {
             return true;
          }
@@ -88,6 +121,8 @@ bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
       {
          LOGGER_ERROR("Paint surface not initialized.");
       }
+      
+     free();
    }
    else
    {
@@ -97,14 +132,12 @@ bool CPixmap::allocatePaintSurface(int width, int height, int bpp)
    return false;
 }
 
+bool CPixmap::isNull() const
+{
+   return m_paintSurface ? false : true;
+}
 
-IPaintSurface *CPixmap::getPaintSurface()
+IPaintSurface *CPixmap::getPaintSurface() const
 {
    return m_paintSurface;
 }
-
-IVideoDevice *CPixmap::getVideoDevice()
-{
-   return NULL;
-}
-

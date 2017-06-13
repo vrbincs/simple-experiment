@@ -9,11 +9,12 @@ class IPaintDevice;
 class CPaintTool
 {
 public:
-   CPaintTool(CPixmap *pixmap);
+   CPaintTool(IPaintSurface *surface);
    virtual ~CPaintTool();
    
-   bool start(CPixmap *pixmap);
+   bool start(IPaintSurface *surface);
    void drawRect(const CRectI &rect);
+   void drawPixmap(const CPixmap &pixmap, const CPointI &pos);
    bool end();
 private:
    IPaintDevice *m_pPaintDevice;

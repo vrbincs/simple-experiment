@@ -5,6 +5,8 @@
 #include <ienginedevice.h>
 #include <ivideodevice.h>
 
+#include <cpainttool.h>
+
 class CEngine2d
 {
 public:

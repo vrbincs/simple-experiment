@@ -19,21 +19,22 @@ int main(int argc, char *argv[])
       return false;
    }
    
+   CPixmap ball("ball.bmp", "bmp");
+   if(ball.isNull())
+   {
+      LOGGER_ERROR("Unable to load ball.bmp");
+      return 1;
+   }
+   
    int ballx = 0;
    int bally = 0;
    while(engineDevice->run())
    {
       videoDevice->start();
       
-      IPaintDevice *paintDevice = videoDevice->getScreenPaintDevice();
-      if(paintDevice)
-      {
-         paintDevice->drawRect(CRectI(ballx,bally,100,100));
-      }
-      else
-      {
-         LOGGER_WARN("Paint device associated with the screed not available.");
-      }
+      CPaintTool painter(videoDevice->getScreenSurface());
+      painter.drawPixmap(ball, CPointI(ballx, bally));
+      painter.end();
       
       ballx++;
       bally++;

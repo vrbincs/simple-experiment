@@ -9,7 +9,8 @@ CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
    : m_videoDevice(videoDevice),
      m_sdlSurface(surface),
      m_width(0),
-     m_height(0)
+     m_height(0),
+     m_pixelBuffer(NULL)
 {
    if(m_sdlSurface)
    {
@@ -24,28 +25,33 @@ CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
 CPaintSurfaceSDL::~CPaintSurfaceSDL()
 {
    freeSurface();
+   delete [] m_pixelBuffer;
 }
 
-bool CPaintSurfaceSDL::allocate(uint32_t width, 
-                                uint32_t height,
-                                uint8_t bpp)
+bool CPaintSurfaceSDL::allocateFromBuffer(uint8_t *pixelBuffer, 
+                                          uint32_t width, 
+                                          uint32_t height,
+                                          uint8_t bpp)
 {
    freeSurface();
    
    m_width = width;
    m_height = height;
    m_bpp = bpp;
+   m_pixelBuffer = pixelBuffer;
    
    if(m_bpp == 32)
    {
-      m_sdlSurface = SDL_CreateRGBSurface(0,
-                                          width,
-                                          height,
-                                          bpp,
-                                          0xFF000000,
-                                          0x00FF0000,
-                                          0x0000FF00,
-                                          0x000000FF);
+      uint32_t pitch = (width * 4);
+      m_sdlSurface = SDL_CreateRGBSurfaceFrom((void *)pixelBuffer,
+                                              width,
+                                              height,
+                                              bpp,
+                                              pitch,
+                                              0xFF000000,
+                                              0x00FF0000,
+                                              0x0000FF00,
+                                              0x000000FF);
 
       createTexture();
    }
@@ -54,6 +60,23 @@ bool CPaintSurfaceSDL::allocate(uint32_t width,
       LOGGER_WARN("The requested depth for the surface not supported. depth=" << m_bpp);
    }
 
+   return m_sdlSurface;
+}
+
+bool CPaintSurfaceSDL::allocateFromFile(const std::string &fileName,
+                                        const std::string &type)
+{
+   if(type == "bmp")
+   {
+      m_sdlSurface = SDL_LoadBMP(fileName.c_str());
+      if(m_sdlSurface)
+      {
+         m_width = m_sdlSurface->w;
+         m_height = m_sdlSurface->h;
+         m_bpp = m_sdlSurface->format->BitsPerPixel;
+      }
+   }
+   
    return m_sdlSurface;
 }
 
@@ -88,7 +111,12 @@ void CPaintSurfaceSDL::unlock()
    }
 }
 
-SDL_Surface *CPaintSurfaceSDL::getSDLSurface()
+IVideoDevice *CPaintSurfaceSDL::getVideoDevice() const
+{
+   return m_videoDevice;
+}
+
+SDL_Surface *CPaintSurfaceSDL::getSDLSurface() const
 {
    return m_sdlSurface;
 }
