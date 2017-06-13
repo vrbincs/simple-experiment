@@ -7,6 +7,7 @@
 
 #include <ipaintsurface.h>
 #include <cpaintsurfacesdl.h>
+#include <ccolour.h>
 
 class CPaintDeviceSDL;
 
@@ -22,7 +23,7 @@ public:
    IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const;
    IPaintDevice *getScreenPaintDevice() const;
    
-   bool start();
+   bool start(const CColour &colour = CColour(0,0,0,255));
    bool end();
 private:
    SDL_Renderer *getSDLRenderer() const;

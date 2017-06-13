@@ -4,6 +4,7 @@
 #include "cpaintsurfacesdl.h"
 #include "cpaintdevicesdl.h"
 #include "cvideodevicesdl.h"
+#include "ccolour.h"
 
 static SDL_Window *l_sdlWindow = NULL;
 static SDL_Renderer *l_sdlRenderer = NULL;
@@ -103,11 +104,15 @@ IPaintDevice *CVideoDeviceSDL::getScreenPaintDevice() const
    return l_sdlPaintDevice;
 }
 
-bool CVideoDeviceSDL::start()
+bool CVideoDeviceSDL::start(const CColour &colour)
 {
    if(l_sdlRenderer)
    {
-      SDL_SetRenderDrawColor(l_sdlRenderer, 0, 0, 0, 255);
+      SDL_SetRenderDrawColor(l_sdlRenderer, 
+                             colour.getRed(),
+                             colour.getGreen(),
+                             colour.getBlue(),
+                             colour.getAlpha());
       SDL_RenderClear(l_sdlRenderer);
    }
    return false;

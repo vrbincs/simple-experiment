@@ -32,7 +32,8 @@ set ( SOURCES cengine2d.cpp
               cpixmap.cpp
               cevent.cpp
               csceneitem.cpp
-              cscene.cpp )
+              cscene.cpp
+              ccolour.cpp )
 
 if (UNIX)
    include_directories ( platform/linux/ )
