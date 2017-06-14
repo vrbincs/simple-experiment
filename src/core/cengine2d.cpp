@@ -1,9 +1,38 @@
+/** 
+ * \file cengine2d.cpp
+ * \author  Sasho Vrbinc <righteous11@gmail.com>
+ * \version 1.0
+ * 
+ * \section LICENSE
+ * 
+ * Copyright (C) 2017 Sasho Vrbinc
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or any
+ * later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+ * 02110-1301 USA.
+ * 
+ * \section DESCRIPTION
+ * 
+ * SEEngine2d is a small library that enapsulates a simple 2D gaming 
+ * engine.
+ *
+ */
+
 #include <cstddef>
 
 #include "logging.h"
 #include "cengine2d.h"
-
-static IEngineDevice *l_engineDevice = CEngine2d::instance();
 
 CEngine2d::~CEngine2d()
 {
@@ -12,9 +41,10 @@ CEngine2d::~CEngine2d()
 IEngineDevice *CEngine2d::createDevice(IVideoDevice::DeviceType renderType,
                                        const CSizeI &resolution)
 {
-   if(l_engineDevice)
+   IEngineDevice *pEngineDevice = IEngineDevice::instance();
+   if(pEngineDevice)
    {
-      if(!l_engineDevice->setRenderer(renderType, resolution))
+      if(!pEngineDevice->setRenderer(renderType, resolution))
       {
          LOGGER_WARN("The render type not supported on your engine device.");
       }
@@ -24,34 +54,14 @@ IEngineDevice *CEngine2d::createDevice(IVideoDevice::DeviceType renderType,
       LOGGER_WARN("Engine device is not available.");
    }
    
-   return l_engineDevice;
+   return pEngineDevice;
 }
 
 IEngineDevice *CEngine2d::instance()
 {
-   if(l_engineDevice == NULL)
-   {
-      l_engineDevice = IEngineDevice::instance();
-   }
-   
-   return l_engineDevice;
+   return IEngineDevice::instance();
 }
-
 
 CEngine2d::CEngine2d()
 {
-}
-
-bool registerEngineDevice(IEngineDevice *engineDevice)
-{
-   if(l_engineDevice == NULL)
-   {
-      l_engineDevice = engineDevice;
-      return true;
-   }
-   else
-   {
-      LOGGER_ERROR("There can only be one engine device!");
-      return false;
-   }
 }

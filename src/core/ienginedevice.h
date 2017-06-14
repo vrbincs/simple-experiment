@@ -19,6 +19,13 @@ private:
    virtual bool setRenderer(IVideoDevice::DeviceType renderType,
                             const CSizeI &resolution) = 0;
    
+   /**
+    * \brief return an instance of the IEngineDevice. This class is 
+    * singeton, so this function should always return the same instance
+    * of the object
+    * 
+    * \return returns a pointer of IEngineDevice
+    */
    static IEngineDevice *instance();
    friend class CEngine2d;
 };
