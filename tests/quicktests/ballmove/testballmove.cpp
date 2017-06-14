@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
    int bally = 0;
    while(engineDevice->run())
    {
-      videoDevice->start();
+      videoDevice->start(CColour(0,0,80,255));
       
       CPaintTool painter(videoDevice->getScreenSurface());
       painter.drawPixmap(ball, CPointI(ballx, bally));

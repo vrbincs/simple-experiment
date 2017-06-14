@@ -104,7 +104,7 @@ bool CVideoDeviceSDL::end()
 {
    if(l_sdlRenderer)
    {
-      SDL_UpdateWindowSurface(l_sdlWindow);
+      SDL_RenderPresent(l_sdlRenderer);
       return true;
    }
    else

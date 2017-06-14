@@ -73,12 +73,12 @@ void CPaintDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
       
       LOGGER_ERROR("RECT=" << pos.getX() << ":" << pos.getY() << ":" << paintSurface.getWidth() << ":" << paintSurface.getHeight());
       
-      if(SDL_BlitSurface(paintSurfaceSdl->getSDLSurface(),
-                         NULL,
-                         m_pDestSurface->getSDLSurface(),
-                         &sdlRect) != 0)
+      if(SDL_RenderCopy(m_pSdlRenderer,
+                        paintSurfaceSdl->getSDLTexture(),
+                        NULL,
+                        &sdlRect) != 0)
       {
-         LOGGER_ERROR("Unable to blit surface. err=" << SDL_GetError());
+         LOGGER_ERROR("Unable to render texture. err=" << SDL_GetError());
       }
    }
 }

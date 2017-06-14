@@ -74,6 +74,8 @@ bool CPaintSurfaceSDL::allocateFromFile(const std::string &fileName,
          m_width = m_sdlSurface->w;
          m_height = m_sdlSurface->h;
          m_bpp = m_sdlSurface->format->BitsPerPixel;
+         
+         createTexture();
       }
    }
    
@@ -121,6 +123,11 @@ SDL_Surface *CPaintSurfaceSDL::getSDLSurface() const
    return m_sdlSurface;
 }
 
+SDL_Texture *CPaintSurfaceSDL::getSDLTexture() const
+{
+   return m_sdlTexture;
+}
+
 void CPaintSurfaceSDL::freeSurface()
 {
    m_width = m_height = m_bpp = 0;
@@ -138,11 +145,8 @@ void CPaintSurfaceSDL::freeSurface()
 
 bool CPaintSurfaceSDL::createTexture()
 {
-   m_sdlTexture = SDL_CreateTexture(m_videoDevice->getSDLRenderer(),
-                                    SDL_PIXELFORMAT_RGBA8888,
-                                    SDL_TEXTUREACCESS_STREAMING, // note that STREAMING is a hint that tells the renderer to upate the pixels frequently
-                                    m_width,
-                                    m_height);
+   m_sdlTexture = SDL_CreateTextureFromSurface(m_videoDevice->getSDLRenderer(),
+                                               m_sdlSurface);
 
    if(m_sdlTexture == NULL)
    {
