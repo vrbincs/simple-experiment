@@ -8,6 +8,7 @@ CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
                                    SDL_Surface *surface)
    : m_videoDevice(videoDevice),
      m_sdlSurface(surface),
+     m_sdlTexture(NULL),
      m_width(0),
      m_height(0),
      m_pixelBuffer(NULL)
@@ -25,7 +26,6 @@ CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
 CPaintSurfaceSDL::~CPaintSurfaceSDL()
 {
    freeSurface();
-   delete [] m_pixelBuffer;
 }
 
 bool CPaintSurfaceSDL::allocateFromBuffer(uint8_t *pixelBuffer, 
@@ -66,6 +66,8 @@ bool CPaintSurfaceSDL::allocateFromBuffer(uint8_t *pixelBuffer,
 bool CPaintSurfaceSDL::allocateFromFile(const std::string &fileName,
                                         const std::string &type)
 {
+   freeSurface();
+   
    if(type == "bmp")
    {
       m_sdlSurface = SDL_LoadBMP(fileName.c_str());
@@ -130,8 +132,6 @@ SDL_Texture *CPaintSurfaceSDL::getSDLTexture() const
 
 void CPaintSurfaceSDL::freeSurface()
 {
-   m_width = m_height = m_bpp = 0;
-   
    if(m_sdlSurface)
    {
       SDL_FreeSurface(m_sdlSurface);
@@ -141,6 +141,16 @@ void CPaintSurfaceSDL::freeSurface()
    {
       SDL_DestroyTexture(m_sdlTexture);
    }
+   
+   if(m_pixelBuffer)
+   {
+      delete [] m_pixelBuffer;
+   }
+   
+   m_sdlSurface = NULL;
+   m_sdlTexture = NULL;
+   m_pixelBuffer = NULL;
+   m_width = m_height = m_bpp = 0;
 }
 
 bool CPaintSurfaceSDL::createTexture()
