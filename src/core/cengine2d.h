@@ -37,6 +37,7 @@
 #include <ivideodevice.h>
 
 #include <cpainttool.h>
+#include <cpixmap.h>
 
 /**
  * \class The main class of the engine. It provides the API to 

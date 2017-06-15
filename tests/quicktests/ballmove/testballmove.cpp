@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
    {
       videoDevice->start(CColour(0,0,80,255));
       
-      CPaintTool painter(videoDevice->getScreenSurface());
+      CPaintTool painter(videoDevice->getScreenPixmap());
       painter.drawRect(CRectI(ballx+200, bally, 50, 50));
       painter.drawPixmap(ball, CPointI(ballx, bally));
       painter.end();

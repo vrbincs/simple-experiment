@@ -1,15 +1,14 @@
 #ifndef CVIDEODEVICESDL_H
    #define CVIDEODEVICESDL_H
 
-#include <ipaintdevice.h>
-#include <ivideodevice.h>
-#include <csize.h>
+#include <SDL.h>
 
-#include <ipaintsurface.h>
-#include <cpaintsurfacesdl.h>
+#include <ivideodevice.h>
+
+#include <csize.h>
 #include <ccolour.h>
 
-class CPaintDeviceSDL;
+class CPixmap;
 
 class CVideoDeviceSDL : public IVideoDevice
 {
@@ -21,7 +20,7 @@ public:
    
    IPaintSurface *createPaintSurface();
    IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const;
-   IPaintSurface *getScreenSurface() const;
+   CPixmap *getScreenPixmap() const;
    
    bool start(const CColour &colour = CColour(0,0,0,255));
    bool end();

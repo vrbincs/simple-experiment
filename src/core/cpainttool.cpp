@@ -2,12 +2,14 @@
 
 #include "ivideodevice.h"
 #include "ipaintsurface.h"
+#include "ipaintdevice.h"
 #include "cpainttool.h"
+#include "cpixmap.h"
 
-CPaintTool::CPaintTool(IPaintSurface *paintSurface)
+CPaintTool::CPaintTool(CPixmap *pixmap)
    : m_pPaintDevice(NULL)
 {
-   start(paintSurface);
+   start(pixmap);
 }
 
 CPaintTool::~CPaintTool()
@@ -15,10 +17,11 @@ CPaintTool::~CPaintTool()
    end();
 }
 
-bool CPaintTool::start(IPaintSurface *paintSurface)
+bool CPaintTool::start(CPixmap *pixmap)
 {
    if(!m_pPaintDevice)
    {
+      IPaintSurface *paintSurface = pixmap->getPaintSurface();
       if(paintSurface)
       {
          IVideoDevice *videoDevice = paintSurface->getVideoDevice();

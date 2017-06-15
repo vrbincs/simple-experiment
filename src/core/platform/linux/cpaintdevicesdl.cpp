@@ -13,7 +13,7 @@ CPaintDeviceSDL::CPaintDeviceSDL(IPaintSurface *destSurface)
    
    if(m_pDestSurface == NULL)
    {
-      LOGGER_ERROR("Destination surface is NULL. No painting can be performed.");
+      LOGGER_ERROR("The destination surface is NULL. No painting can be performed.");
       return;
    }
    
