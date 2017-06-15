@@ -13,7 +13,6 @@ public:
    
    bool run();
    IVideoDevice *getVideoDevice();
-   std::list<CSizeI> getVideoModeList();
    
    bool setRenderer(IVideoDevice::DeviceType renderType,
                     const CSizeI &resolution);
