@@ -8,9 +8,9 @@
 CRenderDeviceSDL::CRenderDeviceSDL(SDL_Renderer *render)
    : m_pSdlRenderer(render)
 {
-   if(m_pSdlRenderer)
+   if(m_pSdlRenderer == NULL)
    {
-      LOGGER_ERROR("SDL renderer not found");
+      LOGGER_ERROR("SDL renderer not found1");
    }
 }
 

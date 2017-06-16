@@ -5,6 +5,7 @@
 
 class IEventListener;
 class IEventSource;
+class CEvent;
 
 class CEventManager
 {
@@ -24,7 +25,9 @@ public:
     * \return returns true if the system has been successdully added
     * to the list, false otherwise.
     */
-   void addEventSource(IEventSource *);
+   void registerEventSource(IEventSource *);
+   
+   bool unregisterEventSource(IEventSource *);
    
    /**
     * \brief register a listener to which events will be posted to.
@@ -41,6 +44,8 @@ public:
 private:
    std::list<IEventListener *> m_listenersList;
    std::list<IEventSource *> m_eventSources;
+   
+   void disposeEvent(CEvent *event);
 };
 
 #endif // CEVENTMANAGER_H

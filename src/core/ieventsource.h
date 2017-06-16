@@ -3,7 +3,7 @@
 
 #include <list>
 
-class CEvent;
+#include <cevent.h>
 
 class IEventSource
 {
@@ -19,7 +19,15 @@ protected:
     */
    virtual void acquireEvents(std::list<CEvent *> &events) = 0;
    
+   inline CEvent *createEvent(int type, const CEvent::UMessage &message) const;
+   
    friend class CEventManager;
 };
+
+CEvent *IEventSource::createEvent(int type, 
+                                  const CEvent::UMessage &message) const
+{
+   return new CEvent(type, message);
+}
 
 #endif // IEVENTSOURCE_H

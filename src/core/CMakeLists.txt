@@ -42,7 +42,8 @@ if (UNIX)
                             platform/linux/cpaintdevicesdl.cpp
                             platform/linux/cpaintsurfacesdl.cpp
                             platform/linux/cvideodevicesdl.cpp
-                            platform/linux/crenderdevicesdl.cpp )
+                            platform/linux/crenderdevicesdl.cpp 
+                            platform/linux/ceventsourcesdl.cpp)
 endif (UNIX)
 
 

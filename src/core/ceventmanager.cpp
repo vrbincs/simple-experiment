@@ -37,10 +37,13 @@ void CEventManager::pollEvents()
             break;
          }
       }
+      
+      // We want to clean-up the event.
+      disposeEvent(*it1);
    }
 }
 
-void CEventManager::addEventSource(IEventSource *eventSource)
+void CEventManager::registerEventSource(IEventSource *eventSource)
 {
    if(eventSource)
    {
@@ -50,6 +53,20 @@ void CEventManager::addEventSource(IEventSource *eventSource)
    {
       LOGGER_WARN("Invalid event source.");
    }
+}
+
+bool CEventManager::unregisterEventSource(IEventSource *eventSource)
+{
+   for(auto it = m_eventSources.begin(); it != m_eventSources.end(); it++)
+   {
+      if(*it == eventSource)
+      {
+         m_eventSources.erase(it);
+         return true;
+      }
+   }
+   
+   return false;
 }
 
 void CEventManager::registerListener(IEventListener *listener)
@@ -76,4 +93,9 @@ bool CEventManager::unregisterListener(IEventListener *listener)
    }
    
    return false;
+}
+
+void CEventManager::disposeEvent(CEvent *event)
+{
+   delete event;
 }

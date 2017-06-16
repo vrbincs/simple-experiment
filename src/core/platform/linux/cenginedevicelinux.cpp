@@ -3,25 +3,51 @@
 #include <cstddef>
 
 #include "logging.h"
+
 #include "cvideodevicesdl.h"
+#include "ceventmanager.h"
+#include "ieventsource.h"
+#include "cevent.h"
+#include "ceventsourcesdl.h"
 #include "cenginedevicelinux.h"
 
 static IEngineDevice *l_engineDeviceInstance = NULL;
 
 CEngineDeviceLinux::CEngineDeviceLinux()
-   : m_videoDevice(NULL)
+   : m_videoDevice(NULL),
+     m_eventSourceSDL(new CEventSourceSDL()),
+     m_eventManager(new CEventManager()),
+     m_engineRunning(true)
 {
+   m_eventManager->registerEventSource(m_eventSourceSDL);
+   m_eventManager->registerListener(this);
 }
 
 CEngineDeviceLinux::~CEngineDeviceLinux()
 {
+   m_eventManager->unregisterListener(this);
+   m_eventManager->unregisterEventSource(m_eventSourceSDL);
+   
+   delete m_eventManager;
+   m_eventManager = NULL;
+   
+   delete m_eventSourceSDL;
+   m_eventSourceSDL = NULL;
+   
    releaseVideoDevice();
 }
 
 bool CEngineDeviceLinux::run()
 {
-   usleep(40000);
-   return true;
+   m_eventManager->pollEvents();
+   
+   if(m_engineRunning)
+   {
+      usleep(40000);
+      return true;
+   }
+   
+   return false;
 }
 
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()
@@ -38,6 +64,12 @@ bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,
    {
       case IVideoDevice::DeviceTypeSdl:
       {
+         if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
+         {
+            LOGGER_ERROR("Unable to initialize SDL. err=" << SDL_GetError());
+            return false;
+         }
+         
          m_videoDevice = new CVideoDeviceSDL(resolution);
          return true;
       }
@@ -49,14 +81,15 @@ bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,
    return false;
 }
 
-IEngineDevice *IEngineDevice::instance()
+bool CEngineDeviceLinux::onEvent(const CEvent &event)
 {
-   if(l_engineDeviceInstance == NULL)
+   if(event.type() == CEvent::EventTypeTerminate)
    {
-      l_engineDeviceInstance = new CEngineDeviceLinux();
+      m_engineRunning = false;
+      return true;
    }
    
-   return l_engineDeviceInstance;
+   return false;
 }
 
 void CEngineDeviceLinux::releaseVideoDevice()
@@ -66,4 +99,14 @@ void CEngineDeviceLinux::releaseVideoDevice()
       delete m_videoDevice;
       m_videoDevice = NULL;
    }
+}
+
+IEngineDevice *IEngineDevice::instance()
+{
+   if(l_engineDeviceInstance == NULL)
+   {
+      l_engineDeviceInstance = new CEngineDeviceLinux();
+   }
+   
+   return l_engineDeviceInstance;
 }

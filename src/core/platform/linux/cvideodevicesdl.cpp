@@ -21,12 +21,6 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
       return;
    }
    
-   if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
-   {
-      LOGGER_ERROR("Unable to initialize SDL. err=" << SDL_GetError());
-      return;
-   }
-
    l_sdlWindow = SDL_CreateWindow("simple-experiment",
                                   SDL_WINDOWPOS_UNDEFINED,
                                   SDL_WINDOWPOS_UNDEFINED,
