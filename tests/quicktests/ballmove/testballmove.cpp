@@ -30,17 +30,15 @@ int main(int argc, char *argv[])
    int bally = 0;
    while(engineDevice->run())
    {
-      videoDevice->start(CColour(0,0,80,255));
-      
-      CPaintTool painter(videoDevice->getScreenPixmap());
-      painter.drawRect(CRectI(ballx+200, bally, 50, 50));
-      painter.drawPixmap(ball, CPointI(ballx, bally));
-      painter.end();
+      videoDevice->start(CColour(0,0,100,255));
       
       ballx++;
       bally++;
       
-      LOGGER_INFO("Runnig at FPS =");
+      CPaintTool *painter = videoDevice->getScreenPaintTool();
+      painter->drawRect(CRectI(ballx+200, bally, 50, 50));
+      painter->drawPixmap(ball, CPointI(ballx, bally));
+      
       videoDevice->end();
    }
 

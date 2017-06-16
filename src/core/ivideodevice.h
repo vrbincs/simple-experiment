@@ -36,10 +36,9 @@
 
 #include <ccolour.h>
 
-class CPixmap;
 class IPaintSurface;
 class IPaintDevice;
-class CPixmap;
+class CPaintTool;
 
 class IVideoDevice
 {
@@ -76,7 +75,7 @@ public:
    virtual IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const = 0;
    
    /**
-    * \brief this function provides access to the screen surface created
+    * \brief this function provides access to the screen renderer created
     * on the initialization of the IVideoDevice. It allows drawing 
     * directly to the framebuffer.
     * 
@@ -84,7 +83,7 @@ public:
     * screen surface. Returns NULL if the screen has not been 
     * initialized.
     */
-   virtual CPixmap *getScreenPixmap() const = 0;
+   virtual CPaintTool *getScreenPaintTool() const = 0;
 
    /**
     * \brief before you want to refresh the content on the screen, you

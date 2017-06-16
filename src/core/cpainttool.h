@@ -11,6 +11,7 @@ class CPaintTool
 {
 public:
    CPaintTool(CPixmap *pixmap);
+   CPaintTool(IPaintDevice *paintDevice);
    virtual ~CPaintTool();
    
    bool start(CPixmap *pixmap);

@@ -12,6 +12,11 @@ CPaintTool::CPaintTool(CPixmap *pixmap)
    start(pixmap);
 }
 
+CPaintTool::CPaintTool(IPaintDevice *paintDevice)
+   : m_pPaintDevice(paintDevice)
+{
+}
+
 CPaintTool::~CPaintTool()
 {
    end();
@@ -74,6 +79,10 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap, const CPointI &pos)
    if(m_pPaintDevice)
    {
       m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), pos);
+   }
+   else
+   {
+      LOGGER_WARN("No paint device associate with the pixamap has been found.");
    }
 }
 

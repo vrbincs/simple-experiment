@@ -4,12 +4,14 @@
 
 #include "cpaintsurfacesdl.h"
 #include "cpaintdevicesdl.h"
+#include "crenderdevicesdl.h"
 #include "cvideodevicesdl.h"
 #include "cpixmap.h"
+#include "cpainttool.h"
 
 static SDL_Window *l_sdlWindow = NULL;
 static SDL_Renderer *l_sdlRenderer = NULL;
-static CPixmap *l_screenPixmap = NULL;
+static CPaintTool *l_screenPaintTool = NULL;
 
 CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 {
@@ -48,15 +50,13 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
    
    clearRenderBuffer();
    SDL_RenderPresent(l_sdlRenderer);
-   
-   CPaintSurfaceSDL *paintSurface = new CPaintSurfaceSDL(this, SDL_GetWindowSurface(l_sdlWindow));
-   if(!paintSurface)
+
+   l_screenPaintTool = new CPaintTool(new CRenderDeviceSDL(l_sdlRenderer));
+   if(l_screenPaintTool == NULL)
    {
-      LOGGER_ERROR("Failed to create paint surface.");
+      LOGGER_ERROR("Failed to create paint tool for the renderer.");
       return;
    }
-   
-   l_screenPixmap = new CPixmap(paintSurface);
 }
 
 CVideoDeviceSDL::~CVideoDeviceSDL()
@@ -71,8 +71,8 @@ CVideoDeviceSDL::~CVideoDeviceSDL()
       SDL_DestroyWindow(l_sdlWindow);
    }
    
-   delete l_screenPixmap;
-   l_screenPixmap = NULL;
+   delete l_screenPaintTool;
+   l_screenPaintTool = NULL;
    
    SDL_Quit();
 }
@@ -92,9 +92,9 @@ IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *paintSurface) co
    return new CPaintDeviceSDL(paintSurface);
 }
 
-CPixmap *CVideoDeviceSDL::getScreenPixmap() const
+CPaintTool *CVideoDeviceSDL::getScreenPaintTool() const
 {
-   return l_screenPixmap;
+   return l_screenPaintTool;
 }
 
 bool CVideoDeviceSDL::start(const CColour &colour)
