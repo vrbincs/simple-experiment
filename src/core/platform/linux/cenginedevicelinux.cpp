@@ -29,11 +29,6 @@ IVideoDevice *CEngineDeviceLinux::getVideoDevice()
    return m_videoDevice;
 }
 
-std::list<CSizeI> CEngineDeviceLinux::getVideoModeList()
-{
-   return std::list<CSizeI>();
-}
-
 bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,
                                      const CSizeI &resolution)
 {

@@ -24,9 +24,9 @@
  * 
  * \section DESCRIPTION
  * 
- * IPaintDevice is meant to provide an abstraction of the renderer
- * dependent drawing operations, such as draw pixmap, draw rectangle,
- * draw circle, ...
+ * IPaintDevice provides an iterface for painting features, like 
+ * drawing primitives (rectangles, circles, polygons, ...) and bliting
+ * pixmaps.
  */
 
 #ifndef IPAINTDEVICE_H
@@ -40,12 +40,36 @@ class IVideoDevice;
 class IPaintDevice
 {
 public:
+   /**
+    * \brief virtual destructor
+    */
    virtual ~IPaintDevice() {}
    
+   /**
+    * \brief prepares everything for painting.
+    * \param[in] destSurface - the surface on which all painting
+    * operations will be carried out.
+    * \return returns true if no errors; false otherwise.
+    */
    virtual bool start(IPaintSurface *destSurface) = 0;
+   
+   /**
+    * \brief draws rectangle at specifed position and size.
+    * \param[in] rect - the position and size of the rectangle
+    */
    virtual void drawRect(const CRectI &rect) = 0;
+   
+   /**
+    * \brief draw a surface. This function copies the source surface to
+    * the destination surface.
+    * \param[in] paintSurface - source surface
+    */
    virtual void drawSurface(const IPaintSurface &paintSurface,
                             const CPointI &pos) = 0;
+   /**
+    * \brief finalizies the drawing.
+    * \return returns true if no errors; false otherwise.
+    */
    virtual bool end() = 0;
 };
 
