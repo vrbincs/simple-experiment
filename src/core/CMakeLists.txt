@@ -30,10 +30,11 @@ include_directories ( ${SDL2_INCLUDE_DIRS} )
 set ( SOURCES cengine2d.cpp
               cpainttool.cpp
               cpixmap.cpp
-              cevent.cpp
               csceneitem.cpp
               cscene.cpp
-              ccolour.cpp )
+              ccolour.cpp
+              cevent.cpp
+              ceventmanager.cpp )
 
 if (UNIX)
    include_directories ( platform/linux/ )
