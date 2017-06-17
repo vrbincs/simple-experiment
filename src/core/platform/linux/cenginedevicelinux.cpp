@@ -50,9 +50,20 @@ bool CEngineDeviceLinux::run()
    return false;
 }
 
+void CEngineDeviceLinux::exit()
+{
+   delete l_engineDeviceInstance;
+   l_engineDeviceInstance = NULL;
+}
+
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()
 {
    return m_videoDevice;
+}
+
+CEventManager *CEngineDeviceLinux::getEventManager()
+{
+   return m_eventManager;
 }
 
 bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,

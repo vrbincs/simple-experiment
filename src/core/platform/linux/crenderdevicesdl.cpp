@@ -49,7 +49,7 @@ void CRenderDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
                  paintSurface.getWidth(),
                  paintSurface.getHeight());
       
-      LOGGER_ERROR("RECT=" << pos.getX() << ":" << pos.getY() << ":" << paintSurface.getWidth() << ":" << paintSurface.getHeight());
+      //LOGGER_ERROR("RECT=" << pos.getX() << ":" << pos.getY() << ":" << paintSurface.getWidth() << ":" << paintSurface.getHeight());
       
       if(SDL_RenderCopy(m_pSdlRenderer,
                         paintSurfaceSdl->getSDLTexture(),

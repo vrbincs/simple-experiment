@@ -13,7 +13,10 @@ public:
    virtual ~CEngineDeviceLinux();
    
    bool run();
+   void exit();
+   
    IVideoDevice *getVideoDevice();
+   CEventManager *getEventManager();
    
    bool setRenderer(IVideoDevice::DeviceType renderType,
                     const CSizeI &resolution);

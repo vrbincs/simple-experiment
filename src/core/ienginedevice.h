@@ -39,6 +39,7 @@
 #include <ivideodevice.h>
 
 class IVideoDevice;
+class CEventManager;
 
 class IEngineDevice
 {
@@ -58,12 +59,16 @@ public:
     */
    virtual bool run() = 0;
    
+   virtual void exit() = 0;
+   
    /**
     * \brief returns a pointer to the video device.
     * \return returns a pointer to the video device. NULL if no video
     * device is available.
     */
    virtual IVideoDevice *getVideoDevice() = 0;
+   
+   virtual CEventManager *getEventManager() = 0;
 private:
    /**
     * \brief select the rendering backend. This function is used by the

@@ -19,15 +19,18 @@ protected:
     */
    virtual void acquireEvents(std::list<CEvent *> &events) = 0;
    
-   inline CEvent *createEvent(int type, const CEvent::UMessage &message) const;
+   inline CEvent *createEvent(int type, 
+                              const CEvent::UMessage &message,
+                              uint32_t timestamp) const;
    
    friend class CEventManager;
 };
 
 CEvent *IEventSource::createEvent(int type, 
-                                  const CEvent::UMessage &message) const
+                                  const CEvent::UMessage &message,
+                                  uint32_t timestamp) const
 {
-   return new CEvent(type, message);
+   return new CEvent(type, message, timestamp);
 }
 
 #endif // IEVENTSOURCE_H

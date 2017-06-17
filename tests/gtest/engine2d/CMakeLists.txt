@@ -6,7 +6,7 @@ include ( FindPkgConfig )
 set ( testengine2d_VERSION_MAJOR 1 )
 set ( testengine2d_VERSION_MINOR 0 )
 
-include_directories ( ${engine2dcore_SOURCE_DIR} )
+include_directories ( ${seEngine2d_SOURCE_DIR} )
 
 pkg_check_modules ( GTEST REQUIRED gtest )
 pkg_check_modules ( SDL2  REQUIRED sdl2 )

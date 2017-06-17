@@ -21,24 +21,34 @@ public:
    void pollEvents();
    
    /**
-    * \brief added an event system that generates events.
-    * \return returns true if the system has been successdully added
-    * to the list, false otherwise.
+    * \brief registers a source where events are generated.
+    * \param[in] eventSource - a pointer the source where events are 
+    * generated
     */
-   void registerEventSource(IEventSource *);
+   void registerEventSource(IEventSource *eventSource);
    
+   /**
+    * \brief unregister an event source.
+    * \param[in] eventSource - a pointer the source where events are 
+    * generated
+    * \return returns true if the system has been successdully removed
+    * from the list, false otherwise.
+    */
    bool unregisterEventSource(IEventSource *);
    
    /**
     * \brief register a listener to which events will be posted to.
-    * \return return true is the listener has been successfully added to
-    * the list; false otherwise.
+    * \param[in] listener - a pointer to the listener that will start
+    * receiving events.
     */
    void registerListener(IEventListener *listener);
    
    /**
     * \brief unlike registerListener(), this function remove a listener
-    * from the list.
+    * \param[in] listener - a pointer to the listener that will stop
+    * receiving events.
+    * * \return return true is the listener has been successfully
+    * removed from the list; false otherwise.
     */
    bool unregisterListener(IEventListener *listener);
 private:

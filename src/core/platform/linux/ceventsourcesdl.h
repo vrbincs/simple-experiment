@@ -12,7 +12,9 @@ public:
    ~CEventSourceSDL();
    
    void acquireEvents(std::list<CEvent *> &events);
+private:
    CEvent *createCEventFromSDLEvent(SDL_Event &sdlEvent);
+   int getKeyCode(int sdlScanCode);
 };
 
 #endif // CEVENTSOURCESDL_H

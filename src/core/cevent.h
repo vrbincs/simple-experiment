@@ -1,13 +1,27 @@
 #ifndef CEVENT_H
    #define CEVENT_H
 
+#include <stdint.h>
+
 class CEvent
 {
 public:
    enum
    {
       EventTypeTerminate = 0,
-      EventTypeKeyboard = 1,
+      EventTypeKeyDown,
+      EventTypeKeyUp
+   };
+   
+   enum
+   {
+      KeyEscape       = 41,
+      KeySpace        = 44,
+      KeyArrowRight   = 79,
+      KeyArrowLeft    = 80,
+      KeyArrowDown    = 81,
+      KeyArrowUp      = 82,
+      
    };
    
    union UMessage
@@ -33,14 +47,17 @@ public:
     * 
     */
    virtual UMessage message() const;
+   
+   uint32_t getTimestamp() const;
 protected:
    /**
     * \brief constructor
     */
-   CEvent(int type, const UMessage &message);
+   CEvent(int type, const UMessage &message, uint32_t timestamp);
 private:
    int m_type;
    UMessage m_message;
+   uint32_t m_timestamp;
    
    friend class IEventSource;
 };

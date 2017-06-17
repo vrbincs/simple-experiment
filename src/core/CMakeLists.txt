@@ -1,21 +1,10 @@
 cmake_minimum_required (VERSION 2.6)
-project ( engine2dcore )
-
-include ( FindPkgConfig )
-
-set ( engine2dcore_VERSION_MAJOR 1 )
-set ( engine2dcore_VERSION_MINOR 0 )
-
-
-
-
-cmake_minimum_required (VERSION 2.6)
 project ( seEngine2d )
 
 include ( FindPkgConfig )
 
-set ( 2drender_VERSION_MAJOR 1 )
-set ( 2drender_VERSION_MINOR 0 )
+set ( seEngine2d_VERSION_MAJOR 1 )
+set ( seEngine2d_VERSION_MINOR 0 )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 
@@ -48,3 +37,7 @@ endif (UNIX)
 
 
 add_library(seEngine2d SHARED ${SOURCES})
+
+
+target_link_libraries ( seEngine2d ${SDL2_LIBRARIES}
+                                   ${UUID_LIBRARIES} )

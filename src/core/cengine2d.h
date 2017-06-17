@@ -35,7 +35,10 @@
 #include <csize.h>
 #include <ienginedevice.h>
 #include <ivideodevice.h>
-
+#include <cevent.h>
+#include <ieventlistener.h>
+#include <ieventsource.h>
+#include <ceventmanager.h>
 #include <cpainttool.h>
 #include <cpixmap.h>
 
