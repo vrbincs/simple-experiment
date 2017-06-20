@@ -1,4 +1,5 @@
 #include <cengine2d.h>
+#include <cmath>
 #include <logging.h>
 
 static bool l_endProgram = false;   
@@ -80,6 +81,7 @@ int main(int argc, char *argv[])
       return 1;
    }
    
+   int speed = 10;
    while(engineDevice->run() && !l_endProgram)
    {
       videoDevice->start(CColour(0,0,100,255));      
@@ -87,21 +89,23 @@ int main(int argc, char *argv[])
       painter->drawRect(CRectI(ballx+200, bally, 50, 50));
       painter->drawPixmap(ball, CPointI(ballx, bally));
       
+      double ticks = ((double)engineDevice->getTicks()/40);
+      LOGGER_INFO("TICKS ::" << ticks);
       if(m_leftDown)
       {
-         ballx -= 5;
+         ballx -= ceil(ticks * speed);
       }
       if(m_rightDown)
       {
-         ballx += 5;
+         ballx += ceil(ticks * speed);
       }
       if(m_upDown)
       {
-         bally -= 5;
+         bally -= ceil(ticks * speed);
       }
       if(m_downDown)
       {
-         bally += 5;
+         bally += ceil(ticks * speed);
       }
       
       videoDevice->end();

@@ -5,6 +5,7 @@
 #include <ieventlistener.h>
 
 class CEventManager;
+class CEngineDeviceLinuxPriv;
 
 class CEngineDeviceLinux : public IEngineDevice, public IEventListener
 {
@@ -15,6 +16,8 @@ public:
    bool run();
    void exit();
    
+   uint64_t getTicks() const;
+   
    IVideoDevice *getVideoDevice();
    CEventManager *getEventManager();
    
@@ -23,6 +26,7 @@ public:
 
    bool onEvent(const CEvent &event);
 private:
+   CEngineDeviceLinuxPriv *m_engineDevicePriv;
    IVideoDevice *m_videoDevice;
    CEventSourceSDL *m_eventSourceSDL;
    CEventManager *m_eventManager;   

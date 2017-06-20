@@ -59,7 +59,17 @@ public:
     */
    virtual bool run() = 0;
    
+   /**
+    * \brief Call to this function will exit the engine and free-up all
+    * allocated resources.
+    */
    virtual void exit() = 0;
+   
+   /**
+    * \brief get number of miliseconds from the last cycle.
+    * \return returns number of miliseconds from the last cycle.
+    */
+   virtual uint64_t getTicks() const = 0;
    
    /**
     * \brief returns a pointer to the video device.
@@ -68,6 +78,10 @@ public:
     */
    virtual IVideoDevice *getVideoDevice() = 0;
    
+   /**
+    * \brief get a pointer to the event manager.
+    * \return returns a pointer to the event manager.
+    */
    virtual CEventManager *getEventManager() = 0;
 private:
    /**

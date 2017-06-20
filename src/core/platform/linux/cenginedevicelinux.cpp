@@ -11,10 +11,59 @@
 #include "ceventsourcesdl.h"
 #include "cenginedevicelinux.h"
 
+#define FPS_TO_MILIS(fps) (1000/((uint64_t)fps))
+
 static IEngineDevice *l_engineDeviceInstance = NULL;
 
+class CEngineDeviceLinuxPriv
+{
+public:
+   uint64_t m_lastTick;
+   uint64_t m_elapsedTicks;
+   
+   CEngineDeviceLinuxPriv()
+      : m_lastTick(0),
+        m_elapsedTicks(0)
+   {
+      m_lastTick = getCurrentTicks();
+   }
+   
+   uint64_t getCurrentTicks()
+   {
+      uint64_t ticks = 0;
+      struct timespec tp;
+      clock_gettime(CLOCK_MONOTONIC, &tp);
+      
+      ticks = ((uint64_t)tp.tv_sec * 1000) + (tp.tv_nsec / 1000000);
+      return ticks;
+   }
+   
+   void cycle()
+   {
+      uint64_t currentTicks = getCurrentTicks();
+      m_elapsedTicks = (currentTicks - m_lastTick);
+      m_lastTick = currentTicks;
+   }
+   
+   inline uint64_t getTicks() const
+   {
+      return m_elapsedTicks;
+   }
+   
+   void maintainFPS(uint64_t fpsInMilis)
+   {
+      uint64_t elapsedTicks = (getCurrentTicks() - m_lastTick);
+      
+      if(elapsedTicks <= fpsInMilis)
+      {
+         usleep(((fpsInMilis - elapsedTicks) * 1000));
+      }
+   }
+};
+
 CEngineDeviceLinux::CEngineDeviceLinux()
-   : m_videoDevice(NULL),
+   : m_engineDevicePriv(new CEngineDeviceLinuxPriv()),
+     m_videoDevice(NULL),
      m_eventSourceSDL(new CEventSourceSDL()),
      m_eventManager(new CEventManager()),
      m_engineRunning(true)
@@ -35,15 +84,20 @@ CEngineDeviceLinux::~CEngineDeviceLinux()
    m_eventSourceSDL = NULL;
    
    releaseVideoDevice();
+   
+   delete m_engineDevicePriv;
 }
 
 bool CEngineDeviceLinux::run()
 {
+   m_engineDevicePriv->maintainFPS(FPS_TO_MILIS(65));
+   
+   m_engineDevicePriv->cycle();
    m_eventManager->pollEvents();
    
    if(m_engineRunning)
    {
-      usleep(40000);
+      LOGGER_INFO("SASO :: " << getTicks());
       return true;
    }
    
@@ -54,6 +108,11 @@ void CEngineDeviceLinux::exit()
 {
    delete l_engineDeviceInstance;
    l_engineDeviceInstance = NULL;
+}
+
+uint64_t CEngineDeviceLinux::getTicks() const
+{
+   return m_engineDevicePriv->getTicks();
 }
 
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()
