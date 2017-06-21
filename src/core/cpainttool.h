@@ -16,7 +16,9 @@ public:
    
    bool start(CPixmap *pixmap);
    void drawRect(const CRectI &rect);
-   void drawPixmap(const CPixmap &pixmap, const CPointI &pos);
+   void drawPixmap(const CPixmap &pixmap, const CPointI &pos, const CRectI *srcRect = NULL);
+   void drawText(const std::string &text,
+                 const CRectI &rect);
    bool end();
 private:
    IPaintDevice *m_pPaintDevice;

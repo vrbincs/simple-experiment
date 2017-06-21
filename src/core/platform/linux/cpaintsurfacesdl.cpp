@@ -35,31 +35,52 @@ bool CPaintSurfaceSDL::allocateFromBuffer(uint8_t *pixelBuffer,
 {
    freeSurface();
    
+   m_bpp = bpp;
    m_width = width;
    m_height = height;
-   m_bpp = bpp;
    m_pixelBuffer = pixelBuffer;
-   
-   if(m_bpp == 32)
-   {
-      uint32_t pitch = (width * 4);
-      m_sdlSurface = SDL_CreateRGBSurfaceFrom((void *)pixelBuffer,
-                                              width,
-                                              height,
-                                              bpp,
-                                              pitch,
-                                              0xFF000000,
-                                              0x00FF0000,
-                                              0x0000FF00,
-                                              0x000000FF);
 
-      createTexture();
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+   uint32_t rmask = 0xFF000000;
+   uint32_t gmask = 0x00FF0000;
+   uint32_t bmask = 0x0000FF00;
+   uint32_t amask = 0x000000FF;
+#else
+   uint32_t rmask = 0x000000FF;
+   uint32_t gmask = 0x0000FF00;
+   uint32_t bmask = 0x00FF0000;
+   uint32_t amask = 0xFF000000;
+#endif
+   
+   uint32_t pitch = 0;
+   int8_t depth = 1;
+   
+   if(m_bpp > 8)
+   {
+      depth = (m_bpp/8);
+   }
+   
+   pitch = (m_width * depth);
+   
+   m_sdlSurface = SDL_CreateRGBSurfaceFrom((void *)pixelBuffer,
+                                           width,
+                                           height,
+                                           m_bpp,
+                                           pitch,
+                                           rmask,
+                                           gmask,
+                                           bmask,
+                                           amask);
+
+   if(m_sdlSurface == NULL)
+   {
+      LOGGER_ERROR("Unable to create SDL surface. sdlError=" << SDL_GetError() << ", pixelFormat=" << (int)m_bpp);
    }
    else
    {
-      LOGGER_WARN("The requested depth for the surface not supported. depth=" << m_bpp);
+      createTexture();
    }
-
+   
    return m_sdlSurface;
 }
 
@@ -160,7 +181,7 @@ bool CPaintSurfaceSDL::createTexture()
 
    if(m_sdlTexture == NULL)
    {
-      LOGGER_ERROR("Unable to create SDL texture");
+      LOGGER_ERROR("Unable to create SDL texture. sdlError=" << SDL_GetError());
       return false;
    }
    

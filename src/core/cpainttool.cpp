@@ -5,6 +5,7 @@
 #include "ipaintdevice.h"
 #include "cpainttool.h"
 #include "cpixmap.h"
+#include "ccolour.h"
 
 CPaintTool::CPaintTool(CPixmap *pixmap)
    : m_pPaintDevice(NULL)
@@ -74,11 +75,25 @@ void CPaintTool::drawRect(const CRectI &rect)
    }
 }
 
-void CPaintTool::drawPixmap(const CPixmap &pixmap, const CPointI &pos)
+void CPaintTool::drawPixmap(const CPixmap &pixmap,
+                            const CPointI &pos,
+                            const CRectI *srcRect)
 {
    if(m_pPaintDevice)
    {
-      m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), pos);
+      m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), pos, srcRect);
+   }
+   else
+   {
+      LOGGER_WARN("No paint device associate with the pixamap has been found.");
+   }
+}
+
+void CPaintTool::drawText(const std::string &text, const CRectI &rect)
+{
+   if(m_pPaintDevice)
+   {
+      m_pPaintDevice->drawText(text, rect, CColour(255,0,0));
    }
    else
    {

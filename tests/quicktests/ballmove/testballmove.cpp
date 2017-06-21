@@ -54,7 +54,7 @@ public:
 int main(int argc, char *argv[])
 {
    IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl,
-                                                         CSizeI(1280, 800));
+                                                         CSizeI(1920, 1080));
 
    if(!engineDevice)
    {
@@ -81,16 +81,16 @@ int main(int argc, char *argv[])
       return 1;
    }
    
-   int speed = 10;
+   int speed = 4;
    while(engineDevice->run() && !l_endProgram)
    {
       videoDevice->start(CColour(0,0,100,255));      
+      
       CPaintTool *painter = videoDevice->getScreenPaintTool();
       painter->drawRect(CRectI(ballx+200, bally, 50, 50));
       painter->drawPixmap(ball, CPointI(ballx, bally));
       
       double ticks = ((double)engineDevice->getTicks()/40);
-      LOGGER_INFO("TICKS ::" << ticks);
       if(m_leftDown)
       {
          ballx -= ceil(ticks * speed);
@@ -108,6 +108,8 @@ int main(int argc, char *argv[])
          bally += ceil(ticks * speed);
       }
       
+      engineDevice->drawFps();
+      
       videoDevice->end();
    }
    
@@ -115,5 +117,6 @@ int main(int argc, char *argv[])
 
    eventManager->unregisterListener(eventListener);
    engineDevice->exit();
+   
    return 0;
 }

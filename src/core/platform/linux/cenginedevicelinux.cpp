@@ -10,6 +10,9 @@
 #include "cevent.h"
 #include "ceventsourcesdl.h"
 #include "cenginedevicelinux.h"
+#include "cpainttool.h"
+
+#include <cdigitool.h>
 
 #define FPS_TO_MILIS(fps) (1000/((uint64_t)fps))
 
@@ -20,12 +23,19 @@ class CEngineDeviceLinuxPriv
 public:
    uint64_t m_lastTick;
    uint64_t m_elapsedTicks;
+   CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
       : m_lastTick(0),
-        m_elapsedTicks(0)
+        m_elapsedTicks(0),
+        m_digitool(NULL)
    {
       m_lastTick = getCurrentTicks();
+   }
+   
+   ~CEngineDeviceLinuxPriv()
+   {
+      delete m_digitool;
    }
    
    uint64_t getCurrentTicks()
@@ -59,6 +69,21 @@ public:
          usleep(((fpsInMilis - elapsedTicks) * 1000));
       }
    }
+   
+   void drawFps()
+   {
+      CPaintTool *paintTool = l_engineDeviceInstance->getVideoDevice()->getScreenPaintTool();
+      
+      if(paintTool)
+      {
+         if(m_digitool == NULL)
+         {
+            m_digitool = new CDigiTool(CColour(150,0,0,255));
+         }
+         
+         m_digitool->drawDigits(*paintTool, 1000/getTicks());
+      }
+   }
 };
 
 CEngineDeviceLinux::CEngineDeviceLinux()
@@ -66,7 +91,8 @@ CEngineDeviceLinux::CEngineDeviceLinux()
      m_videoDevice(NULL),
      m_eventSourceSDL(new CEventSourceSDL()),
      m_eventManager(new CEventManager()),
-     m_engineRunning(true)
+     m_engineRunning(true),
+     m_showFps(false)
 {
    m_eventManager->registerEventSource(m_eventSourceSDL);
    m_eventManager->registerListener(this);
@@ -97,7 +123,6 @@ bool CEngineDeviceLinux::run()
    
    if(m_engineRunning)
    {
-      LOGGER_INFO("SASO :: " << getTicks());
       return true;
    }
    
@@ -160,6 +185,11 @@ bool CEngineDeviceLinux::onEvent(const CEvent &event)
    }
    
    return false;
+}
+
+void CEngineDeviceLinux::drawFps()
+{
+   m_engineDevicePriv->drawFps();
 }
 
 void CEngineDeviceLinux::releaseVideoDevice()

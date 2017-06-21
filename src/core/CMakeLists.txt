@@ -13,7 +13,6 @@ pkg_check_modules ( GSL       REQUIRED gsl )
 pkg_check_modules ( SDL2      REQUIRED sdl2 )
 
 include_directories ( "${PROJECT_SOURCE_DIR}" )
-include_directories ( ${SDL2_INCLUDE_DIRS} )
  
 
 set ( SOURCES cengine2d.cpp
@@ -25,19 +24,32 @@ set ( SOURCES cengine2d.cpp
               cevent.cpp
               ceventmanager.cpp )
 
+include_directories ( tools )
+set ( SOURCES ${SOURCES} tools/cdigitool.cpp
+                         tools/cdigitsbitmap.cpp )
+
 if (UNIX)
+   include_directories ( ${SDL2_INCLUDE_DIRS} )
    include_directories ( platform/linux/ )
+   
    set ( SOURCES ${SOURCES} platform/linux/cenginedevicelinux.cpp
                             platform/linux/cpaintdevicesdl.cpp
                             platform/linux/cpaintsurfacesdl.cpp
                             platform/linux/cvideodevicesdl.cpp
                             platform/linux/crenderdevicesdl.cpp 
                             platform/linux/ceventsourcesdl.cpp)
+   
+   set ( LINK_LIBS ${LINK_LIBS}
+                   ${SDL2_LIBRARIES}
+                   -lSDL2_ttf )
 endif (UNIX)
 
 
 add_library(seEngine2d SHARED ${SOURCES})
 
+#get_cmake_property(_variableNames VARIABLES)
+#foreach (_variableName ${_variableNames})
+#    message(STATUS "${_variableName}=${${_variableName}}")
+#endforeach()
 
-target_link_libraries ( seEngine2d ${SDL2_LIBRARIES}
-                                   ${UUID_LIBRARIES} )
+target_link_libraries ( seEngine2d ${LINK_LIBS} )

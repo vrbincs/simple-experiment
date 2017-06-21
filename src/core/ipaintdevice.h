@@ -32,10 +32,14 @@
 #ifndef IPAINTDEVICE_H
    #define IPAINTDEVICE_H
 
+#include <string>
+
 #include <crect.h>
 #include <cpixmap.h>
 
+
 class IVideoDevice;
+class CColour;
 
 class IPaintDevice
 {
@@ -65,7 +69,12 @@ public:
     * \param[in] paintSurface - source surface
     */
    virtual void drawSurface(const IPaintSurface &paintSurface,
-                            const CPointI &pos) = 0;
+                            const CPointI &pos,
+                            const CRectI *srcRect) = 0;
+
+   virtual void drawText(const std::string &text,
+                         const CRectI &rect,
+                         const CColour &colour) = 0;
    /**
     * \brief finalizies the drawing.
     * \return returns true if no errors; false otherwise.

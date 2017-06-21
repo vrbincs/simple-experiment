@@ -8,8 +8,8 @@ class CColour
 public:
    typedef uint32_t RGBA;
    
+   CColour(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0, uint8_t alpha = 255);
    CColour(RGBA rgba);
-   CColour(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
    
    inline uint8_t getRed() const { return m_red; }
    inline uint8_t getGreen() const { return m_green; }

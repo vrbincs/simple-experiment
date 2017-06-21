@@ -83,6 +83,8 @@ public:
     * \return returns a pointer to the event manager.
     */
    virtual CEventManager *getEventManager() = 0;
+   
+   virtual void drawFps() = 0;
 private:
    /**
     * \brief select the rendering backend. This function is used by the

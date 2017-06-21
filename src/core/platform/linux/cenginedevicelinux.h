@@ -25,13 +25,15 @@ public:
                     const CSizeI &resolution);
 
    bool onEvent(const CEvent &event);
+   
+   void drawFps();
 private:
    CEngineDeviceLinuxPriv *m_engineDevicePriv;
    IVideoDevice *m_videoDevice;
    CEventSourceSDL *m_eventSourceSDL;
    CEventManager *m_eventManager;   
    bool m_engineRunning;
-   
+   bool m_showFps;
    void releaseVideoDevice();
    
    friend class IEngineDevice;

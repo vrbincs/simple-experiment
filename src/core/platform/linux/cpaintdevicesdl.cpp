@@ -54,7 +54,13 @@ void CPaintDeviceSDL::drawRect(const CRectI &rect)
 }
 
 void CPaintDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
-                                  const CPointI &pos)
+                                  const CPointI &pos,
+                                  const CRectI *srcRect)
+{
+   LOGGER_WARN("Not implemented");
+}
+
+void CPaintDeviceSDL::drawText(const std::string &text, const CRectI &rect, const CColour &colour)
 {
    LOGGER_WARN("Not implemented");
 }

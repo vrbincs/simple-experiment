@@ -16,7 +16,12 @@ public:
    bool start(IPaintSurface *destSurface);
    void drawRect(const CRectI &rect);
    void drawSurface(const IPaintSurface &paintSurface,
-                    const CPointI &pos);
+                    const CPointI &pos,
+                    const CRectI *srcRect);
+   void drawText(const std::string &text,
+                 const CRectI &rect,
+                 const CColour &colour);
+   
    bool end();
 private:
    CPaintSurfaceSDL *m_pDestSurface;
