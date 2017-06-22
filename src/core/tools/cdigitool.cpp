@@ -78,9 +78,7 @@ void CDigiTool::loadXBMPixmap()
          }
          else
          {
-            *(pixelTmp++) = 0;
-            *(pixelTmp++) = 0;
-            *(pixelTmp++) = 0;
+            pixelTmp += 3;
          }
       }
       pixelVal++;

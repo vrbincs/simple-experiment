@@ -9,6 +9,7 @@ set ( testballmove_VERSION_MINOR 0 )
 include_directories ( ${seEngine2d_SOURCE_DIR} )
 
 set(CMAKE_CXX_FLAGS "-Wall -Wno-long-long -Werror -pedantic -O0")
+set(CMAKE_BUILD_TYPE Debug)
 
 add_executable ( testballmove testballmove.cpp )
 

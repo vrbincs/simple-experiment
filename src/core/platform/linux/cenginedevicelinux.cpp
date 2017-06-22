@@ -117,7 +117,6 @@ CEngineDeviceLinux::~CEngineDeviceLinux()
 bool CEngineDeviceLinux::run()
 {
    m_engineDevicePriv->maintainFPS(FPS_TO_MILIS(65));
-   
    m_engineDevicePriv->cycle();
    m_eventManager->pollEvents();
    

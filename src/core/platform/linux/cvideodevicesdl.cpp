@@ -58,15 +58,20 @@ CVideoDeviceSDL::~CVideoDeviceSDL()
    if(l_sdlRenderer)
    {
       SDL_DestroyRenderer(l_sdlRenderer);
+      l_sdlRenderer = NULL;
    }
    
    if(l_sdlWindow)
    {
       SDL_DestroyWindow(l_sdlWindow);
+      l_sdlWindow = NULL;
    }
    
-   delete l_screenPaintTool;
-   l_screenPaintTool = NULL;
+   if(l_screenPaintTool)
+   {
+      delete l_screenPaintTool;
+      l_screenPaintTool = NULL;
+   }
    
    SDL_Quit();
 }

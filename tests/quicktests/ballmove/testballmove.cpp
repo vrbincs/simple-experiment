@@ -1,3 +1,5 @@
+#include <memory>
+
 #include <cengine2d.h>
 #include <cmath>
 #include <logging.h>
@@ -71,8 +73,9 @@ int main(int argc, char *argv[])
    
    // Register event receiver
    CEventManager *eventManager = engineDevice->getEventManager();
-   CTestEventListener *eventListener = new CTestEventListener();
-   eventManager->registerListener(eventListener);
+   
+   std::shared_ptr<CTestEventListener> eventListenerPtr(new CTestEventListener());
+   eventManager->registerListener(eventListenerPtr.get());
    
    CPixmap ball("ball.bmp", "bmp");
    if(ball.isNull())
@@ -115,7 +118,7 @@ int main(int argc, char *argv[])
    
    LOGGER_INFO("Exiting the main game loop");
 
-   eventManager->unregisterListener(eventListener);
+   eventManager->unregisterListener(eventListenerPtr.get());
    engineDevice->exit();
    
    return 0;
