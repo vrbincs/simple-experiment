@@ -82,13 +82,23 @@ CSceneItem *CSceneItem::getParent() const
    return m_parent;
 }
 
+void CSceneItem::setPosition(const CPointI &position)
+{
+   m_position = position;
+}
+
+CPointI CSceneItem::getPosition() const
+{
+   return m_position;
+}
+
 void CSceneItem::update()
 {
    CScene *scene = getScene();
    
    if(scene)
    {
-      scene->updateObject(this);
+      scene->updateItem(this);
    }
 }
 
@@ -97,6 +107,17 @@ CScene *CSceneItem::getScene() const
    return m_sceneItemPriv->m_scene;
 }
 
-void CSceneItem::onEvent(CEvent &event)
+bool CSceneItem::onEvent(const CEvent &event)
 {
+   switch(event.type())
+   {
+      case CEvent::EventTypeSceneAdded:
+      {
+         m_sceneItemPriv->m_scene = reinterpret_cast<CScene *>(event.message().customType);
+      }
+      break;
+      default:
+      break;
+   }
+   return false;
 }

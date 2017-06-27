@@ -87,28 +87,37 @@ int main(int argc, char *argv[])
    int speed = 4;
    while(engineDevice->run() && !l_endProgram)
    {
-      videoDevice->start(CColour(0,0,100,255));      
+      bool hasMoved = false;
       
       CPaintTool *painter = videoDevice->getScreenPaintTool();
-      painter->drawRect(CRectI(ballx+200, bally, 50, 50));
-      painter->drawPixmap(ball, CPointI(ballx, bally));
       
       double ticks = ((double)engineDevice->getTicks()/40);
       if(m_leftDown)
       {
          ballx -= ceil(ticks * speed);
+         hasMoved = true;
       }
       if(m_rightDown)
       {
          ballx += ceil(ticks * speed);
+         hasMoved = true;
       }
       if(m_upDown)
       {
          bally -= ceil(ticks * speed);
+         hasMoved = true;
       }
       if(m_downDown)
       {
          bally += ceil(ticks * speed);
+         hasMoved = true;
+      }
+      
+      if(hasMoved)
+      {
+         videoDevice->start();
+         painter->drawRect(CRectI(ballx+200, bally, 50, 50));
+         painter->drawPixmap(ball, CPointI(ballx, bally));
       }
       
       engineDevice->drawFps();

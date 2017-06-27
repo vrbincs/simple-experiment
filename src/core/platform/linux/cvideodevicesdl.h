@@ -23,7 +23,7 @@ public:
    CPaintTool *getScreenPaintTool() const;
    SDL_Renderer *getSDLRenderer() const;
    
-   bool start(const CColour &colour = CColour(0,0,0,255));
+   bool start(const CColour *colour = NULL);
    bool end();
 private:
    void clearRenderBuffer(const CColour &colour = CColour(0,0,0,255));

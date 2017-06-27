@@ -6,6 +6,7 @@
 class CPaintTool;
 class CSceneItemPriv;
 class CEvent;
+class CScene;
 
 /**
  * \class The base class that represents a graphical item. It allows to
@@ -44,13 +45,25 @@ public:
     * \return return a pointer to the parent object;
     */
    CSceneItem *getParent() const;
+   
+   /**
+    * \brief
+    */
+   void setPosition(const CPointI &position);
+   
+   /**
+    * \brief
+    */
+   CPointI getPosition() const;
+   
+   std::list<int>::iterator begin();
 protected:
    /**
     * \brief This is the exciting part of the object where all painting
     * is carried out. Make sure that drawing is confined inside the 
     * region returned by itemRegion()
     */
-   virtual void repaint(CPaintTool *paintTool) = 0;
+   virtual void repaint(CPaintTool *paintTool, const CRectI &updateRegion) = 0;
    
    /**
     * \brief This tells the scene that this object needs to be
@@ -64,10 +77,11 @@ protected:
     */
    CScene *getScene() const;
    
-   virtual void onEvent(CEvent &event);
+   virtual bool onEvent(const CEvent &event);
 private:
    CSceneItem *m_parent;
    CSceneItemPriv *m_sceneItemPriv;
+   CPointI m_position;
    
    friend class CScene;
    /**

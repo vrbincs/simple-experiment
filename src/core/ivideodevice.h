@@ -91,11 +91,12 @@ public:
     * the color of your choice.
     * 
     * \param[in] colour - The colour used for clearing the framebuffer.
+    * If the pointer is NULL, the framebuffer will no be cleared.
     * 
     * \return returns true if the wipe of the screen was successfull;
     * false otherwise.
     */
-   virtual bool start(const CColour &colour = CColour(0,0,0,255)) = 0;
+   virtual bool start(const CColour *colour = NULL) = 0;
    
    /**
     * \brief Once all the painting has been finished, we want the

@@ -85,6 +85,15 @@ public:
    virtual CEventManager *getEventManager() = 0;
    
    virtual void drawFps() = 0;
+   
+   /**
+    * \brief return an instance of the IEngineDevice. This class is 
+    * singleton, so this function should always return the same instance
+    * of the object
+    * 
+    * \return returns a pointer of IEngineDevice
+    */
+   static IEngineDevice *instance();
 private:
    /**
     * \brief select the rendering backend. This function is used by the
@@ -99,14 +108,6 @@ private:
    virtual bool setRenderer(IVideoDevice::DeviceType renderType,
                             const CSizeI &resolution) = 0;
    
-   /**
-    * \brief return an instance of the IEngineDevice. This class is 
-    * singleton, so this function should always return the same instance
-    * of the object
-    * 
-    * \return returns a pointer of IEngineDevice
-    */
-   static IEngineDevice *instance();
    friend class CEngine2d;
 };
 

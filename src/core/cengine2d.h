@@ -42,6 +42,10 @@
 #include <cpainttool.h>
 #include <cpixmap.h>
 
+#include <csceneitem.h>
+#include <cscene.h>
+#include <csceneview.h>
+
 /**
  * \class The main class of the engine. It provides the API to 
  * instatiate the engine and initializes all necessary to prepare a

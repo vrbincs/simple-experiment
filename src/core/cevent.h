@@ -10,7 +10,9 @@ public:
    {
       EventTypeTerminate = 0,
       EventTypeKeyDown,
-      EventTypeKeyUp
+      EventTypeKeyUp,
+      
+      EventTypeSceneAdded
    };
    
    enum
@@ -21,7 +23,6 @@ public:
       KeyArrowLeft    = 80,
       KeyArrowDown    = 81,
       KeyArrowUp      = 82,
-      
    };
    
    union UMessage
@@ -31,6 +32,11 @@ public:
    };
    
    const int UserEventType;
+   
+   /**
+    * \brief constructor
+    */
+   CEvent(int type, const UMessage &message, uint32_t timestamp);
    
    /**
     * \brief virtual destructor
@@ -50,10 +56,6 @@ public:
    
    uint32_t getTimestamp() const;
 protected:
-   /**
-    * \brief constructor
-    */
-   CEvent(int type, const UMessage &message, uint32_t timestamp);
 private:
    int m_type;
    UMessage m_message;
