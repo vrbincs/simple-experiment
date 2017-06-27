@@ -19,7 +19,8 @@ public:
    void setSize(T width, T height);
    
    void translate(T dx, T dy);
-   bool intersects(const CRect<T> &rect);
+   void translate(const CPoint<T> &point);
+   bool intersects(const CRect<T> &rect) const;
    
    void join(const CRect<T> &rect);
    
@@ -46,8 +47,8 @@ public:
    
    friend std::ostream &operator<<(std::ostream &os, const CRect<T> &rect)
    {
-      os << "CRect(" << rect.m_p1.m_x << "," << rect.m_p1.m_x << ") (" 
-         << rect.getWidth() << "," << rect.getHeight() << ")}";
+      os << "CRect(" << rect.m_p1.m_x << "," << rect.m_p1.m_y << ") (" 
+         << rect.m_p2.m_x << "," << rect.m_p2.m_y << ")}";
       return os;
    }
    
@@ -117,16 +118,22 @@ void CRect<T>::translate(T dx, T dy)
 }
 
 template<typename T>
-bool CRect<T>::intersects(const CRect<T> &rect)
+void CRect<T>::translate(const CPoint<T> &point)
 {
-   if( ( m_p2.m_x > rect.m_p1.m_x && m_p1.m_x < rect.m_p2.m_x ) && 
-       ( m_p2.m_y > rect.m_p1.m_y && m_p1.m_y < rect.m_p2.m_y ) )
+   translate(point.getX(), point.getY());
+}
+
+template<typename T>
+bool CRect<T>::intersects(const CRect<T> &rect) const
+{
+   if( (m_p2.m_x <= rect.m_p1.m_x) || (m_p1.m_x >= rect.m_p2.m_x) ||
+       (m_p2.m_y <= rect.m_p1.m_y) || (m_p1.m_y >= rect.m_p2.m_y) )
    {
-      return true;
+      return false;
    }
    else
    {
-      return false;
+      return true;
    }
 }
 

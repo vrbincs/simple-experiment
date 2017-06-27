@@ -6,15 +6,30 @@
 #include "cpainttool.h"
 #include "cpixmap.h"
 #include "ccolour.h"
+#include "ctransform.h"
+
+class CPaintToolPriv
+{
+public:
+   struct SPaintToolSettings
+   {
+      CPaintTool::SPaintSettings m_paintSettings;
+      CTransfrom m_transform;
+   };
+   
+   SPaintToolSettings m_paintToolSettings;
+};
 
 CPaintTool::CPaintTool(CPixmap *pixmap)
-   : m_pPaintDevice(NULL)
+   : m_pPaintDevice(NULL),
+     m_paintToolPriv(new CPaintToolPriv())
 {
    start(pixmap);
 }
 
 CPaintTool::CPaintTool(IPaintDevice *paintDevice)
-   : m_pPaintDevice(paintDevice)
+   : m_pPaintDevice(paintDevice),
+     m_paintToolPriv(new CPaintToolPriv())
 {
 }
 
@@ -63,11 +78,35 @@ bool CPaintTool::start(CPixmap *pixmap)
    return false;
 }
 
+bool CPaintTool::end()
+{
+   delete m_pPaintDevice;
+   m_pPaintDevice = NULL;
+   
+   return true;
+}
+
+void CPaintTool::save()
+{
+   
+}
+
+void CPaintTool::reset()
+{
+   m_paintToolPriv->m_paintToolSettings = CPaintToolPriv::SPaintToolSettings();
+}
+
+void CPaintTool::setPaintSettings(const SPaintSettings &paintSettings)
+{
+   m_paintToolPriv->m_paintToolSettings.m_paintSettings = paintSettings;
+}
+
 void CPaintTool::drawRect(const CRectI &rect)
 {
    if(m_pPaintDevice)
    {
-      m_pPaintDevice->drawRect(rect);
+      m_pPaintDevice->drawRect(rect, 
+                               m_paintToolPriv->m_paintToolSettings.m_paintSettings.bgColour);
    }
    else
    {
@@ -81,7 +120,11 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap,
 {
    if(m_pPaintDevice)
    {
-      m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), pos, srcRect);
+      CPointI posTmp = pos;
+      posTmp += m_paintToolPriv->m_paintToolSettings.m_transform.getPosition();
+      m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), 
+                                  posTmp,
+                                  srcRect);
    }
    else
    {
@@ -101,10 +144,19 @@ void CPaintTool::drawText(const std::string &text, const CRectI &rect)
    }
 }
 
-bool CPaintTool::end()
+void CPaintTool::setTransform(const CTransfrom &transform)
 {
-   delete m_pPaintDevice;
-   m_pPaintDevice = NULL;
-   
-   return true;
+   m_paintToolPriv->m_paintToolSettings.m_transform = transform;
 }
+
+CTransfrom CPaintTool::getTransform() const
+{
+   return m_paintToolPriv->m_paintToolSettings.m_transform;
+}
+
+CTransfrom &CPaintTool::getTransform()
+{
+   return m_paintToolPriv->m_paintToolSettings.m_transform;
+}
+
+

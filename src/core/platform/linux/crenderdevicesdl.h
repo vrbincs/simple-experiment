@@ -16,7 +16,8 @@ public:
    
    bool start(IPaintSurface *destSurface);
    
-   void drawRect(const CRectI &rect);
+   void drawRect(const CRectI &rect,
+                 const CColour &colour);
    
    void drawSurface(const IPaintSurface &paintSurface,
                     const CPointI &pos,

@@ -3,11 +3,13 @@
 
 class CSceneItem;
 
+#include <map>
+#include <set>
+
 #include <crect.h>
 #include <cpoint.h>
 #include <csize.h>
-#include <map>
-#include <set>
+#include <ccolour.h>
 
 class CEvent;
 
@@ -24,7 +26,13 @@ public:
    CPointI getPosition() const;
    CSizeI getSize() const;
    
+   /**
+    * \brief a call to this function will repaint all visible items in
+    * the view.
+    */
    void redraw();
+   
+   void setBackgroundColor(const CColour &bgColour);
    
    friend class CSceneItem;
 protected:
@@ -39,12 +47,8 @@ protected:
    void postEvent(CSceneItem *item, const CEvent &event);
 private:
    CRectI m_rect;
-   
    std::set<CSceneItem *> m_items; /*< the container hold pointer to items. */
-   std::map<CSceneItem *, CRectI> *m_dirtyRegions; /*< this is used for update
-                                                     of dirty regions */
-   std::map<CSceneItem *, CRectI> *m_dirtyObjects;  /*< Objects that need to be
-                                                       repainted */
+   CColour m_bgColour;
 };
 
 #endif // CSCENE_H

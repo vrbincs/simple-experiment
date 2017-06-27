@@ -1,11 +1,12 @@
-#include <map>
-
+#include <set>
 
 #include "logging.h"
 
 #include "cevent.h"
 #include "cscene.h"
 #include "csceneitem.h"
+#include "ctransform.h"
+#include "cpainttool.h"
 
 class CSceneItemPriv
 {
@@ -17,16 +18,8 @@ public:
    
    bool addChild(CSceneItem *child)
    {
-      auto it_child = m_children.find(child);
-      if(it_child == m_children.end())
-      {
-         m_children.insert(std::pair<CSceneItem *, CSceneItem *>(child, child));
-         return true;
-      }
-      else
-      {
-         return false;
-      }
+      m_children.insert(child);
+      return true;
    }
    
    bool removeChild(CSceneItem *child)
@@ -36,7 +29,7 @@ public:
    
    CScene *getScene() const;
    
-   std::map<CSceneItem *, CSceneItem *> m_children;
+   std::set<CSceneItem *> m_children;
    CScene *m_scene;
    friend class CSceneItem;
 };
@@ -82,14 +75,43 @@ CSceneItem *CSceneItem::getParent() const
    return m_parent;
 }
 
-void CSceneItem::setPosition(const CPointI &position)
+CPointI CSceneItem::getPos() const
 {
-   m_position = position;
+   CPointI position = m_position;
+   
+   const CSceneItem *parent = this;
+   while((parent->getParent() != NULL))
+   {
+      position += parent->getPosition();
+   }
+   
+   return position;
 }
 
 CPointI CSceneItem::getPosition() const
 {
    return m_position;
+}
+
+CPointI &CSceneItem::getPosition()
+{
+   return m_position;
+}
+
+void CSceneItem::setPosition(const CPointI &pos)
+{
+   m_position = pos;
+   
+   update();
+}
+
+const std::set<CSceneItem *>::iterator CSceneItem::childIteratorBegin() const
+{
+   return m_sceneItemPriv->m_children.begin();
+}
+const std::set<CSceneItem *>::iterator CSceneItem::childIteratorEnd() const
+{
+   return m_sceneItemPriv->m_children.end();
 }
 
 void CSceneItem::update()
@@ -120,4 +142,18 @@ bool CSceneItem::onEvent(const CEvent &event)
       break;
    }
    return false;
+}
+
+void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectI &updateRegion)
+{
+   // First repaint the parent.
+   repaint(paintTool, updateRegion);
+   
+   CTransfrom &transform = paintTool->getTransform();
+   transform.translate(getPosition());
+   
+   for(auto it1 = childIteratorBegin(); it1 != childIteratorEnd(); it1++)
+   {
+      (*it1)->repaintAll(paintTool, updateRegion);
+   }
 }

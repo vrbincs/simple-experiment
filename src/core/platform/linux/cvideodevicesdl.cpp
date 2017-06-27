@@ -98,6 +98,11 @@ CPaintTool *CVideoDeviceSDL::getScreenPaintTool() const
 
 bool CVideoDeviceSDL::start(const CColour *colour)
 {
+   if(l_screenPaintTool)
+   {
+      l_screenPaintTool->reset();
+   }
+   
    if(l_sdlRenderer && colour)
    {
       clearRenderBuffer(*colour);

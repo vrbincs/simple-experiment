@@ -23,7 +23,8 @@ set ( SOURCES cengine2d.cpp
               csceneview.cpp
               ccolour.cpp
               cevent.cpp
-              ceventmanager.cpp )
+              ceventmanager.cpp
+              ctransform.cpp )
 
 include_directories ( tools )
 set ( SOURCES ${SOURCES} tools/cdigitool.cpp

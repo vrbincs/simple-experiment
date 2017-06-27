@@ -48,7 +48,8 @@ bool CPaintDeviceSDL::start(IPaintSurface *destSurface)
    }
 }
 
-void CPaintDeviceSDL::drawRect(const CRectI &rect)
+void CPaintDeviceSDL::drawRect(const CRectI &rect,
+                               const CColour &colour)
 {   
    LOGGER_WARN("Not implemented");
 }

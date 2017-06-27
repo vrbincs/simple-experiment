@@ -61,7 +61,8 @@ public:
     * \brief draws rectangle at specifed position and size.
     * \param[in] rect - the position and size of the rectangle
     */
-   virtual void drawRect(const CRectI &rect) = 0;
+   virtual void drawRect(const CRectI &rect,
+                         const CColour &colour) = 0;
    
    /**
     * \brief draw a surface. This function copies the source surface to

@@ -24,21 +24,25 @@ public:
    
    CRectI itemRegion() const
    {
-      return CRectI(m_x,m_y,m_pixmap->getWidth(),m_pixmap->getHeight());
+      CPointI position = getPosition();
+      return CRectI(position.getX(),
+                    position.getY(),
+                    m_pixmap->getWidth(),
+                    m_pixmap->getHeight());
    }
    
    void move(int dx, int dy)
    {
-      m_x += dx;
-      m_y += dy;
+      CPointI &pos = getPosition();
+      pos.m_x += dx;
+      pos.m_y += dy;
       
       update();
    }
 protected:
    void repaint(CPaintTool *paintTool, const CRectI &updateRegion)
    {
-      paintTool->drawPixmap(*m_pixmap, CPointI(m_x,m_y), NULL);
-      LOGGER_INFO("HUMPH");
+      paintTool->drawPixmap(*m_pixmap, getPosition(), NULL);
    }
 private:
    CPixmap *m_pixmap;
@@ -62,14 +66,18 @@ int main(int argc, char *argv[])
    ballMain.setPosition(CPointI(300,300));
    
    scene.addItem(&ballMain);
+   scene.setBackgroundColor(CColour(0,0,100,255));
+   CColour background(CColour(0,0,0,255));
+   
    
    while(engineDevice->run())
    {
-      videoDevice->start();
+      videoDevice->start(&background);
       scene.redraw();
       
-      ballMain.move(2,2);
+      ballMain.move(1,1);
       
+      engineDevice->drawFps();
       videoDevice->end();
    }
    

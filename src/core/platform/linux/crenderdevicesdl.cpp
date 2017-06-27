@@ -35,9 +35,14 @@ bool CRenderDeviceSDL::start(IPaintSurface *destSurface)
    return true;
 }
 
-void CRenderDeviceSDL::drawRect(const CRectI &rect)
+void CRenderDeviceSDL::drawRect(const CRectI &rect,
+                                const CColour &colour)
 {
-   SDL_SetRenderDrawColor(m_pSdlRenderer, 255, 0, 0, 255);
+   SDL_SetRenderDrawColor(m_pSdlRenderer,
+                          colour.getRed(),
+                          colour.getGreen(),
+                          colour.getBlue(),
+                          colour.getAlpha());
    SDL_Rect sdlRect;
    
    setSdlRect(sdlRect, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());

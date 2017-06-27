@@ -2,6 +2,7 @@
    #define CSCENEITEM_H
 
 #include <crect.h>
+#include <set>
 
 class CPaintTool;
 class CSceneItemPriv;
@@ -45,18 +46,19 @@ public:
     * \return return a pointer to the parent object;
     */
    CSceneItem *getParent() const;
-   
+      
    /**
-    * \brief
+    * \brief return relative position from the top parent
     */
-   void setPosition(const CPointI &position);
+   CPointI getPos() const;
    
-   /**
-    * \brief
-    */
+   
    CPointI getPosition() const;
+   CPointI &getPosition();
+   void setPosition(const CPointI &pos);
    
-   std::list<int>::iterator begin();
+   const std::set<CSceneItem *>::iterator childIteratorBegin() const;
+   const std::set<CSceneItem *>::iterator childIteratorEnd() const;
 protected:
    /**
     * \brief This is the exciting part of the object where all painting
@@ -91,6 +93,7 @@ private:
    CSceneItem(const CSceneItem &copyObj);
    
    void setScene(CScene *scene);
+   void repaintAll(CPaintTool *paintTool, const CRectI &updateRegion);
 };
 
 #endif // CSCENEITEM_H
