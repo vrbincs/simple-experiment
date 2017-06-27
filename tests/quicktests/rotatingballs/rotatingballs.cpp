@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
    CBallItem ballMain("ball_big.bmp");
    CBallItem ballChild1("ball_small.bmp", &ballMain);
    CBallItem ballChild2("ball_small.bmp", &ballMain);
-   ballMain.setPosition(CPointI(300,300));
+   ballMain.setPosition(CPointI(0,0));
    
    scene.addItem(&ballMain);
    scene.setBackgroundColor(CColour(0,0,100,255));

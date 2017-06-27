@@ -149,7 +149,7 @@ void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectI &updateRegion)
    // First repaint the parent.
    repaint(paintTool, updateRegion);
    
-   CTransfrom &transform = paintTool->getTransform();
+   CTransform &transform = paintTool->getTransform();
    transform.translate(getPosition());
    
    for(auto it1 = childIteratorBegin(); it1 != childIteratorEnd(); it1++)

@@ -1,41 +1,46 @@
 #include "ctransform.h"
 
 
-CTransfrom::CTransfrom()
+CTransform::CTransform()
 {
 }
 
-CTransfrom::~CTransfrom()
+CTransform::CTransform(const CPointI &position)
+   : m_position(position)
 {
 }
 
-void CTransfrom::translate(int32_t dx, int32_t dy)
+CTransform::~CTransform()
+{
+}
+
+void CTransform::translate(int32_t dx, int32_t dy)
 {
    m_position.m_x += dx;
    m_position.m_y += dy;
 }
 
-void CTransfrom::translate(const CPointI &pos)
+void CTransform::translate(const CPointI &pos)
 {
    m_position += pos;
 }
 
-void CTransfrom::setPosition(const CPointI &pos)
+void CTransform::setPosition(const CPointI &pos)
 {
    m_position = pos;
 }
 
-CPointI CTransfrom::getPosition() const
+CPointI CTransform::getPosition() const
 {
    return m_position;
 }
 
-CPointI &CTransfrom::getPosition()
+CPointI &CTransform::getPosition()
 {
    return m_position;
 }
 
-void CTransfrom::clear()
+void CTransform::clear()
 {
    m_position = CPointI();
 }

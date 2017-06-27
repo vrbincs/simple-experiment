@@ -20,13 +20,15 @@ public:
    
    void translate(T dx, T dy);
    void translate(const CPoint<T> &point);
+   
    bool intersects(const CRect<T> &rect) const;
+   CRect intersection(const CRect<T> &rect) const;
    
    void join(const CRect<T> &rect);
    
    CPoint<T> getPosition() const;
-   T getWidth() const;
-   T getHeight() const;
+   inline T getWidth() const;
+   inline T getHeight() const;
    
    inline T getX() const { return m_p1.m_x; }
    inline T getY() const { return m_p1.m_y; }
@@ -136,6 +138,33 @@ bool CRect<T>::intersects(const CRect<T> &rect) const
       return true;
    }
 }
+#include <logging.h>
+template<typename T>
+CRect<T> CRect<T>::intersection(const CRect<T> &rect) const
+{
+   CRect<T> interRect;
+   
+   if(!intersects(rect))
+   {
+      return interRect;
+   }
+   
+   interRect = *this;
+   LOGGER_INFO("SASO0::" << rect << ":" << *this);
+   if(rect.m_p1.m_x > interRect.m_p1.m_x)
+   {
+      LOGGER_INFO("SASO::" << rect << ":" << *this);
+      interRect.m_p1.m_x = rect.m_p1.m_x;
+   }
+   
+   if(rect.m_p1.m_y < interRect.m_p1.m_y)
+   {
+      LOGGER_INFO("SASO::" << rect << ":" << *this);
+      interRect.m_p1.m_y = rect.m_p1.m_y;
+   }
+   
+   return interRect;
+}
 
 template<typename T>
 void CRect<T>::join(const CRect<T> &rect)
@@ -185,13 +214,13 @@ CPoint<T> CRect<T>::getPosition() const
 }
 
 template<typename T>
-T CRect<T>::getWidth() const
+inline T CRect<T>::getWidth() const
 {
    return (m_p2.m_x - m_p1.m_x);
 }
 
 template<typename T>
-T CRect<T>::getHeight() const
+inline T CRect<T>::getHeight() const
 {
    return (m_p2.m_y - m_p1.m_y);
 }

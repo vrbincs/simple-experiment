@@ -14,17 +14,47 @@ public:
    struct SPaintToolSettings
    {
       CPaintTool::SPaintSettings m_paintSettings;
-      CTransfrom m_transform;
+      CTransform m_transform;
    };
    
+   CRectI clipRect(const CRectI *srcRect, const CSizeI &size)
+   {
+      CRectI clipped(0,
+                     0,
+                     size.getWidth(),
+                     size.getHeight());
+      
+      if(srcRect)
+      {
+         clipped = *srcRect;
+      }
+      
+      clipped.intersection(m_clipArea);
+      
+      return clipped;
+   }
+   
+   CRectI tranformRect(const CRectI &rect)
+   {
+      CRectI rectRet = rect;
+      
+      rectRet.translate(m_paintToolSettings.m_transform.getPosition());
+      return rectRet;
+   }
+   
    SPaintToolSettings m_paintToolSettings;
+   CRectI m_clipArea;
 };
 
 CPaintTool::CPaintTool(CPixmap *pixmap)
    : m_pPaintDevice(NULL),
      m_paintToolPriv(new CPaintToolPriv())
 {
-   start(pixmap);
+   if(pixmap)
+   {
+      m_paintToolPriv->m_clipArea = CRectI(0,0,pixmap->getWidth(), pixmap->getHeight());
+      start(pixmap);
+   }
 }
 
 CPaintTool::CPaintTool(IPaintDevice *paintDevice)
@@ -101,11 +131,16 @@ void CPaintTool::setPaintSettings(const SPaintSettings &paintSettings)
    m_paintToolPriv->m_paintToolSettings.m_paintSettings = paintSettings;
 }
 
+void CPaintTool::setClipArea(const CRectI &clip)
+{
+   m_paintToolPriv->m_clipArea = clip;
+}
+
 void CPaintTool::drawRect(const CRectI &rect)
 {
    if(m_pPaintDevice)
    {
-      m_pPaintDevice->drawRect(rect, 
+      m_pPaintDevice->drawRect(m_paintToolPriv->tranformRect(rect), 
                                m_paintToolPriv->m_paintToolSettings.m_paintSettings.bgColour);
    }
    else
@@ -118,13 +153,17 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap,
                             const CPointI &pos,
                             const CRectI *srcRect)
 {
+   
    if(m_pPaintDevice)
    {
       CPointI posTmp = pos;
       posTmp += m_paintToolPriv->m_paintToolSettings.m_transform.getPosition();
+      
+      CRectI clippedRect = m_paintToolPriv->clipRect(srcRect, pixmap.getSize());
+      
       m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), 
                                   posTmp,
-                                  srcRect);
+                                  &clippedRect);
    }
    else
    {
@@ -144,17 +183,17 @@ void CPaintTool::drawText(const std::string &text, const CRectI &rect)
    }
 }
 
-void CPaintTool::setTransform(const CTransfrom &transform)
+void CPaintTool::setTransform(const CTransform &transform)
 {
    m_paintToolPriv->m_paintToolSettings.m_transform = transform;
 }
 
-CTransfrom CPaintTool::getTransform() const
+CTransform CPaintTool::getTransform() const
 {
    return m_paintToolPriv->m_paintToolSettings.m_transform;
 }
 
-CTransfrom &CPaintTool::getTransform()
+CTransform &CPaintTool::getTransform()
 {
    return m_paintToolPriv->m_paintToolSettings.m_transform;
 }

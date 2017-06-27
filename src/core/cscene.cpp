@@ -6,6 +6,7 @@
 
 #include "csceneitem.h"
 #include "cscene.h"
+#include "ctransform.h"
 
 CScene::CScene(const CRectI &sceneRect)
    : m_rect(sceneRect)
@@ -57,14 +58,19 @@ void CScene::redraw()
    
    CPaintTool::SPaintSettings paintSettings;
    paintSettings.bgColour = m_bgColour;
+   
+   CRectI localRect(0,0,m_rect.getWidth(), m_rect.getHeight());
+   
+   paintTool->setTransform(CTransform(m_rect.getPosition()));
    paintTool->setPaintSettings(paintSettings);
-   paintTool->drawRect(m_rect);
+   paintTool->drawRect(localRect);
+   paintTool->setClipArea(localRect);
    
    for(auto it1 = m_items.begin(); it1 != m_items.end(); it1++)
    {
-      if(m_rect.intersects((*it1)->itemRegion()))
+      if(localRect.intersects((*it1)->itemRegion()))
       {
-         (*it1)->repaintAll(paintTool, m_rect);
+         (*it1)->repaintAll(paintTool, localRect);
       }
    }
    

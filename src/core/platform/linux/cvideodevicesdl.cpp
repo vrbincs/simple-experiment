@@ -51,6 +51,7 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
       LOGGER_ERROR("Failed to create paint tool for the renderer.");
       return;
    }
+   l_screenPaintTool->setClipArea(CRectI(0,0,resolution.getWidth(), resolution.getHeight()));
 }
 
 CVideoDeviceSDL::~CVideoDeviceSDL()

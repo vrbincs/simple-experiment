@@ -5,11 +5,12 @@
 
 #include <cpoint.h>
 
-class CTransfrom
+class CTransform
 {
 public:
-   CTransfrom();
-   virtual ~CTransfrom();
+   CTransform();
+   CTransform(const CPointI &position);
+   virtual ~CTransform();
    
    void translate(int32_t dx, int32_t dy);
    void translate(const CPointI &pos);

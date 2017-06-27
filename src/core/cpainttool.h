@@ -8,7 +8,7 @@
 class IPaintDevice;
 class CPixmap;
 class CPaintToolPriv;
-class CTransfrom;
+class CTransform;
 
 class CPaintTool
 {
@@ -30,15 +30,16 @@ public:
    void reset();
    
    void setPaintSettings(const SPaintSettings &paintSettings);
+   void setClipArea(const CRectI &clip);
    
    void drawRect(const CRectI &rect);
    void drawPixmap(const CPixmap &pixmap, const CPointI &pos, const CRectI *srcRect = NULL);
    void drawText(const std::string &text,
                  const CRectI &rect);
 
-   void setTransform(const CTransfrom &transform);
-   CTransfrom getTransform() const;
-   CTransfrom &getTransform();
+   void setTransform(const CTransform &transform);
+   CTransform getTransform() const;
+   CTransform &getTransform();
 private:
    IPaintDevice *m_pPaintDevice;
    CPaintToolPriv *m_paintToolPriv;
