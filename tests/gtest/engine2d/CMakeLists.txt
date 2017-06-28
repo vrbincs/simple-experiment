@@ -12,7 +12,8 @@ pkg_check_modules ( GTEST REQUIRED gtest )
 pkg_check_modules ( SDL2  REQUIRED sdl2 )
 pkg_check_modules ( UUID  REQUIRED uuid )
 
-add_executable ( testengine2d testcgobject.cpp )
+add_executable ( testengine2d testcgobject.cpp
+                              testcrect.cpp )
 
 target_link_libraries ( testengine2d ${GTEST_LIBRARIES}
                                      ${SDL2_LIBRARIES}

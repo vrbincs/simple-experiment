@@ -64,7 +64,7 @@ void CScene::redraw()
    paintTool->setTransform(CTransform(m_rect.getPosition()));
    paintTool->setPaintSettings(paintSettings);
    paintTool->drawRect(localRect);
-   paintTool->setClipArea(localRect);
+   paintTool->setClipArea(m_rect);
    
    for(auto it1 = m_items.begin(); it1 != m_items.end(); it1++)
    {

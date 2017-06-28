@@ -39,15 +39,16 @@ public:
       
       update();
    }
+   CPixmap *m_pixmap;
+   int m_x;
+   int m_y;   
 protected:
    void repaint(CPaintTool *paintTool, const CRectI &updateRegion)
    {
       paintTool->drawPixmap(*m_pixmap, getPosition(), NULL);
    }
 private:
-   CPixmap *m_pixmap;
-   int m_x;
-   int m_y;
+
 };
 
 int main(int argc, char *argv[])
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
    CBallItem ballMain("ball_big.bmp");
    CBallItem ballChild1("ball_small.bmp", &ballMain);
    CBallItem ballChild2("ball_small.bmp", &ballMain);
-   ballMain.setPosition(CPointI(0,0));
+   ballMain.setPosition(CPointI(-200,-200));
    
    scene.addItem(&ballMain);
    scene.setBackgroundColor(CColour(0,0,100,255));
@@ -72,13 +73,16 @@ int main(int argc, char *argv[])
    
    while(engineDevice->run())
    {
-      videoDevice->start(&background);
-      scene.redraw();
-      
-      ballMain.move(1,1);
-      
-      engineDevice->drawFps();
-      videoDevice->end();
+      if(ballMain.getPosition().getX() <= -100)
+      {
+         videoDevice->start(&background);
+         scene.redraw();
+         
+         ballMain.move(1,1);
+         
+         engineDevice->drawFps();
+         videoDevice->end();
+      }
    }
    
    return 0;

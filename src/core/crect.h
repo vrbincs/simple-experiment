@@ -90,10 +90,10 @@ void CRect<T>::setPosition(T x, T y)
    T w = getWidth();
    T h = getHeight();
    
-   m_p1.x = x;
-   m_p1.y = y;
-   m_p2.x = (x + w);
-   m_p2.y = (y + h);
+   m_p1.m_x = x;
+   m_p1.m_y = y;
+   m_p2.m_x = (x + w);
+   m_p2.m_y = (y + h);
 }
 
 template<typename T>
@@ -150,18 +150,24 @@ CRect<T> CRect<T>::intersection(const CRect<T> &rect) const
    }
    
    interRect = *this;
-   LOGGER_INFO("SASO0::" << rect << ":" << *this);
    if(rect.m_p1.m_x > interRect.m_p1.m_x)
    {
-      LOGGER_INFO("SASO::" << rect << ":" << *this);
       interRect.m_p1.m_x = rect.m_p1.m_x;
    }
-   
-   if(rect.m_p1.m_y < interRect.m_p1.m_y)
+   if(rect.m_p1.m_y > interRect.m_p1.m_y)
    {
-      LOGGER_INFO("SASO::" << rect << ":" << *this);
       interRect.m_p1.m_y = rect.m_p1.m_y;
    }
+   if(rect.m_p2.m_x < interRect.m_p2.m_x)
+   {
+      interRect.m_p2.m_x = rect.m_p2.m_x;
+   }
+   if(rect.m_p2.m_y < interRect.m_p2.m_y)
+   {
+      interRect.m_p2.m_y = rect.m_p2.m_y;
+   }
+   
+   interRect.normalize();
    
    return interRect;
 }

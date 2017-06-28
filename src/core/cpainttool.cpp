@@ -17,19 +17,26 @@ public:
       CTransform m_transform;
    };
    
-   CRectI clipRect(const CRectI *srcRect, const CSizeI &size)
+   CRectI clipRect(const CPointI &position,
+                   const CRectI *srcRect,
+                   const CSizeI &size)
    {
-      CRectI clipped(0,
-                     0,
+      CRectI clipped(position.getX(),
+                     position.getY(),
                      size.getWidth(),
                      size.getHeight());
       
       if(srcRect)
       {
          clipped = *srcRect;
+         clipped.translate(position);
+         //clipped = clipped.intersection(m_clipArea);
       }
-      
-      clipped.intersection(m_clipArea);
+      else
+      {
+         clipped = clipped.intersection(m_clipArea);
+         clipped.setPosition(position.getX(),position.getY());
+      }
       
       return clipped;
    }
@@ -159,8 +166,7 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap,
       CPointI posTmp = pos;
       posTmp += m_paintToolPriv->m_paintToolSettings.m_transform.getPosition();
       
-      CRectI clippedRect = m_paintToolPriv->clipRect(srcRect, pixmap.getSize());
-      
+      CRectI clippedRect = m_paintToolPriv->clipRect(posTmp, srcRect, pixmap.getSize());
       m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), 
                                   posTmp,
                                   &clippedRect);
