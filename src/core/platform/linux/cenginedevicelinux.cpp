@@ -73,7 +73,7 @@ public:
    void drawFps()
    {
       CPaintTool *paintTool = l_engineDeviceInstance->getVideoDevice()->getScreenPaintTool();
-      
+      paintTool->save();
       if(paintTool)
       {
          if(m_digitool == NULL)
@@ -83,6 +83,7 @@ public:
          
          m_digitool->drawDigits(*paintTool, 1000/getTicks());
       }
+      paintTool->restore();
    }
 };
 

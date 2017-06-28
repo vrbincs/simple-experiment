@@ -148,7 +148,7 @@ void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectI &updateRegion)
 {
    // First repaint the parent.
    repaint(paintTool, updateRegion);
-   
+   paintTool->save();
    CTransform &transform = paintTool->getTransform();
    transform.translate(getPosition());
    
@@ -156,4 +156,5 @@ void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectI &updateRegion)
    {
       (*it1)->repaintAll(paintTool, updateRegion);
    }
+   paintTool->restore();
 }

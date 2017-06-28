@@ -101,7 +101,7 @@ bool CVideoDeviceSDL::start(const CColour *colour)
 {
    if(l_screenPaintTool)
    {
-      l_screenPaintTool->reset();
+      l_screenPaintTool->save();
    }
    
    if(l_sdlRenderer && colour)
@@ -116,6 +116,7 @@ bool CVideoDeviceSDL::end()
    if(l_sdlRenderer)
    {
       SDL_RenderPresent(l_sdlRenderer);
+      l_screenPaintTool->restore();
       return true;
    }
    else

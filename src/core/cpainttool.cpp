@@ -1,4 +1,4 @@
-#include <cmath>
+#include <stack>
 
 #include "logging.h"
 
@@ -17,33 +17,21 @@ public:
    {
       CPaintTool::SPaintSettings m_paintSettings;
       CTransform m_transform;
+      CRectI m_clipArea;
    };
    
    CRectI clipRect(CPointI &position,
-                   const CRectI *srcRect,
-                   const CSizeI &size)
+                   const CRectI &srcRect)
    {
-      CRectI clipped(position.getX(),
-                     position.getY(),
-                     size.getWidth(),
-                     size.getHeight());
+      CRectI clipped = srcRect;
+      clipped.translate(position);
       
-      if(srcRect)
-      {
-         clipped = *srcRect;
-         //clipped.translate(position);
-         //clipped = clipped.intersection(m_clipArea);
-      }
-      else
-      {
-         CRectI clippedGlob = clipped.intersection(m_clipArea);
-         CPointI offset((clippedGlob.getX()-clipped.getX()),
-                        (clippedGlob.getY()-clipped.getY()));
-         
-         clipped = CRectI(offset, clippedGlob.getSize());
-         position += offset;
-         LOGGER_INFO("SASO---1" << clipped);
-      }
+      CRectI clippedGlob = clipped.intersection(m_paintToolSettings.m_clipArea);
+      CPointI offset((clippedGlob.getX()-clipped.getX()),
+                     (clippedGlob.getY()-clipped.getY()));
+      
+      clipped = CRectI(offset + srcRect.getPosition(), clippedGlob.getSize());
+      position += offset;
       
       return clipped;
    }
@@ -56,8 +44,26 @@ public:
       return rectRet;
    }
    
-   SPaintToolSettings m_paintToolSettings;
-   CRectI m_clipArea;
+   void saveSettings()
+   {
+      m_savedSettings.push(m_paintToolSettings);
+   }
+   
+   void restoreSettings()
+   {
+      if(!m_savedSettings.empty())
+      {
+         m_paintToolSettings = m_savedSettings.top();
+         m_savedSettings.pop();
+      }
+      else
+      {
+         LOGGER_INFO("Unable to restore paint tool settings.");
+      }
+   }
+   
+   SPaintToolSettings m_paintToolSettings;   
+   std::stack<SPaintToolSettings> m_savedSettings;
 };
 
 CPaintTool::CPaintTool(CPixmap *pixmap)
@@ -66,7 +72,7 @@ CPaintTool::CPaintTool(CPixmap *pixmap)
 {
    if(pixmap)
    {
-      m_paintToolPriv->m_clipArea = CRectI(0,0,pixmap->getWidth(), pixmap->getHeight());
+      m_paintToolPriv->m_paintToolSettings.m_clipArea = CRectI(0,0,pixmap->getWidth(), pixmap->getHeight());
       start(pixmap);
    }
 }
@@ -132,12 +138,12 @@ bool CPaintTool::end()
 
 void CPaintTool::save()
 {
-   
+   m_paintToolPriv->saveSettings();
 }
 
-void CPaintTool::reset()
+void CPaintTool::restore()
 {
-   m_paintToolPriv->m_paintToolSettings = CPaintToolPriv::SPaintToolSettings();
+   m_paintToolPriv->restoreSettings();
 }
 
 void CPaintTool::setPaintSettings(const SPaintSettings &paintSettings)
@@ -147,7 +153,7 @@ void CPaintTool::setPaintSettings(const SPaintSettings &paintSettings)
 
 void CPaintTool::setClipArea(const CRectI &clip)
 {
-   m_paintToolPriv->m_clipArea = clip;
+   m_paintToolPriv->m_paintToolSettings.m_clipArea = clip;
 }
 
 void CPaintTool::drawRect(const CRectI &rect)
@@ -170,9 +176,15 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap,
    
    if(m_pPaintDevice)
    {
+      CRectI sourceRect(CPointI(0,0), pixmap.getSize());
+      if(srcRect)
+      {
+         sourceRect = *srcRect;
+      }
+      
       CPointI posTmp = pos;
       posTmp += m_paintToolPriv->m_paintToolSettings.m_transform.getPosition();
-      CRectI clippedRect = m_paintToolPriv->clipRect(posTmp, srcRect, pixmap.getSize());
+      CRectI clippedRect = m_paintToolPriv->clipRect(posTmp, sourceRect);
       
       m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), 
                                   posTmp,

@@ -27,7 +27,7 @@ public:
    bool end();
    
    void save();
-   void reset();
+   void restore();
    
    void setPaintSettings(const SPaintSettings &paintSettings);
    void setClipArea(const CRectI &clip);
