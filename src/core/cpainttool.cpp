@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "logging.h"
 
 #include "ivideodevice.h"
@@ -17,7 +19,7 @@ public:
       CTransform m_transform;
    };
    
-   CRectI clipRect(const CPointI &position,
+   CRectI clipRect(CPointI &position,
                    const CRectI *srcRect,
                    const CSizeI &size)
    {
@@ -29,13 +31,18 @@ public:
       if(srcRect)
       {
          clipped = *srcRect;
-         clipped.translate(position);
+         //clipped.translate(position);
          //clipped = clipped.intersection(m_clipArea);
       }
       else
       {
-         clipped = clipped.intersection(m_clipArea);
-         clipped.setPosition(position.getX(),position.getY());
+         CRectI clippedGlob = clipped.intersection(m_clipArea);
+         CPointI offset((clippedGlob.getX()-clipped.getX()),
+                        (clippedGlob.getY()-clipped.getY()));
+         
+         clipped = CRectI(offset, clippedGlob.getSize());
+         position += offset;
+         LOGGER_INFO("SASO---1" << clipped);
       }
       
       return clipped;
@@ -165,8 +172,8 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap,
    {
       CPointI posTmp = pos;
       posTmp += m_paintToolPriv->m_paintToolSettings.m_transform.getPosition();
-      
       CRectI clippedRect = m_paintToolPriv->clipRect(posTmp, srcRect, pixmap.getSize());
+      
       m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), 
                                   posTmp,
                                   &clippedRect);

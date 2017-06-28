@@ -5,12 +5,14 @@
 #include <iostream>
 
 #include <cpoint.h>
+#include <csize.h>
 
 template<typename T>
 class CRect
 {
 public:
    CRect(T x = 0, T y = 0, T width = 0, T height = 0);
+   CRect(const CPoint<T> &position, const CSize<T> &size);
    CRect(const CPoint<T> &p1, const CPoint<T> &p2);
    
    void setPosition(T x, T y);
@@ -29,6 +31,7 @@ public:
    CPoint<T> getPosition() const;
    inline T getWidth() const;
    inline T getHeight() const;
+   inline CSize<T> getSize() const;
    
    inline T getX() const { return m_p1.m_x; }
    inline T getY() const { return m_p1.m_y; }
@@ -63,7 +66,6 @@ typedef CRect<float> CRectF;
 typedef CRect<double> CRectD;
 typedef CRect<unsigned int> CRectU;
 
-#include <iostream>
 template<typename T>
 CRect<T>::CRect(T x, T y, T width, T height) 
 {
@@ -71,6 +73,17 @@ CRect<T>::CRect(T x, T y, T width, T height)
    m_p1.m_y = y;
    m_p2.m_x = x+width;
    m_p2.m_y = y+height;
+   
+   normalize();
+}
+
+template<typename T>
+CRect<T>::CRect(const CPoint<T> &position, const CSize<T> &size)
+{
+   m_p1.m_x = position.getX();
+   m_p1.m_y = position.getY();
+   m_p2.m_x = m_p1.m_x+size.getWidth();
+   m_p2.m_y = m_p1.m_y+size.getHeight();
    
    normalize();
 }
@@ -229,6 +242,12 @@ template<typename T>
 inline T CRect<T>::getHeight() const
 {
    return (m_p2.m_y - m_p1.m_y);
+}
+
+template<typename T>
+inline CSize<T> CRect<T>::getSize() const
+{
+   return CSize<T>(getWidth(), getHeight());
 }
 
 template<typename T>

@@ -66,6 +66,9 @@ int main(int argc, char *argv[])
    CBallItem ballChild2("ball_small.bmp", &ballMain);
    ballMain.setPosition(CPointI(-200,-200));
    
+   ballChild1.setPosition(CPointI(100,0));
+   ballChild2.setPosition(CPointI(0,100));
+   
    scene.addItem(&ballMain);
    scene.setBackgroundColor(CColour(0,0,100,255));
    CColour background(CColour(0,0,0,255));
@@ -73,7 +76,7 @@ int main(int argc, char *argv[])
    
    while(engineDevice->run())
    {
-      if(ballMain.getPosition().getX() <= -100)
+      //if(ballMain.getPosition().getX() <= 200)
       {
          videoDevice->start(&background);
          scene.redraw();
