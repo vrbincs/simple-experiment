@@ -24,6 +24,7 @@ public:
                    const CRectI &srcRect)
    {
       CRectI clipped = srcRect;
+      position += m_paintToolSettings.m_transform.getPosition();
       clipped.translate(position);
       
       CRectI clippedGlob = clipped.intersection(m_paintToolSettings.m_clipArea);
@@ -183,9 +184,7 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap,
       }
       
       CPointI posTmp = pos;
-      posTmp += m_paintToolPriv->m_paintToolSettings.m_transform.getPosition();
       CRectI clippedRect = m_paintToolPriv->clipRect(posTmp, sourceRect);
-      
       m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), 
                                   posTmp,
                                   &clippedRect);
