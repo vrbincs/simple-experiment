@@ -11,12 +11,12 @@ public:
    TestCSceneItem(TestCSceneItem *testcgobject = NULL) : CSceneItem(testcgobject){}
    ~TestCSceneItem(){}
    
-   CRectI itemRegion() const
+   CRectF itemRegion() const
    {
-      return CRectI();
+      return CRectF();
    }
 protected:
-   void repaint(CPaintTool *, const CRectI &)
+   void repaint(CPaintTool *, const CRectF &)
    {
       
    }

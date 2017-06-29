@@ -25,6 +25,11 @@ public:
    inline T getX() const { return m_x; }
    inline T getY() const { return m_y; }
    
+   inline CPoint<float> toFloat() const
+   {
+      return CPoint<float>(m_x, m_y);
+   }
+   
    T m_x;
    T m_y;
 };

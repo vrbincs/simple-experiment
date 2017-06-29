@@ -48,20 +48,20 @@ bool CPaintDeviceSDL::start(IPaintSurface *destSurface)
    }
 }
 
-void CPaintDeviceSDL::drawRect(const CRectI &rect,
+void CPaintDeviceSDL::drawRect(const CRectF &rect,
                                const CColour &colour)
 {   
    LOGGER_WARN("Not implemented");
 }
 
 void CPaintDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
-                                  const CPointI &pos,
-                                  const CRectI *srcRect)
+                                  const CPointF &pos,
+                                  const CRectF *srcRect)
 {
    LOGGER_WARN("Not implemented");
 }
 
-void CPaintDeviceSDL::drawText(const std::string &text, const CRectI &rect, const CColour &colour)
+void CPaintDeviceSDL::drawText(const std::string &text, const CRectF &rect, const CColour &colour)
 {
    LOGGER_WARN("Not implemented");
 }

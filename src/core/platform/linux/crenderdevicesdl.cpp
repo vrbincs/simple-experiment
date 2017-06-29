@@ -35,7 +35,7 @@ bool CRenderDeviceSDL::start(IPaintSurface *destSurface)
    return true;
 }
 
-void CRenderDeviceSDL::drawRect(const CRectI &rect,
+void CRenderDeviceSDL::drawRect(const CRectF &rect,
                                 const CColour &colour)
 {
    SDL_SetRenderDrawColor(m_pSdlRenderer,
@@ -51,8 +51,8 @@ void CRenderDeviceSDL::drawRect(const CRectI &rect,
 }
 
 void CRenderDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
-                                   const CPointI &pos,
-                                   const CRectI *srcRect)
+                                   const CPointF &pos,
+                                   const CRectF *srcRect)
 {
    const CPaintSurfaceSDL *paintSurfaceSdl = dynamic_cast<const CPaintSurfaceSDL *>(&paintSurface);
    
@@ -93,7 +93,7 @@ void CRenderDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
 }
 
 void CRenderDeviceSDL::drawText(const std::string &text,
-                                const CRectI &rect,
+                                const CRectF &rect,
                                 const CColour &colour)
 {
    TTF_Font *ttf = TTF_OpenFont("font.ttf", 54);

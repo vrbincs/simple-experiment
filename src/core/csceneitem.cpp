@@ -75,9 +75,9 @@ CSceneItem *CSceneItem::getParent() const
    return m_parent;
 }
 
-CPointI CSceneItem::getPos() const
+CPointF CSceneItem::getPos() const
 {
-   CPointI position = m_position;
+   CPointF position = m_position;
    
    const CSceneItem *parent = this;
    while((parent->getParent() != NULL))
@@ -88,17 +88,17 @@ CPointI CSceneItem::getPos() const
    return position;
 }
 
-CPointI CSceneItem::getPosition() const
+CPointF CSceneItem::getPosition() const
 {
    return m_position;
 }
 
-CPointI &CSceneItem::getPosition()
+CPointF &CSceneItem::getPosition()
 {
    return m_position;
 }
 
-void CSceneItem::setPosition(const CPointI &pos)
+void CSceneItem::setPosition(const CPointF &pos)
 {
    m_position = pos;
    
@@ -144,7 +144,7 @@ bool CSceneItem::onEvent(const CEvent &event)
    return false;
 }
 
-void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectI &updateRegion)
+void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectF &updateRegion)
 {
    // First repaint the parent.
    repaint(paintTool, updateRegion);

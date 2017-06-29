@@ -16,15 +16,15 @@ public:
    
    bool start(IPaintSurface *destSurface);
    
-   void drawRect(const CRectI &rect,
+   void drawRect(const CRectF &rect,
                  const CColour &colour);
    
    void drawSurface(const IPaintSurface &paintSurface,
-                    const CPointI &pos,
-                    const CRectI *srcRect);
+                    const CPointF &pos,
+                    const CRectF *srcRect);
    
    void drawText(const std::string &text,
-                 const CRectI &rect,
+                 const CRectF &rect,
                  const CColour &colour);
    bool end();
 private:

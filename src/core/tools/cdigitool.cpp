@@ -38,11 +38,11 @@ bool CDigiTool::drawDigits(CPaintTool &paintTool, uint32_t number)
       std::string numberStr = std::to_string(number);
       int digit;
       
-      CPointI digitPosition;
+      CPointF digitPosition;
       for(auto it=numberStr.begin(); it!=numberStr.end(); it++)
       {
          digit = (*it - '0');
-         CRectI srcRect((digit * digitWidth),
+         CRectF srcRect((digit * digitWidth),
                         0,
                         digitWidth,
                         cdigitsbitmap_height);

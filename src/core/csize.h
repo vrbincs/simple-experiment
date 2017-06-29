@@ -22,6 +22,11 @@ public:
    {
       return m_height;
    }
+   
+   inline CSize<float> toFloat() const
+   {
+      return CSize<float>(m_width, m_height);
+   }
 private:
    T m_width;
    T m_height;

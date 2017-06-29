@@ -9,19 +9,19 @@ class CTransform
 {
 public:
    CTransform();
-   CTransform(const CPointI &position);
+   CTransform(const CPointF &position);
    virtual ~CTransform();
    
    void translate(int32_t dx, int32_t dy);
-   void translate(const CPointI &pos);
+   void translate(const CPointF &pos);
    
-   void setPosition(const CPointI &pos);
-   CPointI getPosition() const;
-   CPointI &getPosition();
+   void setPosition(const CPointF &pos);
+   CPointF getPosition() const;
+   CPointF &getPosition();
    
    void clear();
 private:
-   CPointI m_position;
+   CPointF m_position;
 };
 
 

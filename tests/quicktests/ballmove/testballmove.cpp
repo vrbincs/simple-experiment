@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
    }
    
    int speed = 4;
+   CColour color;
    while(engineDevice->run() && !l_endProgram)
    {
       bool hasMoved = false;
@@ -115,9 +116,9 @@ int main(int argc, char *argv[])
       
       if(hasMoved)
       {
-         videoDevice->start();
-         painter->drawRect(CRectI(ballx+200, bally, 50, 50));
-         painter->drawPixmap(ball, CPointI(ballx, bally));
+         videoDevice->start(&color);
+         painter->drawRect(CRectF(ballx+200, bally, 50, 50));
+         painter->drawPixmap(ball, CPointF(ballx, bally));
       }
       
       engineDevice->drawFps();

@@ -5,7 +5,7 @@ CTransform::CTransform()
 {
 }
 
-CTransform::CTransform(const CPointI &position)
+CTransform::CTransform(const CPointF &position)
    : m_position(position)
 {
 }
@@ -20,27 +20,27 @@ void CTransform::translate(int32_t dx, int32_t dy)
    m_position.m_y += dy;
 }
 
-void CTransform::translate(const CPointI &pos)
+void CTransform::translate(const CPointF &pos)
 {
    m_position += pos;
 }
 
-void CTransform::setPosition(const CPointI &pos)
+void CTransform::setPosition(const CPointF &pos)
 {
    m_position = pos;
 }
 
-CPointI CTransform::getPosition() const
+CPointF CTransform::getPosition() const
 {
    return m_position;
 }
 
-CPointI &CTransform::getPosition()
+CPointF &CTransform::getPosition()
 {
    return m_position;
 }
 
 void CTransform::clear()
 {
-   m_position = CPointI();
+   m_position = CPointF();
 }

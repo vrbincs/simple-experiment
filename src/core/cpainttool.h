@@ -30,12 +30,12 @@ public:
    void restore();
    
    void setPaintSettings(const SPaintSettings &paintSettings);
-   void setClipArea(const CRectI &clip);
+   void setClipArea(const CRectF &clip);
    
-   void drawRect(const CRectI &rect);
-   void drawPixmap(const CPixmap &pixmap, const CPointI &pos, const CRectI *srcRect = NULL);
+   void drawRect(const CRectF &rect);
+   void drawPixmap(const CPixmap &pixmap, const CPointF &pos, const CRectF *srcRect = NULL);
    void drawText(const std::string &text,
-                 const CRectI &rect);
+                 const CRectF &rect);
 
    void setTransform(const CTransform &transform);
    CTransform getTransform() const;

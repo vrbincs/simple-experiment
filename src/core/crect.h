@@ -38,6 +38,8 @@ public:
    
    void normalize();
    
+   inline CRect<float> toFloat() const;
+   
    //void operator+(const CPoint<T> &point);
    void operator+=(const CRect<T> &rect);
    bool operator==(const CRect<T> &rect);
@@ -151,7 +153,7 @@ bool CRect<T>::intersects(const CRect<T> &rect) const
       return true;
    }
 }
-#include <logging.h>
+
 template<typename T>
 CRect<T> CRect<T>::intersection(const CRect<T> &rect) const
 {
@@ -266,6 +268,12 @@ void CRect<T>::normalize()
       m_p2.m_y = m_p1.m_y;
       m_p1.m_y = y;
    }
+}
+
+template<typename T>
+inline CRect<float> CRect<T>::toFloat() const
+{
+   return CRect<float>(m_p1.toFloat(), m_p2.toFloat());
 }
 
 #endif // CRECT_H

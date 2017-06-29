@@ -32,7 +32,7 @@ public:
     * information for the optimizer to only updates certain parts of
     * the visible drawing region and not the entire one.
     */
-   virtual CRectI itemRegion() const = 0;
+   virtual CRectF itemRegion() const = 0;
    
    /**
     * \brief set parent
@@ -50,12 +50,12 @@ public:
    /**
     * \brief return relative position from the top parent
     */
-   CPointI getPos() const;
+   CPointF getPos() const;
    
    
-   CPointI getPosition() const;
-   CPointI &getPosition();
-   void setPosition(const CPointI &pos);
+   CPointF getPosition() const;
+   CPointF &getPosition();
+   void setPosition(const CPointF &pos);
    
    const std::set<CSceneItem *>::iterator childIteratorBegin() const;
    const std::set<CSceneItem *>::iterator childIteratorEnd() const;
@@ -65,7 +65,7 @@ protected:
     * is carried out. Make sure that drawing is confined inside the 
     * region returned by itemRegion()
     */
-   virtual void repaint(CPaintTool *paintTool, const CRectI &updateRegion) = 0;
+   virtual void repaint(CPaintTool *paintTool, const CRectF &updateRegion) = 0;
    
    /**
     * \brief This tells the scene that this object needs to be
@@ -83,7 +83,7 @@ protected:
 private:
    CSceneItem *m_parent;
    CSceneItemPriv *m_sceneItemPriv;
-   CPointI m_position;
+   CPointF m_position;
    
    friend class CScene;
    /**
@@ -93,7 +93,7 @@ private:
    CSceneItem(const CSceneItem &copyObj);
    
    void setScene(CScene *scene);
-   void repaintAll(CPaintTool *paintTool, const CRectI &updateRegion);
+   void repaintAll(CPaintTool *paintTool, const CRectF &updateRegion);
 };
 
 #endif // CSCENEITEM_H

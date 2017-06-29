@@ -61,7 +61,7 @@ public:
     * \brief draws rectangle at specifed position and size.
     * \param[in] rect - the position and size of the rectangle
     */
-   virtual void drawRect(const CRectI &rect,
+   virtual void drawRect(const CRectF &rect,
                          const CColour &colour) = 0;
    
    /**
@@ -70,11 +70,11 @@ public:
     * \param[in] paintSurface - source surface
     */
    virtual void drawSurface(const IPaintSurface &paintSurface,
-                            const CPointI &pos,
-                            const CRectI *srcRect) = 0;
+                            const CPointF &pos,
+                            const CRectF *srcRect) = 0;
 
    virtual void drawText(const std::string &text,
-                         const CRectI &rect,
+                         const CRectF &rect,
                          const CColour &colour) = 0;
    /**
     * \brief finalizies the drawing.

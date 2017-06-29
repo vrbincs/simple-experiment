@@ -22,10 +22,10 @@ public:
       delete m_pixmap;
    }
    
-   CRectI itemRegion() const
+   CRectF itemRegion() const
    {
-      CPointI position = getPosition();
-      return CRectI(position.getX(),
+      CPointF position = getPosition();
+      return CRectF(position.getX(),
                     position.getY(),
                     m_pixmap->getWidth(),
                     m_pixmap->getHeight());
@@ -33,7 +33,7 @@ public:
    
    void move(int dx, int dy)
    {
-      CPointI &pos = getPosition();
+      CPointF &pos = getPosition();
       pos.m_x += dx;
       pos.m_y += dy;
       
@@ -43,7 +43,7 @@ public:
    int m_x;
    int m_y;   
 protected:
-   void repaint(CPaintTool *paintTool, const CRectI &updateRegion)
+   void repaint(CPaintTool *paintTool, const CRectF &updateRegion)
    {
       paintTool->drawPixmap(*m_pixmap, getPosition(), NULL);
    }
@@ -67,13 +67,13 @@ int main(int argc, char *argv[])
    CBallItem ball3("ball_big.bmp");
    CBallItem ballChild1("ball_small.bmp", &ball0);
    CBallItem ballChild2("ball_small.bmp", &ball1);
-   ball0.setPosition(CPointI(-100,-100));
-   ball1.setPosition(CPointI(-100, 600));
-   ball2.setPosition(CPointI( 600, 600));
-   ball3.setPosition(CPointI( 600,-100));
+   ball0.setPosition(CPointF(-100,-100));
+   ball1.setPosition(CPointF(-100, 600));
+   ball2.setPosition(CPointF( 600, 600));
+   ball3.setPosition(CPointF( 600,-100));
    
-   ballChild1.setPosition(CPointI(100,0));
-   ballChild2.setPosition(CPointI(0,100));
+   ballChild1.setPosition(CPointF(100,0));
+   ballChild2.setPosition(CPointF(0,100));
    
    scene.addItem(&ball0);
    scene.addItem(&ball1);

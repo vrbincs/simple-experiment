@@ -57,13 +57,13 @@ void CScene::redraw()
    CPaintTool::SPaintSettings paintSettings;
    paintSettings.bgColour = m_bgColour;
    
-   CRectI localRect(0,0,m_rect.getWidth(), m_rect.getHeight());
+   CRectF localRect(0,0,m_rect.getWidth(), m_rect.getHeight());
    
    paintTool->save();
-   paintTool->setTransform(CTransform(m_rect.getPosition()));
+   paintTool->setTransform(CTransform(m_rect.getPosition().toFloat()));
    paintTool->setPaintSettings(paintSettings);
    paintTool->drawRect(localRect);
-   paintTool->setClipArea(m_rect);
+   paintTool->setClipArea(m_rect.toFloat());
    
    for(auto it1 = m_items.begin(); it1 != m_items.end(); it1++)
    {
