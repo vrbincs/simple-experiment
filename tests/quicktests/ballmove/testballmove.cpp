@@ -85,45 +85,32 @@ int main(int argc, char *argv[])
    }
    
    int speed = 4;
-   CColour color;
    while(engineDevice->run() && !l_endProgram)
-   {
-      bool hasMoved = false;
-      
+   {      
       CPaintTool *painter = videoDevice->getScreenPaintTool();
       
-      double ticks = ((double)engineDevice->getTicks()/40);
+      double ticks = ((double)engineDevice->getTicks()/25);
       if(m_leftDown)
       {
          ballx -= ceil(ticks * speed);
-         hasMoved = true;
       }
       if(m_rightDown)
       {
          ballx += ceil(ticks * speed);
-         hasMoved = true;
       }
       if(m_upDown)
       {
          bally -= ceil(ticks * speed);
-         hasMoved = true;
       }
       if(m_downDown)
       {
          bally += ceil(ticks * speed);
-         hasMoved = true;
       }
       
-      if(hasMoved)
-      {
-         videoDevice->start(&color);
-         painter->drawRect(CRectF(ballx+200, bally, 50, 50));
-         painter->drawPixmap(ball, CPointF(ballx, bally));
-      }
+      painter->drawRect(CRectF(ballx+200, bally, 50, 50));
+      painter->drawPixmap(ball, CPointF(ballx, bally));
       
       engineDevice->drawFps();
-      
-      videoDevice->end();
    }
    
    LOGGER_INFO("Exiting the main game loop");

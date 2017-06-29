@@ -31,7 +31,7 @@ public:
                     m_pixmap->getHeight());
    }
    
-   void move(int dx, int dy)
+   void move(float dx, float dy)
    {
       CPointF &pos = getPosition();
       pos.m_x += dx;
@@ -82,28 +82,29 @@ int main(int argc, char *argv[])
    
    scene.setBackgroundColor(CColour(0,0,100,255));
    CColour background(CColour(0,0,0,255));
-   int speed = 1;
+   double speed = 3;
    while(engineDevice->run())
    {
-      if(ball0.getPosition().getX() == 600)
+      double ticks = ((double)engineDevice->getTicks()/10);
+      
+      if(ball0.getPosition().getX() >= 600)
       {
          speed = -1;
       }
-      else if(ball0.getPosition().getX() == -100)
+      else if(ball0.getPosition().getX() <= -100)
       {
          speed = 1;
       }
 
-      videoDevice->start(&background);
       scene.redraw();
       
-      ball0.move(speed,speed);
-      ball1.move(speed,-speed);
-      ball2.move(-speed,-speed);
-      ball3.move(-speed,speed);
+      double moveStep = (ticks * speed);
+      ball0.move(moveStep,moveStep);
+      ball1.move(moveStep,-moveStep);
+      ball2.move(-moveStep,-moveStep);
+      ball3.move(-moveStep,moveStep);
       
       engineDevice->drawFps();
-      videoDevice->end();
    }
    
    return 0;

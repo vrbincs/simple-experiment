@@ -17,6 +17,7 @@
 #define FPS_TO_MILIS(fps) (1000/((uint64_t)fps))
 
 static IEngineDevice *l_engineDeviceInstance = NULL;
+static CColour l_backgroundColour;
 
 class CEngineDeviceLinuxPriv
 {
@@ -117,12 +118,14 @@ CEngineDeviceLinux::~CEngineDeviceLinux()
 
 bool CEngineDeviceLinux::run()
 {
-   m_engineDevicePriv->maintainFPS(FPS_TO_MILIS(65));
-   m_engineDevicePriv->cycle();
-   m_eventManager->pollEvents();
-   
-   if(m_engineRunning)
+   if(m_engineRunning && m_videoDevice)
    {
+      m_engineDevicePriv->maintainFPS(FPS_TO_MILIS(65));
+      m_engineDevicePriv->cycle();
+      m_videoDevice->end();
+      
+      m_eventManager->pollEvents();
+      m_videoDevice->start(&l_backgroundColour);
       return true;
    }
    
