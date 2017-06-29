@@ -57,9 +57,6 @@ int main(int argc, char *argv[])
                                                          CSizeI(1920, 1200));
    assert(engineDevice != NULL);
    
-   IVideoDevice *videoDevice = engineDevice->getVideoDevice();
-   assert(videoDevice != NULL);
-   
    CScene scene(CRectI(200,200,700,700));
    CBallItem ball0("ball_big.bmp");
    CBallItem ball1("ball_big.bmp");
