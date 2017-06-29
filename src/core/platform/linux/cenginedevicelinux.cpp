@@ -69,6 +69,8 @@ public:
       {
          usleep(((fpsInMilis - elapsedTicks) * 1000));
       }
+      
+      cycle();
    }
    
    void drawFps()
@@ -121,7 +123,6 @@ bool CEngineDeviceLinux::run()
    if(m_engineRunning && m_videoDevice)
    {
       m_engineDevicePriv->maintainFPS(FPS_TO_MILIS(65));
-      m_engineDevicePriv->cycle();
       m_videoDevice->end();
       
       m_eventManager->pollEvents();

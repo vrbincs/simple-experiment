@@ -5,14 +5,14 @@
 #include <logging.h>
 
 static bool l_endProgram = false;   
-static int ballx = 0;
-static int bally = 0;
+static float ballx = 0;
+static float bally = 0;
 
 static bool m_leftDown  = false;
 static bool m_rightDown = false;
 static bool m_upDown    = false;
 static bool m_downDown  = false;
-
+#include <unistd.h>
 class CTestEventListener : public IEventListener
 {
 public:
@@ -29,22 +29,19 @@ public:
          }
          else if(event.message().keyCode == CEvent::KeyArrowLeft)
          {
-            LOGGER_INFO("LEFT");
             m_leftDown = isKeyDown;
          }
          else if(event.message().keyCode == CEvent::KeyArrowRight)
          {
-            LOGGER_INFO("RIGHT");
             m_rightDown = isKeyDown;
          }
          else if(event.message().keyCode == CEvent::KeyArrowUp)
          {
-            LOGGER_INFO("UP");
             m_upDown = isKeyDown;
+            usleep(40000);
          }
          else if(event.message().keyCode == CEvent::KeyArrowDown)
          {
-            LOGGER_INFO("DOWN");
             m_downDown = isKeyDown;
          }
       }
@@ -92,19 +89,19 @@ int main(int argc, char *argv[])
       double ticks = ((double)engineDevice->getTicks()/25);
       if(m_leftDown)
       {
-         ballx -= ceil(ticks * speed);
+         ballx -= (ticks * speed);
       }
       if(m_rightDown)
       {
-         ballx += ceil(ticks * speed);
+         ballx += (ticks * speed);
       }
       if(m_upDown)
       {
-         bally -= ceil(ticks * speed);
+         bally -= (ticks * speed);
       }
       if(m_downDown)
       {
-         bally += ceil(ticks * speed);
+         bally += (ticks * speed);
       }
       
       painter->drawRect(CRectF(ballx+200, bally, 50, 50));
