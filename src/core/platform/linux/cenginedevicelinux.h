@@ -26,7 +26,7 @@ public:
 
    bool onEvent(const CEvent &event);
    
-   void drawFps();
+   void showFps(bool show = true);
 private:
    CEngineDeviceLinuxPriv *m_engineDevicePriv;
    IVideoDevice *m_videoDevice;

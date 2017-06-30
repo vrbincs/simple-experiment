@@ -48,6 +48,7 @@ protected:
 private:
    CRectI m_rect;
    std::set<CSceneItem *> m_items; /*< the container hold pointer to items. */
+   std::set<CSceneItem *> m_viewableItems; /*< The items inside theh viewable area. */
    CColour m_bgColour;
 };
 

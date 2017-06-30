@@ -101,7 +101,6 @@ CPointF &CSceneItem::getPosition()
 void CSceneItem::setPosition(const CPointF &pos)
 {
    m_position = pos;
-   
    update();
 }
 

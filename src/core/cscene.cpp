@@ -35,9 +35,18 @@ void CScene::addItem(CSceneItem *item)
 
 void CScene::updateItem(CSceneItem *item)
 {
+   CRectF localRect(0,0,m_rect.getWidth(), m_rect.getHeight());
+   
    if(item)
    {
-      // nothing to do
+      if(localRect.intersects(item->itemRegion()))
+      {
+         m_viewableItems.insert(item);
+      }
+      else
+      {
+         m_viewableItems.erase(item);
+      }
    }
    else
    {
@@ -52,8 +61,9 @@ void CScene::postEvent(CSceneItem *item, const CEvent &event)
 
 void CScene::redraw()
 {
-   CPaintTool *paintTool = IEngineDevice::instance()->getVideoDevice()->getScreenPaintTool();
+   LOGGER_INFO(m_viewableItems.size());
    
+   CPaintTool *paintTool = IEngineDevice::instance()->getVideoDevice()->getScreenPaintTool();
    CPaintTool::SPaintSettings paintSettings;
    paintSettings.bgColour = m_bgColour;
    
@@ -65,12 +75,9 @@ void CScene::redraw()
    paintTool->drawRect(localRect);
    paintTool->setClipArea(m_rect.toFloat());
    
-   for(auto it1 = m_items.begin(); it1 != m_items.end(); it1++)
+   for(auto it1 = m_viewableItems.begin(); it1 != m_viewableItems.end(); it1++)
    {
-      if(localRect.intersects((*it1)->itemRegion()))
-      {
-         (*it1)->repaintAll(paintTool, localRect);
-      }
+      (*it1)->repaintAll(paintTool, localRect);
    }
    
    paintTool->restore();

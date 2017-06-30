@@ -57,6 +57,8 @@ int main(int argc, char *argv[])
                                                          CSizeI(1920, 1200));
    assert(engineDevice != NULL);
    
+   engineDevice->showFps();
+   
    CScene scene(CRectI(200,200,700,700));
    CBallItem ball0("ball_big.bmp");
    CBallItem ball1("ball_big.bmp");
@@ -79,16 +81,16 @@ int main(int argc, char *argv[])
    
    scene.setBackgroundColor(CColour(0,0,100,255));
    CColour background(CColour(0,0,0,255));
-   double speed = 3;
+   double speed = 1;
    while(engineDevice->run())
    {
       double ticks = ((double)engineDevice->getTicks()/10);
       
-      if(ball0.getPosition().getX() >= 600)
+      if(ball0.getPosition().getX() >= 1200)
       {
          speed = -1;
       }
-      else if(ball0.getPosition().getX() <= -100)
+      else if(ball0.getPosition().getX() <= -600)
       {
          speed = 1;
       }
@@ -100,8 +102,6 @@ int main(int argc, char *argv[])
       ball1.move(moveStep,-moveStep);
       ball2.move(-moveStep,-moveStep);
       ball3.move(-moveStep,moveStep);
-      
-      engineDevice->drawFps();
    }
    
    return 0;

@@ -67,6 +67,8 @@ int main(int argc, char *argv[])
       return false;
    }
    
+   engineDevice->showFps();
+   
    // Register event receiver
    CEventManager *eventManager = engineDevice->getEventManager();
    
@@ -105,8 +107,6 @@ int main(int argc, char *argv[])
       
       painter->drawRect(CRectF(ballx+200, bally, 50, 50));
       painter->drawPixmap(ball, CPointF(ballx, bally));
-      
-      engineDevice->drawFps();
    }
    
    LOGGER_INFO("Exiting the main game loop");

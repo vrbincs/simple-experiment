@@ -22,16 +22,16 @@ static CColour l_backgroundColour;
 class CEngineDeviceLinuxPriv
 {
 public:
+   const uint32_t m_targetFps;
    uint64_t m_lastTick;
    uint64_t m_elapsedTicks;
-   const uint32_t m_targetFps;
    uint32_t m_currentFps;
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
-      : m_lastTick(0),
-        m_elapsedTicks(0),
-        m_targetFps(FPS_TO_MILIS(65)),
+      : m_targetFps(FPS_TO_MILIS(64)),
+        m_lastTick(0),
+        m_elapsedTicks(m_targetFps),
         m_currentFps(m_targetFps),
         m_digitool(NULL)
    {
@@ -76,6 +76,9 @@ public:
          sleepDuration = (nextTicks - currentTicks);
       }
       
+      //TODO: the execution of the main thread is blocked at this point,
+      // so a potential of one core is wasted. Something needs to be
+      // done about it. ;)
       usleep(sleepDuration*1000);
       cycle();
    }
@@ -90,7 +93,6 @@ public:
          {
             m_digitool = new CDigiTool(CColour(150,0,0,255));
          }
-         
          m_digitool->drawDigits(*paintTool, 1000/getTicks());
       }
       paintTool->restore();
@@ -129,9 +131,13 @@ bool CEngineDeviceLinux::run()
 {
    if(m_engineRunning && m_videoDevice)
    {
+      if(m_showFps)
+      {
+         m_engineDevicePriv->drawFps();
+      }
+      
       m_engineDevicePriv->maintainFPS();
       m_videoDevice->end();
-      
       
       m_eventManager->pollEvents();
       
@@ -200,9 +206,9 @@ bool CEngineDeviceLinux::onEvent(const CEvent &event)
    return false;
 }
 
-void CEngineDeviceLinux::drawFps()
+void CEngineDeviceLinux::showFps(bool show)
 {
-   m_engineDevicePriv->drawFps();
+   m_showFps = show;
 }
 
 void CEngineDeviceLinux::releaseVideoDevice()

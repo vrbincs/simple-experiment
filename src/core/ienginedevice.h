@@ -84,7 +84,7 @@ public:
     */
    virtual CEventManager *getEventManager() = 0;
    
-   virtual void drawFps() = 0;
+   virtual void showFps(bool show = true) = 0;
    
    /**
     * \brief return an instance of the IEngineDevice. This class is 
