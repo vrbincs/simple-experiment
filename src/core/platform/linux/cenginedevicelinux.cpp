@@ -24,11 +24,15 @@ class CEngineDeviceLinuxPriv
 public:
    uint64_t m_lastTick;
    uint64_t m_elapsedTicks;
+   const uint32_t m_targetFps;
+   uint32_t m_currentFps;
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
       : m_lastTick(0),
         m_elapsedTicks(0),
+        m_targetFps(FPS_TO_MILIS(65)),
+        m_currentFps(m_targetFps),
         m_digitool(NULL)
    {
       m_lastTick = getCurrentTicks();
@@ -61,14 +65,19 @@ public:
       return m_elapsedTicks;
    }
    
-   void maintainFPS(uint64_t fpsInMilis)
+   void maintainFPS()
    {
-      uint64_t elapsedTicks = (getCurrentTicks() - m_lastTick);
+      uint64_t currentTicks = getCurrentTicks();
+      uint64_t nextTicks =  (m_lastTick + m_currentFps);
+      uint64_t sleepDuration = 1;
       
-      if(elapsedTicks <= fpsInMilis)
+      if(currentTicks < nextTicks)
       {
-         usleep(((fpsInMilis - elapsedTicks) * 1000));
+         sleepDuration = (nextTicks - currentTicks);
       }
+      
+      usleep(sleepDuration*1000);
+      cycle();
    }
    
    void drawFps()
@@ -120,11 +129,12 @@ bool CEngineDeviceLinux::run()
 {
    if(m_engineRunning && m_videoDevice)
    {
-      m_engineDevicePriv->maintainFPS(FPS_TO_MILIS(65));
-      m_engineDevicePriv->cycle();
+      m_engineDevicePriv->maintainFPS();
       m_videoDevice->end();
       
+      
       m_eventManager->pollEvents();
+      
       m_videoDevice->start(&l_backgroundColour);
       return true;
    }

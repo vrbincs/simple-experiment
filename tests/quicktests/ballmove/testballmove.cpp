@@ -12,7 +12,7 @@ static bool m_leftDown  = false;
 static bool m_rightDown = false;
 static bool m_upDown    = false;
 static bool m_downDown  = false;
-
+#include <unistd.h>
 class CTestEventListener : public IEventListener
 {
 public:
@@ -29,22 +29,18 @@ public:
          }
          else if(event.message().keyCode == CEvent::KeyArrowLeft)
          {
-            LOGGER_INFO("LEFT");
             m_leftDown = isKeyDown;
          }
          else if(event.message().keyCode == CEvent::KeyArrowRight)
          {
-            LOGGER_INFO("RIGHT");
             m_rightDown = isKeyDown;
          }
          else if(event.message().keyCode == CEvent::KeyArrowUp)
          {
-            LOGGER_INFO("UP");
             m_upDown = isKeyDown;
          }
          else if(event.message().keyCode == CEvent::KeyArrowDown)
          {
-            LOGGER_INFO("DOWN");
             m_downDown = isKeyDown;
          }
       }
