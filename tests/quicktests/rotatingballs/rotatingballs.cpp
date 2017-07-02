@@ -75,7 +75,7 @@ protected:
 private:
 
 };
-
+#include <unistd.h>
 int main(int argc, char *argv[])
 {
    IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl,
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
       ballChild9.rotate(150, rotationTick);
       ballChild10.rotate(150, rotationTick);
       ballChild11.rotate(150, rotationTick);
-      ballChild12.rotate(150, rotationTick);
+      ballChild12.rotate(150, rotationTick);      
    }
    
    return 0;

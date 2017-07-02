@@ -29,7 +29,7 @@ public:
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
-      : m_targetFps(FPS_TO_MICRO(64)),
+      : m_targetFps(FPS_TO_MICRO(32)),
         m_lastTick(0),
         m_elapsedTicks(m_targetFps),
         m_currentFps(m_targetFps),
@@ -76,9 +76,6 @@ public:
          sleepDuration = (nextTicks - currentTicks);
       }
       
-      //TODO: the execution of the main thread is blocked at this point,
-      // so a potential of one core is wasted. Something needs to be
-      // done about it. ;)
       usleep(sleepDuration);
       cycle();
    }
@@ -136,11 +133,9 @@ bool CEngineDeviceLinux::run()
          m_engineDevicePriv->drawFps();
       }
       
-      m_engineDevicePriv->maintainFPS();
       m_videoDevice->end();
-      
+      m_engineDevicePriv->maintainFPS();
       m_eventManager->pollEvents();
-      
       m_videoDevice->start(&l_backgroundColour);
       return true;
    }
