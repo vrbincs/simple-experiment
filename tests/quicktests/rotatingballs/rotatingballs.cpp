@@ -1,20 +1,29 @@
 #include <string>
 #include <cassert>
+#include <cmath>
 
 #include "logging.h"
 
 #include <cengine2d.h>
 
+#define PI 3.14159
+
 class CBallItem : public CSceneItem
 {
 public:
-   CBallItem(const std::string &filePath, CSceneItem *parent = NULL)
+   CBallItem(const std::string &filePath, CSceneItem *parent = NULL, double angleOffset = 0)
       : CSceneItem(parent),
         m_pixmap(NULL),
-        m_x(0),
-        m_y(0)
+        m_angle(angleOffset)
    {
       m_pixmap = new CPixmap(filePath, "bmp");
+      
+      if(parent && m_pixmap)
+      {
+         CSizeF parentSize = parent->itemRegion().getSize();
+         m_centerPos = CSizeF(((parentSize.getWidth()/2) - m_pixmap->getWidth()/2),
+                              ((parentSize.getHeight()/2) - m_pixmap->getHeight()/2));
+      }
    }
    
    ~CBallItem()
@@ -39,13 +48,29 @@ public:
       
       update();
    }
+   
+   void rotate(int distance, float angleRad)
+   {
+      m_angle = (m_angle + angleRad);
+      if(m_angle >= (2*PI))
+      {
+         m_angle = 0;
+      }
+      
+      CPointF &pos = getPosition();
+      pos.m_x = (cos(m_angle) * distance) + (m_centerPos.getWidth());
+      pos.m_y = (sin(m_angle) * distance) + (m_centerPos.getHeight());
+   }
+   
    CPixmap *m_pixmap;
-   int m_x;
-   int m_y;   
+   float m_angle;
+   CSizeF m_centerPos;
 protected:
    void repaint(CPaintTool *paintTool, const CRectF &updateRegion)
    {
+      paintTool->save();
       paintTool->drawPixmap(*m_pixmap, getPosition(), NULL);
+      paintTool->restore();
    }
 private:
 
@@ -66,13 +91,21 @@ int main(int argc, char *argv[])
    CBallItem ball3("ball_big.bmp");
    CBallItem ballChild1("ball_small.bmp", &ball0);
    CBallItem ballChild2("ball_small.bmp", &ball1);
+   CBallItem ballChild3("ball_small.bmp", &ball2);
+   CBallItem ballChild4("ball_small.bmp", &ball3);
+   CBallItem ballChild5("ball_small.bmp", &ball0, ((2*PI)/3));
+   CBallItem ballChild6("ball_small.bmp", &ball1, ((2*PI)/3));
+   CBallItem ballChild7("ball_small.bmp", &ball2, ((2*PI)/3));
+   CBallItem ballChild8("ball_small.bmp", &ball3, ((2*PI)/3));
+   CBallItem ballChild9("ball_small.bmp", &ball0, ((4*PI)/3));
+   CBallItem ballChild10("ball_small.bmp", &ball1,((4*PI)/3));
+   CBallItem ballChild11("ball_small.bmp", &ball2,((4*PI)/3));
+   CBallItem ballChild12("ball_small.bmp", &ball3,((4*PI)/3));
+   
    ball0.setPosition(CPointF(-100,-100));
    ball1.setPosition(CPointF(-100, 600));
    ball2.setPosition(CPointF( 600, 600));
    ball3.setPosition(CPointF( 600,-100));
-   
-   ballChild1.setPosition(CPointF(100,0));
-   ballChild2.setPosition(CPointF(0,100));
    
    scene.addItem(&ball0);
    scene.addItem(&ball1);
@@ -84,13 +117,13 @@ int main(int argc, char *argv[])
    double speed = 1;
    while(engineDevice->run())
    {
-      double ticks = ((double)engineDevice->getTicks()*0.00020);
+      double ticks = ((double)engineDevice->getTicks()*0.00015);
       
-      if(ball0.getPosition().getX() >= 1200)
+      if(ball0.getPosition().getX() >= 600)
       {
          speed = -1;
       }
-      else if(ball0.getPosition().getX() <= -600)
+      else if(ball0.getPosition().getX() <= -100)
       {
          speed = 1;
       }
@@ -102,6 +135,21 @@ int main(int argc, char *argv[])
       ball1.move(moveStep,-moveStep);
       ball2.move(-moveStep,-moveStep);
       ball3.move(-moveStep,moveStep);
+      
+      double rotationTick = ((float)engineDevice->getTicks()/(1000000))*PI;
+      
+      ballChild1.rotate(150, rotationTick);
+      ballChild2.rotate(150, rotationTick);
+      ballChild3.rotate(150, rotationTick);
+      ballChild4.rotate(150, rotationTick);
+      ballChild5.rotate(150, rotationTick);
+      ballChild6.rotate(150, rotationTick);
+      ballChild7.rotate(150, rotationTick);
+      ballChild8.rotate(150, rotationTick);
+      ballChild9.rotate(150, rotationTick);
+      ballChild10.rotate(150, rotationTick);
+      ballChild11.rotate(150, rotationTick);
+      ballChild12.rotate(150, rotationTick);
    }
    
    return 0;

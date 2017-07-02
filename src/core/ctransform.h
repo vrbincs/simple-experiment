@@ -15,6 +15,8 @@ public:
    void translate(int32_t dx, int32_t dy);
    void translate(const CPointF &pos);
    
+   void rotate(float angle);
+   
    void setPosition(const CPointF &pos);
    CPointF getPosition() const;
    CPointF &getPosition();
@@ -22,6 +24,7 @@ public:
    void clear();
 private:
    CPointF m_position;
+   float m_angle;
 };
 
 

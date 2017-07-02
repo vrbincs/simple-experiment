@@ -2,11 +2,13 @@
 
 
 CTransform::CTransform()
+   : m_angle(0)
 {
 }
 
 CTransform::CTransform(const CPointF &position)
-   : m_position(position)
+   : m_position(position),
+     m_angle(0)
 {
 }
 
@@ -23,6 +25,11 @@ void CTransform::translate(int32_t dx, int32_t dy)
 void CTransform::translate(const CPointF &pos)
 {
    m_position += pos;
+}
+
+void CTransform::rotate(float angle)
+{
+   m_angle = angle;
 }
 
 void CTransform::setPosition(const CPointF &pos)

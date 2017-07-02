@@ -29,7 +29,7 @@ public:
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
-      : m_targetFps(FPS_TO_MICRO(128)),
+      : m_targetFps(FPS_TO_MICRO(64)),
         m_lastTick(0),
         m_elapsedTicks(m_targetFps),
         m_currentFps(m_targetFps),

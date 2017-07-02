@@ -5,8 +5,8 @@
 #include <logging.h>
 
 static bool l_endProgram = false;   
-static int ballx = 0;
-static int bally = 0;
+static double ballx = 0;
+static double bally = 0;
 
 static bool m_leftDown  = false;
 static bool m_rightDown = false;
@@ -90,19 +90,19 @@ int main(int argc, char *argv[])
       double ticks = ((double)engineDevice->getTicks());
       if(m_leftDown)
       {
-         ballx -= ceil(ticks * speed);
+         ballx -= (ticks * speed);
       }
       if(m_rightDown)
       {
-         ballx += ceil(ticks * speed);
+         ballx += (ticks * speed);
       }
       if(m_upDown)
       {
-         bally -= ceil(ticks * speed);
+         bally -= (ticks * speed);
       }
       if(m_downDown)
       {
-         bally += ceil(ticks * speed);
+         bally += (ticks * speed);
       }
       
       painter->drawRect(CRectF(ballx+200, bally, 50, 50));

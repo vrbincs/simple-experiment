@@ -33,5 +33,6 @@ private:
 };
 
 typedef CSize<int> CSizeI;
+typedef CSize<float> CSizeF;
 
 #endif // CSIZE_H
