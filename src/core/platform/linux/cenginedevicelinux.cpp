@@ -24,14 +24,14 @@ class CEngineDeviceLinuxPriv
 public:
    const uint32_t m_targetFps;
    uint64_t m_lastTick;
-   uint64_t m_elapsedTicks;
+   uint64_t m_deltaTicks;
    uint32_t m_currentFps;
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
       : m_targetFps(FPS_TO_MICRO(32)),
         m_lastTick(0),
-        m_elapsedTicks(m_targetFps),
+        m_deltaTicks(m_targetFps),
         m_currentFps(m_targetFps),
         m_digitool(NULL)
    {
@@ -56,13 +56,13 @@ public:
    void cycle()
    {
       uint64_t currentTicks = getCurrentTicks();
-      m_elapsedTicks = (currentTicks - m_lastTick);
+      m_deltaTicks = (currentTicks - m_lastTick);
       m_lastTick = currentTicks;
    }
    
-   inline uint64_t getTicks() const
+   inline uint64_t getDeltaTicks() const
    {
-      return m_elapsedTicks;
+      return m_deltaTicks;
    }
    
    void maintainFPS()
@@ -90,7 +90,7 @@ public:
          {
             m_digitool = new CDigiTool(CColour(150,0,0,255));
          }
-         m_digitool->drawDigits(*paintTool, 1000000/getTicks());
+         m_digitool->drawDigits(*paintTool, 1000000/getDeltaTicks());
       }
       paintTool->restore();
    }
@@ -149,9 +149,9 @@ void CEngineDeviceLinux::exit()
    l_engineDeviceInstance = NULL;
 }
 
-uint64_t CEngineDeviceLinux::getTicks() const
+uint64_t CEngineDeviceLinux::getDeltaTicks() const
 {
-   return m_engineDevicePriv->getTicks();
+   return m_engineDevicePriv->getDeltaTicks();
 }
 
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()

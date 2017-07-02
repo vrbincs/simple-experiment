@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
    {      
       CPaintTool *painter = videoDevice->getScreenPaintTool();
       
-      double ticks = ((double)engineDevice->getTicks());
+      double ticks = ((double)engineDevice->getDeltaTicks());
       if(m_leftDown)
       {
          ballx -= (ticks * speed);

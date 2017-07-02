@@ -69,7 +69,7 @@ public:
     * \brief get number of miliseconds from the last cycle.
     * \return returns number of miliseconds from the last cycle.
     */
-   virtual uint64_t getTicks() const = 0;
+   virtual uint64_t getDeltaTicks() const = 0;
    
    /**
     * \brief returns a pointer to the video device.

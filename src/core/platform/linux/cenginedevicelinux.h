@@ -16,7 +16,7 @@ public:
    bool run();
    void exit();
    
-   uint64_t getTicks() const;
+   uint64_t getDeltaTicks() const;
    
    IVideoDevice *getVideoDevice();
    CEventManager *getEventManager();

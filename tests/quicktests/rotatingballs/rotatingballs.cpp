@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
    double speed = 1;
    while(engineDevice->run())
    {
-      double ticks = ((double)engineDevice->getTicks()*0.00015);
+      double ticks = ((double)engineDevice->getDeltaTicks()*0.00015);
       
       if(ball0.getPosition().getX() >= 600)
       {
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
       ball2.move(-moveStep,-moveStep);
       ball3.move(-moveStep,moveStep);
       
-      double rotationTick = ((float)engineDevice->getTicks()/(1000000))*PI;
+      double rotationTick = ((float)engineDevice->getDeltaTicks()/(1000000))*PI;
       
       ballChild1.rotate(150, rotationTick);
       ballChild2.rotate(150, rotationTick);
