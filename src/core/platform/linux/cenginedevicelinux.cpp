@@ -53,13 +53,6 @@ public:
       return ticks;
    }
    
-   void cycle()
-   {
-      uint64_t currentTicks = getCurrentTicks();
-      m_deltaTicks = (currentTicks - m_lastTick);
-      m_lastTick = currentTicks;
-   }
-   
    inline uint64_t getDeltaTicks() const
    {
       return m_deltaTicks;
@@ -68,16 +61,22 @@ public:
    void maintainFPS()
    {
       uint64_t currentTicks = getCurrentTicks();
-      uint64_t nextTicks =  (m_lastTick + m_currentFps);
+      uint64_t nextTicks = (m_lastTick + m_currentFps);
       uint64_t sleepDuration = 1;
       
       if(currentTicks < nextTicks)
       {
          sleepDuration = (nextTicks - currentTicks);
       }
+      else
+      {
+         nextTicks += (currentTicks - nextTicks);
+      }
+      
+      m_deltaTicks = (nextTicks - m_lastTick);
+      m_lastTick = nextTicks;
       
       usleep(sleepDuration);
-      cycle();
    }
    
    void drawFps()
