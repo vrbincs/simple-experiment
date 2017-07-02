@@ -61,8 +61,6 @@ void CScene::postEvent(CSceneItem *item, const CEvent &event)
 
 void CScene::redraw()
 {
-   LOGGER_INFO(m_viewableItems.size());
-   
    CPaintTool *paintTool = IEngineDevice::instance()->getVideoDevice()->getScreenPaintTool();
    CPaintTool::SPaintSettings paintSettings;
    paintSettings.bgColour = m_bgColour;

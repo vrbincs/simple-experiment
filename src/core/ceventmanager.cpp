@@ -47,7 +47,7 @@ void CEventManager::registerEventSource(IEventSource *eventSource)
 {
    if(eventSource)
    {
-      m_eventSources.push_back(eventSource);
+      m_eventSources.insert(eventSource);
    }
    else
    {
@@ -73,7 +73,7 @@ void CEventManager::registerListener(IEventListener *listener)
 {
    if(listener)
    {
-      m_listenersList.push_back(listener);
+      m_listenersList.insert(listener);
    }
    else
    {

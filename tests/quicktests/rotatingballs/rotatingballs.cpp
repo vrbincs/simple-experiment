@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
    double speed = 1;
    while(engineDevice->run())
    {
-      double ticks = ((double)engineDevice->getTicks()/10);
+      double ticks = ((double)engineDevice->getTicks()*0.00020);
       
       if(ball0.getPosition().getX() >= 1200)
       {

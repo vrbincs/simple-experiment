@@ -1,7 +1,7 @@
 #ifndef CEVENTMANAGER_H
    #define CEVENTMANAGER_H
 
-#include <list>
+#include <set>
 
 class IEventListener;
 class IEventSource;
@@ -52,8 +52,8 @@ public:
     */
    bool unregisterListener(IEventListener *listener);
 private:
-   std::list<IEventListener *> m_listenersList;
-   std::list<IEventSource *> m_eventSources;
+   std::set<IEventListener *> m_listenersList;
+   std::set<IEventSource *> m_eventSources;
    
    void disposeEvent(CEvent *event);
 };

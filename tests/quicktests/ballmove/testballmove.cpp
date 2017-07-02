@@ -82,12 +82,12 @@ int main(int argc, char *argv[])
       return 1;
    }
    
-   int speed = 4;
+   double speed = 0.00025;
    while(engineDevice->run() && !l_endProgram)
    {      
       CPaintTool *painter = videoDevice->getScreenPaintTool();
       
-      double ticks = ((double)engineDevice->getTicks()/25);
+      double ticks = ((double)engineDevice->getTicks());
       if(m_leftDown)
       {
          ballx -= ceil(ticks * speed);

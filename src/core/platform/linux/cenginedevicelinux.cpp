@@ -14,7 +14,7 @@
 
 #include <cdigitool.h>
 
-#define FPS_TO_MILIS(fps) (1000/((uint64_t)fps))
+#define FPS_TO_MICRO(fps) (1000000/((uint64_t)fps))
 
 static IEngineDevice *l_engineDeviceInstance = NULL;
 static CColour l_backgroundColour;
@@ -29,7 +29,7 @@ public:
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
-      : m_targetFps(FPS_TO_MILIS(64)),
+      : m_targetFps(FPS_TO_MICRO(128)),
         m_lastTick(0),
         m_elapsedTicks(m_targetFps),
         m_currentFps(m_targetFps),
@@ -49,7 +49,7 @@ public:
       struct timespec tp;
       clock_gettime(CLOCK_MONOTONIC, &tp);
       
-      ticks = ((uint64_t)tp.tv_sec * 1000) + (tp.tv_nsec / 1000000);
+      ticks = ((uint64_t)tp.tv_sec * 1000000) + (tp.tv_nsec / 1000);
       return ticks;
    }
    
@@ -79,7 +79,7 @@ public:
       //TODO: the execution of the main thread is blocked at this point,
       // so a potential of one core is wasted. Something needs to be
       // done about it. ;)
-      usleep(sleepDuration*1000);
+      usleep(sleepDuration);
       cycle();
    }
    
@@ -93,7 +93,7 @@ public:
          {
             m_digitool = new CDigiTool(CColour(150,0,0,255));
          }
-         m_digitool->drawDigits(*paintTool, 1000/getTicks());
+         m_digitool->drawDigits(*paintTool, 1000000/getTicks());
       }
       paintTool->restore();
    }
