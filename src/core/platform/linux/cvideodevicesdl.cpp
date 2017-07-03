@@ -26,7 +26,7 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
                                   SDL_WINDOWPOS_UNDEFINED,
                                   resolution.getWidth(),
                                   resolution.getHeight(),
-                                  /*SDL_WINDOW_FULLSCREEN |*/ SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS);
+                                  SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS);
          
    if(!l_sdlWindow)
    {

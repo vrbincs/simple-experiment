@@ -14,7 +14,7 @@
 
 #include <cdigitool.h>
 
-#define FPS_TO_MICRO(fps) (1000000/((uint64_t)fps))
+#define FPS_TO_MICRO(fps) (1000000/((double)fps))
 
 static IEngineDevice *l_engineDeviceInstance = NULL;
 static CColour l_backgroundColour;
@@ -29,7 +29,7 @@ public:
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
-      : m_targetFps(FPS_TO_MICRO(32)),
+      : m_targetFps(FPS_TO_MICRO(60.00)),
         m_lastTick(0),
         m_deltaTicks(m_targetFps),
         m_currentFps(m_targetFps),
