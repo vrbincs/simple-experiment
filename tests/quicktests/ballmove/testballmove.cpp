@@ -51,8 +51,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-   IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl,
-                                                         CSizeI(1920, 1080));
+   IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl);
 
    if(!engineDevice)
    {
@@ -82,7 +81,7 @@ int main(int argc, char *argv[])
       return 1;
    }
    
-   double speed = 0.00025;
+   double speed = 0.00050;
    while(engineDevice->run() && !l_endProgram)
    {      
       CPaintTool *painter = videoDevice->getScreenPaintTool();

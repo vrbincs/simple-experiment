@@ -29,13 +29,14 @@ public:
    CDigiTool *m_digitool;
    
    CEngineDeviceLinuxPriv()
-      : m_targetFps(FPS_TO_MICRO(60.00)),
+      : m_targetFps(FPS_TO_MICRO(60)),
         m_lastTick(0),
         m_deltaTicks(m_targetFps),
         m_currentFps(m_targetFps),
         m_digitool(NULL)
    {
       m_lastTick = getCurrentTicks();
+      LOGGER_INFO(m_targetFps);
    }
    
    ~CEngineDeviceLinuxPriv()

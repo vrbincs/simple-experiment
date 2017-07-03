@@ -68,7 +68,7 @@ public:
     * cannot be created.
     */
    static IEngineDevice *createDevice(IVideoDevice::DeviceType renderType,
-                                      const CSizeI &resolution);
+                                      const CSizeI &resolution = CSizeI());
    /**
     * \brief return the instance ot the engine.
     * \return return the instance ot the engine.

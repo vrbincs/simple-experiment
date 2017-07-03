@@ -21,12 +21,21 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
       return;
    }
    
+   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+   
+   uint32_t windowFlags = (SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS);
+   if(resolution.isZero())
+   {
+      windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+   }
+   
    l_sdlWindow = SDL_CreateWindow("simple-experiment",
                                   SDL_WINDOWPOS_UNDEFINED,
                                   SDL_WINDOWPOS_UNDEFINED,
                                   resolution.getWidth(),
                                   resolution.getHeight(),
-                                  SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS);
+                                  windowFlags);
          
    if(!l_sdlWindow)
    {
@@ -34,8 +43,19 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
       return;
    }
    
-   l_sdlRenderer = SDL_CreateRenderer(l_sdlWindow, -1, SDL_RENDERER_ACCELERATED);
-            
+   l_sdlRenderer = SDL_CreateRenderer(l_sdlWindow, 
+                                      -1,
+                                      SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+   // This call will enable SDL to syncronize frame rate with the frequency
+   // of the monitor. There are two effects of this:
+   // - remedy tearing
+   // - fixed refresh rate
+   if(SDL_GL_SetSwapInterval(1) != 0)
+   {
+      LOGGER_ERROR("Unable to set SWAP interval.");
+   }
+   
    if(!l_sdlRenderer)
    {
       LOGGER_ERROR("Failed creating SDL renderer. err=" << SDL_GetError());
@@ -45,13 +65,15 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
    clearRenderBuffer();
    SDL_RenderPresent(l_sdlRenderer);
 
+   SDL_DisplayMode mode;
+   SDL_GetCurrentDisplayMode(0, &mode);
    l_screenPaintTool = new CPaintTool(new CRenderDeviceSDL(l_sdlRenderer));
    if(l_screenPaintTool == NULL)
    {
       LOGGER_ERROR("Failed to create paint tool for the renderer.");
       return;
    }
-   l_screenPaintTool->setClipArea(CRectF(0,0,resolution.getWidth(), resolution.getHeight()));
+   l_screenPaintTool->setClipArea(CRectF(0,0,mode.w, mode.h));
 }
 
 CVideoDeviceSDL::~CVideoDeviceSDL()
@@ -116,6 +138,7 @@ bool CVideoDeviceSDL::end()
    if(l_sdlRenderer)
    {
       SDL_RenderPresent(l_sdlRenderer);
+      
       l_screenPaintTool->restore();
       return true;
    }

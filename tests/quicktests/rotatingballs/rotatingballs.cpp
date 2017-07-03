@@ -78,8 +78,7 @@ private:
 #include <unistd.h>
 int main(int argc, char *argv[])
 {
-   IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl,
-                                                         CSizeI(1920, 1200));
+   IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl);
    assert(engineDevice != NULL);
    
    engineDevice->showFps();

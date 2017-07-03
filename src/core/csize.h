@@ -23,6 +23,15 @@ public:
       return m_height;
    }
    
+   inline bool isZero() const
+   {
+      if(!m_width || !m_height)
+      {
+         return true;
+      }
+      return false;
+   }
+   
    inline CSize<float> toFloat() const
    {
       return CSize<float>(m_width, m_height);
