@@ -34,11 +34,3 @@ TEST(TestCSceneItem, TestParentIsSet)
    EXPECT_TRUE((child1.getParent() == &parent));
    EXPECT_TRUE((parent.getParent() == NULL));
 }
-
-TEST(HuiyuTests, CheckCSizeFunctions)
-{
-   CSizeI testObject(100, 5);
-   
-   EXPECT_EQ(testObject.getWidth(), 100);
-   EXPECT_EQ(testObject.getHeight(), 5);
-}

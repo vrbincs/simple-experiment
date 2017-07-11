@@ -12,7 +12,8 @@ class CSceneItemPriv
 {
 public:
    CSceneItemPriv()
-      : m_scene(NULL)
+      : m_scene(NULL),
+        m_zIndex(0)
    {
    }
    
@@ -31,6 +32,7 @@ public:
    
    std::set<CSceneItem *> m_children;
    CScene *m_scene;
+   int32_t m_zIndex;
    friend class CSceneItem;
 };
 
@@ -80,10 +82,11 @@ CPointF CSceneItem::getPos() const
    CPointF position = m_position;
    
    const CSceneItem *parent = this;
-   while((parent->getParent() != NULL))
+   do
    {
       position += parent->getPosition();
-   }
+      
+   }while((parent = parent->getParent()) != NULL);
    
    return position;
 }
@@ -113,13 +116,30 @@ const std::set<CSceneItem *>::iterator CSceneItem::childIteratorEnd() const
    return m_sceneItemPriv->m_children.end();
 }
 
+int32_t CSceneItem::getZIndex() const
+{
+   return m_sceneItemPriv->m_zIndex;
+}
+
+void CSceneItem::setZIndex(int32_t zIndex)
+{
+   int32_t zIndex_t = m_sceneItemPriv->m_zIndex;
+   m_sceneItemPriv->m_zIndex = zIndex;
+   
+   CScene *scene = getScene();
+   if(scene)
+   {
+      scene->updateItem(this, zIndex_t);
+   }
+}
+
 void CSceneItem::update()
 {
    CScene *scene = getScene();
    
    if(scene)
    {
-      scene->updateItem(this);
+      scene->updateItem(getRoot());
    }
 }
 
@@ -156,4 +176,16 @@ void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectF &updateRegion)
       (*it1)->repaintAll(paintTool, updateRegion);
    }
    paintTool->restore();
+}
+
+CSceneItem *CSceneItem::getRoot()
+{
+   CSceneItem *item = this;
+   
+   while(item->getParent() != NULL)
+   {
+      item = item->getParent();
+   }
+   
+   return item;
 }

@@ -60,6 +60,8 @@ public:
       CPointF &pos = getPosition();
       pos.m_x = (cos(m_angle) * distance) + (m_centerPos.getWidth());
       pos.m_y = (sin(m_angle) * distance) + (m_centerPos.getHeight());
+      
+      update();
    }
    
    CPixmap *m_pixmap;
@@ -84,7 +86,6 @@ int main(int argc, char *argv[])
    engineDevice->showFps();
    
    CScene scene0(CRectI(200,200,700,700));
-   CScene scene1(CRectI(1000,200,700,700));
    CBallItem ball0("ball_big.bmp");
    CBallItem ball1("ball_big.bmp");
    CBallItem ball2("ball_big.bmp");
@@ -112,13 +113,7 @@ int main(int argc, char *argv[])
    scene0.addItem(&ball2);
    scene0.addItem(&ball3);
    
-   scene1.addItem(&ball0);
-   scene1.addItem(&ball1);
-   scene1.addItem(&ball2);
-   scene1.addItem(&ball3);
-   
-   scene0.setBackgroundColor(CColour(0,0,100,255));
-   scene1.setBackgroundColor(CColour(0,50,50,255));
+   scene0.setBackgroundColor(CColour(0,50,50,255));
    
    CColour background(CColour(0,0,0,255));
    double speed = 1;
@@ -126,7 +121,7 @@ int main(int argc, char *argv[])
    {
       double ticks = ((double)engineDevice->getDeltaTicks()*0.00015);
       
-      if(ball0.getPosition().getX() >= 600)
+      if(ball0.getPosition().getX() >= 800)
       {
          speed = -1;
       }
@@ -135,9 +130,6 @@ int main(int argc, char *argv[])
          speed = 1;
       }
 
-      scene0.redraw();
-      scene1.redraw();
-      
       double moveStep = (ticks * speed);
       ball0.move(moveStep,moveStep);
       ball1.move(moveStep,-moveStep);
@@ -158,6 +150,8 @@ int main(int argc, char *argv[])
       ballChild10.rotate(150, rotationTick);
       ballChild11.rotate(150, rotationTick);
       ballChild12.rotate(150, rotationTick);
+      
+      scene0.redraw();
    }
    
    return 0;

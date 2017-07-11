@@ -33,24 +33,57 @@ void CScene::addItem(CSceneItem *item)
    }
 }
 
+CPointI CScene::getPosition() const
+{
+   return CPointI();
+}
+
+CSizeI CScene::getSize() const
+{
+   return CSizeI();
+}
+
+void CScene::setSceneRect(const CRectI &sceneRect)
+{
+   m_rect = sceneRect;
+}
+
 void CScene::updateItem(CSceneItem *item)
 {
    CRectF localRect(0,0,m_rect.getWidth(), m_rect.getHeight());
    
    if(item)
    {
-      if(localRect.intersects(item->itemRegion()))
+      std::set<CSceneItem *> &viewableItems_t = m_viewableItems[item->getZIndex()];
+      
+      if(item->intersects(localRect))
       {
-         m_viewableItems.insert(item);
+         auto item_t = viewableItems_t.find(item);
+         if(item_t == viewableItems_t.end())
+         {
+            viewableItems_t.insert(item);
+         }
+         
+         m_dirtyItems.insert(std::pair<CSceneItem *, CRectF>(item, item->itemRegion()));
       }
       else
       {
-         m_viewableItems.erase(item);
+         viewableItems_t.erase(item);
+         m_dirtyItems.erase(item);
       }
    }
    else
    {
       LOGGER_WARN("Attempt to update an invalid item.");
+   }
+}
+
+void CScene::updateItem(CSceneItem *item, int32_t zIndexOld)
+{
+   if(item)
+   {
+      m_viewableItems[zIndexOld].erase(item);
+      updateItem(item);
    }
 }
 
@@ -73,12 +106,26 @@ void CScene::redraw()
    paintTool->drawRect(localRect);
    paintTool->setClipArea(m_rect.toFloat());
    
-   for(auto it1 = m_viewableItems.begin(); it1 != m_viewableItems.end(); it1++)
+   for(auto it0 = m_viewableItems.begin(); it0 != m_viewableItems.end(); it0++)
    {
-      (*it1)->repaintAll(paintTool, localRect);
+      for(auto it1 = it0->second.begin(); it1 != it0->second.end(); it1++)
+      {
+         (*it1)->repaintAll(paintTool, localRect);
+      }
    }
    
+   m_dirtyItems.clear();
    paintTool->restore();
+}
+
+const std::set<CSceneItem *> &CScene::getItems() const
+{
+   return m_items;
+}
+
+const std::map<int32_t, std::set<CSceneItem *> > &CScene::getViewableItems() const
+{
+   return m_viewableItems;
 }
 
 void CScene::setBackgroundColor(const CColour &bgColour)

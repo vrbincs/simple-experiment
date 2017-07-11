@@ -59,6 +59,9 @@ public:
    
    const std::set<CSceneItem *>::iterator childIteratorBegin() const;
    const std::set<CSceneItem *>::iterator childIteratorEnd() const;
+   
+   int32_t getZIndex() const;
+   void setZIndex(int32_t zIndex);
 protected:
    /**
     * \brief This is the exciting part of the object where all painting
@@ -94,6 +97,8 @@ private:
    
    void setScene(CScene *scene);
    void repaintAll(CPaintTool *paintTool, const CRectF &updateRegion);
+   
+   CSceneItem *getRoot();
 };
 
 #endif // CSCENEITEM_H
