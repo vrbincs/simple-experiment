@@ -133,6 +133,27 @@ void CSceneItem::setZIndex(int32_t zIndex)
    }
 }
 
+bool CSceneItem::intersects(const CRectF &rect)
+{
+   CRectF region = itemRegion();
+   region.setPosition(getPos());
+   
+   if(itemRegion().intersects(rect))
+   {
+      return true;
+   }
+   
+   for(auto it = childIteratorBegin(); it != childIteratorEnd(); it++)
+   {
+      if((*it)->intersects(rect))
+      {
+         return true;
+      }
+   }
+   
+   return false;
+}
+
 void CSceneItem::update()
 {
    CScene *scene = getScene();

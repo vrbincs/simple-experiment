@@ -106,6 +106,8 @@ void CScene::redraw()
    paintTool->drawRect(localRect);
    paintTool->setClipArea(m_rect.toFloat());
    
+   // Viewable items are ordered by zIndex, so we traverse over all of
+   // them, layer by layer
    for(auto it0 = m_viewableItems.begin(); it0 != m_viewableItems.end(); it0++)
    {
       for(auto it1 = it0->second.begin(); it1 != it0->second.end(); it1++)
