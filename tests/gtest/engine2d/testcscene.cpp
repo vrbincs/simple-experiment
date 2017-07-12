@@ -100,3 +100,40 @@ TEST_F(TestCScene, TestZIndex)
    ASSERT_TRUE((item != getViewableItems().end()));
    EXPECT_TRUE((item->second.find(&sceneItem1) != item->second.end()));
 }
+
+TEST_F(TestCScene, TestGetCollisionItems)
+{
+   GMockCSceneItem sceneItem0(CRectF(0,0,100,100));
+   GMockCSceneItem sceneItem1(CRectF(50,50,100,100));
+   GMockCSceneItem sceneItem2(CRectF(-50,-5,100,100));
+   GMockCSceneItem sceneItem3(CRectF(100,100,100,100));
+   GMockCSceneItem sceneItem4(CRectF(50,50,100,100));
+   
+   sceneItem0.DelegateToFake();
+   sceneItem1.DelegateToFake();
+   sceneItem2.DelegateToFake();
+   sceneItem3.DelegateToFake();
+   sceneItem4.DelegateToFake();
+   
+   EXPECT_CALL(sceneItem0, itemRegion()).Times(AtLeast(1));
+   EXPECT_CALL(sceneItem1, itemRegion()).Times(AtLeast(1));
+   EXPECT_CALL(sceneItem2, itemRegion()).Times(AtLeast(1));
+   EXPECT_CALL(sceneItem3, itemRegion()).Times(AtLeast(1));
+   EXPECT_CALL(sceneItem4, itemRegion()).Times(AtLeast(1));
+   
+   sceneItem4.setZIndex(5);
+   
+   addItem(&sceneItem0);
+   addItem(&sceneItem1);
+   addItem(&sceneItem2);
+   addItem(&sceneItem3);
+   addItem(&sceneItem4);
+   
+   std::deque<CSceneItem *> collisionList = getCollisionItems(&sceneItem0);
+   ASSERT_EQ(collisionList.size(), 3);
+   
+   for(auto it0=collisionList.begin(); it0 != collisionList.end(); it0++)
+   {
+      EXPECT_TRUE((*it0 = &sceneItem1) || (*it0 = &sceneItem2) || (*it0 = &sceneItem3));
+   }
+}

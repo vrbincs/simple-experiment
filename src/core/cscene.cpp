@@ -140,3 +140,18 @@ void CScene::setBackgroundColor(const CColour &bgColour)
 {
    m_bgColour = bgColour;
 }
+
+std::deque<CSceneItem *> CScene::getCollisionItems(CSceneItem *item)
+{
+   std::deque<CSceneItem *> collidedItems;
+   
+   for(auto it0 = m_items.begin(); it0 != m_items.end(); it0++)
+   {
+      if(item != *it0)
+      {
+         //if(item->intersectsIte())
+      }
+   }
+   
+   return collidedItems;
+}

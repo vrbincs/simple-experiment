@@ -11,6 +11,8 @@ class GMockCSceneItem : public CSceneItem
 {
 public:
    GMockCSceneItem(CSceneItem *parent = NULL) : CSceneItem(parent){}
+   GMockCSceneItem(const CRectF &rect, CSceneItem *parent = NULL) : CSceneItem(parent), m_rect(rect){}
+   
    MOCK_CONST_METHOD0(itemRegion, CRectF());
    
    inline void setRect(uint32_t posx,

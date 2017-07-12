@@ -5,6 +5,7 @@ class CSceneItem;
 
 #include <map>
 #include <set>
+#include <deque>
 
 #include <crect.h>
 #include <cpoint.h>
@@ -35,6 +36,8 @@ public:
    void redraw();
    
    void setBackgroundColor(const CColour &bgColour);
+   
+   std::deque<CSceneItem *> getCollisionItems(CSceneItem *);
    
    friend class CSceneItem;
 protected:
