@@ -145,7 +145,7 @@ bool CSceneItem::intersectsRect(const CRectF &rect)
    
    for(auto it = childIteratorBegin(); it != childIteratorEnd(); it++)
    {
-      if((*it)->intersects(rect))
+      if((*it)->intersectsRect(rect))
       {
          return true;
       }
