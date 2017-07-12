@@ -56,7 +56,7 @@ void CScene::updateItem(CSceneItem *item)
    {
       std::set<CSceneItem *> &viewableItems_t = m_viewableItems[item->getZIndex()];
       
-      if(item->intersects(localRect))
+      if(item->intersectsRect(localRect))
       {
          auto item_t = viewableItems_t.find(item);
          if(item_t == viewableItems_t.end())

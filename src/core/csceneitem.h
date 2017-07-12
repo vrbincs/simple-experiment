@@ -63,7 +63,7 @@ public:
    int32_t getZIndex() const;
    void setZIndex(int32_t zIndex);
    
-   bool intersects(const CRectF &rect);
+   bool intersectsRect(const CRectF &rect);
 protected:
    /**
     * \brief This is the exciting part of the object where all painting
