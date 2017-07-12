@@ -140,6 +140,7 @@ int main(int argc, char *argv[])
    ball2.setPosition(CPointF( 600, 600));
    ball3.setPosition(CPointF( 600,-100));
    
+   backgroundChecker.setZIndex(-1);
    scene0.addItem(&backgroundChecker);
    scene0.addItem(&ball0);
    scene0.addItem(&ball1);
