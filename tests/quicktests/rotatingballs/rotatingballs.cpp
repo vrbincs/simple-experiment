@@ -77,6 +77,36 @@ protected:
 private:
 
 };
+
+class CBackground : public CSceneItem
+{
+public:
+   CBackground(const std::string &bmpPath)
+   {
+      m_pixmap = new CPixmap(bmpPath, "bmp");
+      
+      if(m_pixmap)
+      {
+         m_rect = CRectF(CPointF(0,0), m_pixmap->getSize().toFloat());
+      }
+   }
+   
+   CRectF itemRegion() const
+   {
+      return m_rect;
+   }
+protected:
+   CPixmap *m_pixmap;
+   CRectF m_rect;
+   
+   void repaint(CPaintTool *paintTool, const CRectF &updateRegion)
+   {
+      paintTool->save();
+      paintTool->drawPixmap(*m_pixmap, CPointF(0,0), NULL);
+      paintTool->restore();
+   }
+};
+
 #include <unistd.h>
 int main(int argc, char *argv[])
 {
@@ -86,6 +116,8 @@ int main(int argc, char *argv[])
    engineDevice->showFps();
    
    CScene scene0(CRectI(200,200,700,700));
+   
+   CBackground backgroundChecker("background.bmp");
    CBallItem ball0("ball_big.bmp");
    CBallItem ball1("ball_big.bmp");
    CBallItem ball2("ball_big.bmp");
@@ -108,6 +140,7 @@ int main(int argc, char *argv[])
    ball2.setPosition(CPointF( 600, 600));
    ball3.setPosition(CPointF( 600,-100));
    
+   scene0.addItem(&backgroundChecker);
    scene0.addItem(&ball0);
    scene0.addItem(&ball1);
    scene0.addItem(&ball2);
@@ -121,7 +154,7 @@ int main(int argc, char *argv[])
    {
       double ticks = ((double)engineDevice->getDeltaTicks()*0.00015);
       
-      if(ball0.getPosition().getX() >= 800)
+      if(ball0.getPosition().getX() >= 600)
       {
          speed = -1;
       }

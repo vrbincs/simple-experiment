@@ -82,7 +82,13 @@ void CScene::updateItem(CSceneItem *item, int32_t zIndexOld)
 {
    if(item)
    {
-      m_viewableItems[zIndexOld].erase(item);
+      auto zItems = m_viewableItems.find(zIndexOld);
+      
+      if(zItems != m_viewableItems.end())
+      {
+         zItems->second.erase(item);
+      }
+      
       updateItem(item);
    }
 }
