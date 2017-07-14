@@ -154,6 +154,25 @@ bool CSceneItem::intersectsRect(const CRectF &rect)
    return false;
 }
 
+bool CSceneItem::intersectsRect(const CRectF &rect, 
+                                std::deque<CSceneItem *> &itersectedItems)
+{
+   CRectF region = itemRegion();
+   region.setPosition(getPos());
+   
+   if(itemRegion().intersects(rect))
+   {
+      itersectedItems.push_back(this);
+   }
+   
+   for(auto it = childIteratorBegin(); it != childIteratorEnd(); it++)
+   {
+      (*it)->intersectsRect(rect, itersectedItems);
+   }
+   
+   return itersectedItems.size();
+}
+
 void CSceneItem::update()
 {
    CScene *scene = getScene();

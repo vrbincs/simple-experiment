@@ -24,6 +24,8 @@ public:
     */
    void addItem(CSceneItem *item);
    
+   bool itemExists(CSceneItem *item);
+   
    CPointI getPosition() const;
    CSizeI getSize() const;
    
@@ -50,16 +52,18 @@ protected:
    void updateItem(CSceneItem *item);
    void updateItem(CSceneItem *item, int32_t zIndexOld);
    
+   bool removeItem(std::map<int32_t, std::set<CSceneItem *> > &container,
+                   CSceneItem *item,
+                   int32_t zIndex);
+   
    void postEvent(CSceneItem *item, const CEvent &event);
    
-   const std::set<CSceneItem *> &getItems() const;
+   const std::map<int32_t, std::set<CSceneItem *> > &getItems() const;
    const std::map<int32_t, std::set<CSceneItem *> > &getViewableItems() const;
 private:
    CRectI m_rect;
-   std::set<CSceneItem *> m_items;                 /*< the container hold pointer to items. */
+   std::map<int32_t, std::set<CSceneItem *> > m_items;                 /*< the container hold pointer to items. */
    std::map<int32_t, std::set<CSceneItem *> > m_viewableItems;         /*< a map of items inside theh viewable area. */
-   std::map<CSceneItem *, CRectF> m_dirtyItems;    /*< a map of dirty objects that need to be repainted */
-   std::map<CSceneItem *, CRectF> m_dirtyAreas;    /*< a map of dirty areas that need to be repainted */
    
    CColour m_bgColour;
 };

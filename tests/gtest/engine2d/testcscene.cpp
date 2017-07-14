@@ -105,35 +105,54 @@ TEST_F(TestCScene, TestGetCollisionItems)
 {
    GMockCSceneItem sceneItem0(CRectF(0,0,100,100));
    GMockCSceneItem sceneItem1(CRectF(50,50,100,100));
-   GMockCSceneItem sceneItem2(CRectF(-50,-5,100,100));
+   GMockCSceneItem sceneItem2(CRectF(-50,-50,100,100));
    GMockCSceneItem sceneItem3(CRectF(100,100,100,100));
-   GMockCSceneItem sceneItem4(CRectF(50,50,100,100));
+   GMockCSceneItem sceneItem4(CRectF(100,100,100,100));
+   GMockCSceneItem sceneItem5(CRectF(50,50,100,100));
    
    sceneItem0.DelegateToFake();
    sceneItem1.DelegateToFake();
    sceneItem2.DelegateToFake();
    sceneItem3.DelegateToFake();
    sceneItem4.DelegateToFake();
+   sceneItem5.DelegateToFake();
    
    EXPECT_CALL(sceneItem0, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(sceneItem1, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(sceneItem2, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(sceneItem3, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(sceneItem4, itemRegion()).Times(AtLeast(1));
+   EXPECT_CALL(sceneItem5, itemRegion()).Times(AtLeast(1));
    
-   sceneItem4.setZIndex(5);
+   sceneItem5.setZIndex(5);
    
    addItem(&sceneItem0);
    addItem(&sceneItem1);
    addItem(&sceneItem2);
    addItem(&sceneItem3);
    addItem(&sceneItem4);
+   addItem(&sceneItem5);
    
-   std::deque<CSceneItem *> collisionList = getCollisionItems(&sceneItem0);
-   ASSERT_EQ(collisionList.size(), 3);
+   std::deque<CSceneItem *> collisionList0 = getCollisionItems(&sceneItem0);
+   std::deque<CSceneItem *> collisionList1 = getCollisionItems(&sceneItem1);
+   std::deque<CSceneItem *> collisionList2 = getCollisionItems(&sceneItem2);
    
-   for(auto it0=collisionList.begin(); it0 != collisionList.end(); it0++)
+   ASSERT_EQ(collisionList0.size(), 2);
+   ASSERT_EQ(collisionList1.size(), 3);
+   ASSERT_EQ(collisionList2.size(), 1);
+   
+   for(auto it0=collisionList0.begin(); it0 != collisionList0.end(); it0++)
    {
-      EXPECT_TRUE((*it0 = &sceneItem1) || (*it0 = &sceneItem2) || (*it0 = &sceneItem3));
+      EXPECT_TRUE((*it0 = &sceneItem1) || (*it0 = &sceneItem2));
+   }
+   
+   for(auto it0=collisionList1.begin(); it0 != collisionList1.end(); it0++)
+   {
+      EXPECT_TRUE((*it0 = &sceneItem0) || (*it0 = &sceneItem3) || (*it0 = &sceneItem4));
+   }
+   
+   for(auto it0=collisionList2.begin(); it0 != collisionList2.end(); it0++)
+   {
+      EXPECT_TRUE((*it0 = &sceneItem0));
    }
 }

@@ -3,6 +3,7 @@
 
 #include <crect.h>
 #include <set>
+#include <deque>
 
 class CPaintTool;
 class CSceneItemPriv;
@@ -64,6 +65,18 @@ public:
    void setZIndex(int32_t zIndex);
    
    bool intersectsRect(const CRectF &rect);
+   
+   /**
+    * \brief get a list of items that intersects with the given 
+    * rectangle.
+    * \param[in] rect: This rectangle is used to find items that
+    * intersets with it.
+    * \param[in] intersectedItems: A list of scene items that are 
+    * intersecting with the rectangle
+    * \return returns true if more than one item intersects with the
+    * rectangle.
+    */
+   bool intersectsRect(const CRectF &rect, std::deque<CSceneItem *> &intersectedItems);
 protected:
    /**
     * \brief This is the exciting part of the object where all painting
