@@ -128,6 +128,11 @@ bool CScene::removeItem(std::map<int32_t, std::set<CSceneItem *> > &container,
 void CScene::postEvent(CSceneItem *item, const CEvent &event)
 {
    item->onEvent(event);
+   
+   for(auto it0 = item->childIteratorBegin(); it0 != item->childIteratorEnd(); it0++)
+   {
+      postEvent(*it0, event);
+   }
 }
 
 void CScene::redraw()

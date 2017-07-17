@@ -49,8 +49,8 @@ protected:
     * 
     * \param[in] a pointer to CSceneItem;
     */
-   void updateItem(CSceneItem *item);
-   void updateItem(CSceneItem *item, int32_t zIndexOld);
+   virtual void updateItem(CSceneItem *item);
+   virtual void updateItem(CSceneItem *item, int32_t zIndexOld);
    
    bool removeItem(std::map<int32_t, std::set<CSceneItem *> > &container,
                    CSceneItem *item,

@@ -7,7 +7,7 @@
 #include "gmockcsceneitem.h"
 
 using ::testing::AtLeast;
-
+using ::testing::NiceMock;
 
 class TestCScene : public CScene, public ::testing::Test
 {
@@ -21,9 +21,9 @@ public:
 
 TEST_F(TestCScene, TestAddItem)
 {
-   GMockCSceneItem sceneItem0;
-   GMockCSceneItem sceneChildItem1(&sceneItem0);
-   GMockCSceneItem sceneChildItem2(&sceneItem0);
+   NiceMock<GMockCSceneItem> sceneItem0;
+   NiceMock<GMockCSceneItem> sceneChildItem1(&sceneItem0);
+   NiceMock<GMockCSceneItem> sceneChildItem2(&sceneItem0);
    
    EXPECT_CALL(sceneItem0, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(sceneChildItem1, itemRegion()).Times(AtLeast(1));
@@ -36,13 +36,13 @@ TEST_F(TestCScene, TestAddItem)
 
 TEST_F(TestCScene, TestViewableItems)
 {
-   GMockCSceneItem sceneItem0;
-   GMockCSceneItem sceneChildItem1(&sceneItem0);
-   GMockCSceneItem sceneChildItem2(&sceneItem0);
+   NiceMock<GMockCSceneItem> sceneItem0;
+   NiceMock<GMockCSceneItem> sceneChildItem1(&sceneItem0);
+   NiceMock<GMockCSceneItem> sceneChildItem2(&sceneItem0);
    
-   GMockCSceneItem sceneItem1;
-   GMockCSceneItem sceneChildItem3(&sceneItem1);
-   GMockCSceneItem sceneChildItem4(&sceneItem1);
+   NiceMock<GMockCSceneItem> sceneItem1;
+   NiceMock<GMockCSceneItem> sceneChildItem3(&sceneItem1);
+   NiceMock<GMockCSceneItem> sceneChildItem4(&sceneItem1);
    
    sceneItem0.DelegateToFake();
    sceneChildItem1.DelegateToFake();
@@ -73,9 +73,9 @@ TEST_F(TestCScene, TestViewableItems)
 
 TEST_F(TestCScene, TestZIndex)
 {
-   GMockCSceneItem sceneItem0;
-   GMockCSceneItem sceneItem1;
-   GMockCSceneItem sceneItem2;
+   NiceMock<GMockCSceneItem> sceneItem0;
+   NiceMock<GMockCSceneItem> sceneItem1;
+   NiceMock<GMockCSceneItem> sceneItem2;
    
    sceneItem0.DelegateToFake();
    sceneItem1.DelegateToFake();
@@ -96,19 +96,26 @@ TEST_F(TestCScene, TestZIndex)
    sceneItem1.setZIndex(10);
    
    ASSERT_EQ(getViewableItems().size(), 2);
-   auto item = getViewableItems().find(10);
-   ASSERT_TRUE((item != getViewableItems().end()));
-   EXPECT_TRUE((item->second.find(&sceneItem1) != item->second.end()));
+   
+   auto itemLayer10 = getViewableItems().find(10);
+   ASSERT_TRUE((itemLayer10 != getViewableItems().end()));
+   EXPECT_TRUE((itemLayer10->second.find(&sceneItem1) != itemLayer10->second.end()));
+   
+   auto itemLayer0 = getViewableItems().find(0);
+   ASSERT_TRUE((itemLayer0 != getViewableItems().end()));
+   EXPECT_TRUE((itemLayer0->second.find(&sceneItem0) != itemLayer0->second.end()));
+   EXPECT_TRUE((itemLayer0->second.find(&sceneItem2) != itemLayer0->second.end()));
+   
 }
 
 TEST_F(TestCScene, TestGetCollisionItems)
 {
-   GMockCSceneItem sceneItem0(CRectF(0,0,100,100));
-   GMockCSceneItem sceneItem1(CRectF(50,50,100,100));
-   GMockCSceneItem sceneItem2(CRectF(-50,-50,100,100));
-   GMockCSceneItem sceneItem3(CRectF(100,100,100,100));
-   GMockCSceneItem sceneItem4(CRectF(100,100,100,100));
-   GMockCSceneItem sceneItem5(CRectF(50,50,100,100));
+   NiceMock<GMockCSceneItem> sceneItem0(CRectF(0,0,100,100));
+   NiceMock<GMockCSceneItem> sceneItem1(CRectF(50,50,100,100));
+   NiceMock<GMockCSceneItem> sceneItem2(CRectF(-50,-50,100,100));
+   NiceMock<GMockCSceneItem> sceneItem3(CRectF(100,100,100,100));
+   NiceMock<GMockCSceneItem> sceneItem4(CRectF(100,100,100,100));
+   NiceMock<GMockCSceneItem> sceneItem5(CRectF(50,50,100,100));
    
    sceneItem0.DelegateToFake();
    sceneItem1.DelegateToFake();

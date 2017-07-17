@@ -181,6 +181,10 @@ void CSceneItem::update()
    {
       scene->updateItem(getRoot());
    }
+   else
+   {
+      LOGGER_INFO("The item has not been added to the scene yet.");
+   }
 }
 
 CScene *CSceneItem::getScene() const
