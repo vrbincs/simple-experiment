@@ -25,6 +25,7 @@ public:
     * \brief adds an item to the scene.
     */
    void addItem(CSceneItem *item);
+   bool removeItem(CSceneItem *item);
    
    bool itemExists(CSceneItem *item);
    

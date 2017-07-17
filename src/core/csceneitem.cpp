@@ -48,6 +48,15 @@ CSceneItem::CSceneItem(CSceneItem *parent)
 
 CSceneItem::~CSceneItem()
 {
+   if(m_sceneItemPriv->m_scene)
+   {
+      m_sceneItemPriv->m_scene->removeItem(this);
+   }
+   
+   for(auto it0 = m_sceneItemPriv->m_children.begin(); it0 != m_sceneItemPriv->m_children.end(); it0++)
+   {
+      delete *it0;
+   }
 }
 
 bool CSceneItem::setParent(CSceneItem *parent)
@@ -199,6 +208,9 @@ bool CSceneItem::onEvent(const CEvent &event)
       {
          m_sceneItemPriv->m_scene = reinterpret_cast<CScene *>(event.message().customType);
       }
+      break;
+      case CEvent::EventTypeSceneRemoved:
+         m_sceneItemPriv->m_scene = NULL;
       break;
       default:
       break;

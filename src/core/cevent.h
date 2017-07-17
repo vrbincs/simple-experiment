@@ -12,7 +12,8 @@ public:
       EventTypeKeyDown,
       EventTypeKeyUp,
       
-      EventTypeSceneAdded
+      EventTypeSceneAdded,
+      EventTypeSceneRemoved
    };
    
    enum
