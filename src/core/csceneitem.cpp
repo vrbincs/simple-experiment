@@ -79,7 +79,7 @@ CSceneItem *CSceneItem::getParent() const
 
 CPointF CSceneItem::getPos() const
 {
-   CPointF position = m_position;
+   CPointF position;
    
    const CSceneItem *parent = this;
    do
@@ -135,10 +135,9 @@ void CSceneItem::setZIndex(int32_t zIndex)
 
 bool CSceneItem::intersectsRect(const CRectF &rect)
 {
-   CRectF region = itemRegion();
-   region.setPosition(getPos());
+   CRectF region = CRectF(getPos(), itemRegion().getSize());
    
-   if(itemRegion().intersects(rect))
+   if(region.intersects(rect))
    {
       return true;
    }
@@ -183,7 +182,7 @@ void CSceneItem::update()
    }
    else
    {
-      LOGGER_INFO("The item has not been added to the scene yet.");
+      LOGGER_TRACE("The item has not been added to the scene yet.");
    }
 }
 

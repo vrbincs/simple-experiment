@@ -6,6 +6,7 @@ class CSceneItem;
 #include <map>
 #include <set>
 #include <deque>
+#include <vector>
 
 #include <crect.h>
 #include <cpoint.h>
@@ -17,7 +18,8 @@ class CEvent;
 class CScene
 {
 public:
-   CScene(const CRectI &sceneRect);
+   CScene(const CRectF &windowRect, 
+          const CPointF &scenePosition = CPointF(0,0));
    
    /**
     * \brief adds an item to the scene.
@@ -26,10 +28,10 @@ public:
    
    bool itemExists(CSceneItem *item);
    
-   CPointI getPosition() const;
-   CSizeI getSize() const;
+   CPointF getPosition() const;
+   CSizeF getSize() const;
    
-   void setSceneRect(const CRectI &sceneRect);
+   void setScenePosition(const CPointF &scenePosition);
    
    /**
     * \brief a call to this function will repaint all visible items in
@@ -58,10 +60,15 @@ protected:
    
    void postEvent(CSceneItem *item, const CEvent &event);
    
+   void reloadViewableItems();
+   
    const std::map<int32_t, std::set<CSceneItem *> > &getItems() const;
    const std::map<int32_t, std::set<CSceneItem *> > &getViewableItems() const;
+   
+   std::vector<CSceneItem *> getViewableItems(int32_t zIndex) const;
 private:
-   CRectI m_rect;
+   CRectF m_windowRect;
+   CRectF m_sceneRect;
    std::map<int32_t, std::set<CSceneItem *> > m_items;                 /*< the container hold pointer to items. */
    std::map<int32_t, std::set<CSceneItem *> > m_viewableItems;         /*< a map of items inside theh viewable area. */
    

@@ -1,12 +1,15 @@
 #include <string>
 #include <cassert>
 #include <cmath>
+#include <memory>
 
 #include "logging.h"
 
 #include <cengine2d.h>
 
 #define PI 3.14159
+
+static CScene *scene = new CScene(CRectF(300,300,1200,1200), CPointF(0,0));
 
 class CBallItem : public CSceneItem
 {
@@ -107,15 +110,53 @@ protected:
    }
 };
 
-#include <unistd.h>
+static bool m_exitProgram = false;
+static bool m_leftDown  = false;
+static bool m_rightDown = false;
+static bool m_upDown    = false;
+static bool m_downDown  = false;
+
+class CTestEventListener : public IEventListener
+{
+public:
+   bool onEvent(const CEvent &event)
+   {
+      bool isKeyDown = (event.type() == CEvent::EventTypeKeyDown);
+      
+      if(isKeyDown || event.type() == CEvent::EventTypeKeyUp )
+      {
+         if(event.message().keyCode == CEvent::KeyEscape)
+         {
+            m_exitProgram = true;
+         }
+         else if(event.message().keyCode == CEvent::KeyArrowLeft)
+         {
+            m_leftDown = isKeyDown;
+         }
+         else if(event.message().keyCode == CEvent::KeyArrowRight)
+         {
+            m_rightDown = isKeyDown;
+         }
+         else if(event.message().keyCode == CEvent::KeyArrowUp)
+         {
+            m_upDown = isKeyDown;
+         }
+         else if(event.message().keyCode == CEvent::KeyArrowDown)
+         {
+            m_downDown = isKeyDown;
+         }
+      }
+      
+      return false;
+   }
+};
+
 int main(int argc, char *argv[])
 {
    IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl);
    assert(engineDevice != NULL);
    
    engineDevice->showFps();
-   
-   CScene scene0(CRectI(200,200,700,700));
    
    CBackground backgroundChecker("background.bmp");
    CBallItem ball0("ball_big.bmp");
@@ -141,19 +182,49 @@ int main(int argc, char *argv[])
    ball3.setPosition(CPointF( 600,-100));
    
    backgroundChecker.setZIndex(-1);
-   scene0.addItem(&backgroundChecker);
-   scene0.addItem(&ball0);
-   scene0.addItem(&ball1);
-   scene0.addItem(&ball2);
-   scene0.addItem(&ball3);
+   scene->addItem(&backgroundChecker);
+   scene->addItem(&ball0);
+   scene->addItem(&ball1);
+   scene->addItem(&ball2);
+   scene->addItem(&ball3);
    
-   scene0.setBackgroundColor(CColour(0,50,50,255));
+   std::shared_ptr<CTestEventListener> eventListenerPtr(new CTestEventListener());
+   engineDevice->getEventManager()->registerListener(eventListenerPtr.get());
+   
+   scene->setBackgroundColor(CColour(0,50,50,255));
    
    CColour background(CColour(0,0,0,255));
    double speed = 1;
+   double scenePosX = 0;
+   double scenePosY = 0;
    while(engineDevice->run())
    {
+      if(m_exitProgram)
+      {
+         break;
+      }
+      
       double ticks = ((double)engineDevice->getDeltaTicks()*0.00015);
+      
+      if(m_leftDown)
+      {
+         scenePosX -= (ticks);
+      }
+      else if(m_rightDown)
+      {
+         scenePosX += (ticks);
+      }
+      
+      if(m_upDown)
+      {
+         scenePosY -= (ticks);
+      }
+      else if(m_downDown)
+      {
+         scenePosY += (ticks);
+      }
+      
+      scene->setScenePosition(CPointF(scenePosX, scenePosY));
       
       if(ball0.getPosition().getX() >= 600)
       {
@@ -185,7 +256,7 @@ int main(int argc, char *argv[])
       ballChild11.rotate(150, rotationTick);
       ballChild12.rotate(150, rotationTick);
       
-      scene0.redraw();
+      scene->redraw();
    }
    
    return 0;

@@ -14,10 +14,24 @@ public:
       m_y += pos.m_y;
    }
    
+   void operator-=(const CPoint<T> &pos)
+   {
+      m_x -= pos.m_x;
+      m_y -= pos.m_y;
+   }
+   
    friend CPoint<T> operator+(const CPoint<T> &pos1, const CPoint<T> &pos2)
    {
       CPoint<T> point = pos1;
       point += pos2;
+      
+      return point;
+   }
+   
+   friend CPoint<T> operator-(const CPoint<T> &pos1, const CPoint<T> &pos2)
+   {
+      CPoint<T> point = pos1;
+      point -= pos2;
       
       return point;
    }

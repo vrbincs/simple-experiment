@@ -9,7 +9,7 @@ using ::testing::Invoke;
 class GMockCScene : public CScene
 {
 public:
-   GMockCScene(const CRectI &rect = CRectI(0,0,0,0)) : CScene(rect){}
+   GMockCScene(const CRectF &rect = CRectF(0,0,0,0)) : CScene(rect){}
    
    MOCK_METHOD1(updateItem, void(CSceneItem *));
 };

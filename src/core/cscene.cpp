@@ -8,8 +8,9 @@
 #include "cscene.h"
 #include "ctransform.h"
 
-CScene::CScene(const CRectI &sceneRect)
-   : m_rect(sceneRect)
+CScene::CScene(const CRectF &windowRect, const CPointF &sceneOffset)
+   :  m_windowRect(windowRect),
+      m_sceneRect(sceneOffset, windowRect.getSize())
 {
 }
 
@@ -53,30 +54,30 @@ bool CScene::itemExists(CSceneItem *item)
    return false;
 }
 
-CPointI CScene::getPosition() const
+CPointF CScene::getPosition() const
 {
-   return CPointI();
+   return m_windowRect.getPosition();
 }
 
-CSizeI CScene::getSize() const
+CSizeF CScene::getSize() const
 {
-   return CSizeI();
+   return m_windowRect.getSize();
 }
 
-void CScene::setSceneRect(const CRectI &sceneRect)
+void CScene::setScenePosition(const CPointF &scenePosition)
 {
-   m_rect = sceneRect;
+   m_sceneRect = CRectF(scenePosition, m_windowRect.getSize());
+   
+   reloadViewableItems();
 }
 
 void CScene::updateItem(CSceneItem *item)
 {
-   CRectF localRect(0,0,m_rect.getWidth(), m_rect.getHeight());
-   
    if(item)
    {
       std::set<CSceneItem *> &viewableItems_t = m_viewableItems[item->getZIndex()];
       
-      if(item->intersectsRect(localRect))
+      if(item->intersectsRect(m_sceneRect.toFloat()))
       {
          auto item_t = viewableItems_t.find(item);
          if(item_t == viewableItems_t.end())
@@ -135,19 +136,33 @@ void CScene::postEvent(CSceneItem *item, const CEvent &event)
    }
 }
 
+void CScene::reloadViewableItems()
+{
+   m_viewableItems.clear();
+   
+   for(auto it0 = m_items.begin(); it0 != m_items.end(); it0++)
+   {
+      for(auto it1 = it0->second.begin(); it1 != it0->second.end(); it1++)
+      {
+         updateItem(*it1);
+      }
+   }
+}
+
 void CScene::redraw()
 {
    CPaintTool *paintTool = IEngineDevice::instance()->getVideoDevice()->getScreenPaintTool();
    CPaintTool::SPaintSettings paintSettings;
    paintSettings.bgColour = m_bgColour;
    
-   CRectF localRect(0,0,m_rect.getWidth(), m_rect.getHeight());
+   CRectF localRect(CPointF(0,0), m_windowRect.getSize());
    
    paintTool->save();
-   paintTool->setTransform(CTransform(m_rect.getPosition().toFloat()));
    paintTool->setPaintSettings(paintSettings);
-   paintTool->drawRect(localRect);
-   paintTool->setClipArea(m_rect.toFloat());
+   paintTool->drawRect(m_windowRect);
+   
+   paintTool->setTransform(CTransform(m_windowRect.getPosition() - m_sceneRect.getPosition()));
+   paintTool->setClipArea(m_windowRect);
    
    // Viewable items are ordered by zIndex, so we traverse over all of
    // them, layer by layer
@@ -170,6 +185,23 @@ const std::map<int32_t, std::set<CSceneItem *> > &CScene::getItems() const
 const std::map<int32_t, std::set<CSceneItem *> > &CScene::getViewableItems() const
 {
    return m_viewableItems;
+}
+
+std::vector<CSceneItem *> CScene::getViewableItems(int32_t zIndex) const
+{
+   std::vector<CSceneItem *> result;
+   
+   auto items_it = m_viewableItems.find(zIndex);
+   if(items_it != m_viewableItems.end())
+   {
+      result.reserve(items_it->second.size());
+      for(auto item_it = items_it->second.begin(); item_it != items_it->second.end(); item_it++)
+      {
+         result.push_back(*item_it);
+      }
+   }
+   
+   return result;
 }
 
 void CScene::setBackgroundColor(const CColour &bgColour)

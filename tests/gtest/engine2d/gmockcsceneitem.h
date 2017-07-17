@@ -12,7 +12,10 @@ class GMockCSceneItem : public CSceneItem
 {
 public:
    GMockCSceneItem(CSceneItem *parent = NULL) : CSceneItem(parent){}
-   GMockCSceneItem(const CRectF &rect, CSceneItem *parent = NULL) : CSceneItem(parent), m_rect(rect){}
+   GMockCSceneItem(const CRectF &rect, CSceneItem *parent = NULL) : CSceneItem(parent)
+   {
+      setRect(rect);
+   }
    
    MOCK_CONST_METHOD0(itemRegion, CRectF());
    MOCK_METHOD1(onEvent, bool(const CEvent &));
@@ -23,6 +26,13 @@ public:
                        uint32_t height)
    {
       m_rect = CRectF(posx, posy, width, height);
+      setPosition(m_rect.getPosition());
+   }
+   
+   inline void setRect(const CRectF &rect)
+   {
+      m_rect = rect;
+      setPosition(m_rect.getPosition());
    }
    
    void DelegateToFake()

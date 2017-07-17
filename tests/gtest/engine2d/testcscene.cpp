@@ -12,7 +12,7 @@ using ::testing::NiceMock;
 class TestCScene : public CScene, public ::testing::Test
 {
 public:
-   TestCScene(const CRectI &sceneRect = CRectI(0,0,800,600))
+   TestCScene(const CRectF &sceneRect = CRectF(0,0,800,600))
       : CScene(sceneRect)
    {
    }
@@ -69,6 +69,10 @@ TEST_F(TestCScene, TestViewableItems)
    addItem(&sceneItem1);
    
    EXPECT_EQ(getViewableItems().size(), 1);
+}
+
+TEST_F(TestCScene, TestViewableItemsWithSceneOffset)
+{
 }
 
 TEST_F(TestCScene, TestZIndex)
@@ -162,4 +166,33 @@ TEST_F(TestCScene, TestGetCollisionItems)
    {
       EXPECT_TRUE((*it0 = &sceneItem0));
    }
+}
+
+TEST_F(TestCScene, TestSetScenePosition)
+{
+   NiceMock<GMockCSceneItem> sceneItem0(CRectF(0,0,100,100));
+   NiceMock<GMockCSceneItem> sceneItem1(CRectF(100,100,100,100));
+   NiceMock<GMockCSceneItem> sceneItem2(CRectF(200,200,100,100));
+   NiceMock<GMockCSceneItem> sceneItem3(CRectF(800,600,100,100));
+   
+   sceneItem0.DelegateToFake();
+   sceneItem1.DelegateToFake();
+   sceneItem2.DelegateToFake();
+   sceneItem3.DelegateToFake();
+   
+   addItem(&sceneItem0);
+   addItem(&sceneItem1);
+   addItem(&sceneItem2);
+   addItem(&sceneItem3);
+   
+   EXPECT_EQ(getViewableItems(0).size(), 3);
+   
+   setScenePosition(CPointF(50,50));
+   EXPECT_EQ(getViewableItems(0).size(), 4);
+   
+   setScenePosition(CPointF(100,100));
+   EXPECT_EQ(getViewableItems(0).size(), 3);
+   
+   setScenePosition(CPointF(300,300));
+   EXPECT_EQ(getViewableItems(0).size(), 1);
 }

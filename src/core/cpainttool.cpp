@@ -42,6 +42,7 @@ public:
       CRectF rectRet = rect;
       
       rectRet.translate(m_paintToolSettings.m_transform.getPosition());
+      
       return rectRet;
    }
    
@@ -61,6 +62,11 @@ public:
       {
          LOGGER_INFO("Unable to restore paint tool settings.");
       }
+   }
+   
+   void setClipArea(const CRectF &clipRect)
+   {
+      m_paintToolSettings.m_clipArea = clipRect;
    }
    
    SPaintToolSettings m_paintToolSettings;   
@@ -154,7 +160,7 @@ void CPaintTool::setPaintSettings(const SPaintSettings &paintSettings)
 
 void CPaintTool::setClipArea(const CRectF &clip)
 {
-   m_paintToolPriv->m_paintToolSettings.m_clipArea = clip;
+   m_paintToolPriv->setClipArea(clip);
 }
 
 void CPaintTool::drawRect(const CRectF &rect)

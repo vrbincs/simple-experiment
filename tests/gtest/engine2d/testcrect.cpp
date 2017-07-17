@@ -53,4 +53,3 @@ TEST(TestCRect, TestsClipping4)
    EXPECT_EQ(rect3.getWidth(), 1);
    EXPECT_EQ(rect3.getHeight(), 1);
 }
-
