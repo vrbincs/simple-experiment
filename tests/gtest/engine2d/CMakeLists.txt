@@ -18,8 +18,7 @@ find_package (Threads REQUIRED)
 add_executable ( testengine2d testcgobject.cpp
                               testcrect.cpp
                               testcscene.cpp
-                              testcsceneitem.cpp
-                              testcsceneitemfactory.cpp )
+                              testcsceneitem.cpp )
 
 target_link_libraries ( testengine2d ${GTEST_LIBRARIES}
                                      -lgmock

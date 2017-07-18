@@ -9,7 +9,6 @@
 #include <csceneitem.h>
 
 #include "gmockcsceneitem.h"
-#include "testcsceneitemfactory.h"
 
 using ::testing::AtLeast;
 using ::testing::NiceMock;
@@ -43,7 +42,6 @@ public:
       return ret;
    }
    
-   TestCSceneItemFactory m_itemFactory;
    std::deque<NiceMock<GMockCSceneItem> *> m_rootItems;
 };
 
