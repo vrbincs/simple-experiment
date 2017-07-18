@@ -21,11 +21,13 @@ public:
    CScene(const CRectF &windowRect, 
           const CPointF &scenePosition = CPointF(0,0));
    
+   ~CScene();
    /**
     * \brief adds an item to the scene.
     */
    void addItem(CSceneItem *item);
    bool removeItem(CSceneItem *item);
+   void removeAll();
    
    bool itemExists(CSceneItem *item);
    

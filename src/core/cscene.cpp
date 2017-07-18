@@ -14,6 +14,11 @@ CScene::CScene(const CRectF &windowRect, const CPointF &sceneOffset)
 {
 }
 
+CScene::~CScene()
+{
+   removeAll();
+}
+
 void CScene::addItem(CSceneItem *item)
 {
    if(item)
@@ -21,6 +26,8 @@ void CScene::addItem(CSceneItem *item)
       if(!itemExists(item))
       {
          m_items[item->getZIndex()].insert(item);
+         
+         item->setScene(this);
          
          // Send message to all items that they were added to the scene.
          CEvent::UMessage msg;
@@ -43,18 +50,31 @@ void CScene::addItem(CSceneItem *item)
 
 bool CScene::removeItem(CSceneItem *item)
 {
-   // remove the item from the view
-   removeItem(m_viewableItems, item, item->getZIndex());
+   bool ok = false;
    
-   // remove the item from the scene.
-   bool ok = removeItem(m_items, item, item->getZIndex());
-   
-   // Send message to all items that they were removed from the scene.
-   CEvent::UMessage msg;
-   msg.customType = this;
-   postEvent(item, CEvent(CEvent::EventTypeSceneRemoved, msg, 0));
+   if(item)
+   {
+      // remove the item from the view
+      removeItem(m_viewableItems, item, item->getZIndex());
+      
+      // remove the item from the scene.
+      removeItem(m_items, item, item->getZIndex());
+      
+      item->setScene(NULL);
+   }
    
    return ok;
+}
+
+void CScene::removeAll()
+{
+   for(auto it0=m_items.begin(); it0!=m_items.end(); it0++)
+   {
+      for(auto it1=it0->second.begin(); it1!=it0->second.end(); it1++)
+      {
+         removeItem(*it1);
+      }
+   }
 }
 
 bool CScene::itemExists(CSceneItem *item)

@@ -202,20 +202,12 @@ CScene *CSceneItem::getScene() const
 
 bool CSceneItem::onEvent(const CEvent &event)
 {
-   switch(event.type())
-   {
-      case CEvent::EventTypeSceneAdded:
-      {
-         m_sceneItemPriv->m_scene = reinterpret_cast<CScene *>(event.message().customType);
-      }
-      break;
-      case CEvent::EventTypeSceneRemoved:
-         m_sceneItemPriv->m_scene = NULL;
-      break;
-      default:
-      break;
-   }
    return false;
+}
+
+void CSceneItem::setScene(CScene *scene)
+{
+   m_sceneItemPriv->m_scene = scene;
 }
 
 void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectF &updateRegion)
