@@ -1,36 +1,24 @@
 #include <gtest/gtest.h>
 
-#include <crect.h>
-#include <cscene.h>
-#include <csceneitem.h>
+#include "gmockcsceneitem.h"
+#include "csceneitemtestfactory.h"
 
-
-class TestCSceneItem : public CSceneItem
+class TestCGObject : public ::testing::Test
 {
 public:
-   TestCSceneItem(TestCSceneItem *testcgobject = NULL) : CSceneItem(testcgobject){}
-   ~TestCSceneItem(){}
-   
-   CRectF itemRegion() const
-   {
-      return CRectF();
-   }
-protected:
-   void repaint(CPaintTool *, const CRectF &)
-   {
-      
-   }
+   CSceneItemTestFactory m_itemFactory;
 };
 
-
-TEST(TestCSceneItem, TestParentIsSet)
+TEST_F(TestCGObject, TestParentIsSet)
 {
-   TestCSceneItem parent;
-   TestCSceneItem child1(&parent);
-   TestCSceneItem child2;
+   auto parent = m_itemFactory.createMockItem();
+   auto child1 = m_itemFactory.createMockItem(parent);
+   auto child2 = m_itemFactory.createMockItem();
    
-   EXPECT_TRUE(child2.setParent(&child1));
-   EXPECT_TRUE((child2.getParent() == &child1));
-   EXPECT_TRUE((child1.getParent() == &parent));
-   EXPECT_TRUE((parent.getParent() == NULL));
+   m_itemFactory.m_rootItems.erase(child2);
+   
+   EXPECT_TRUE(child2->setParent(child1));
+   EXPECT_TRUE((child2->getParent() == child1));
+   EXPECT_TRUE((child1->getParent() == parent));
+   EXPECT_TRUE((parent->getParent() == NULL));
 }

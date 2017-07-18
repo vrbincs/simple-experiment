@@ -1,3 +1,6 @@
+#ifndef GMOCKCSCENEITEM_H
+   #define GMOCKCSCENEITEM_H
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -35,7 +38,7 @@ public:
       setPosition(m_rect.getPosition());
    }
    
-   void DelegateToFake()
+   void delegateToFake()
    {
       ON_CALL(*this, itemRegion()).WillByDefault(Invoke(this, &GMockCSceneItem::getItemRegion));
       ON_CALL(*this, onEvent(_)).WillByDefault(Invoke(this, &GMockCSceneItem::mockOnEvent));
@@ -55,3 +58,5 @@ protected:
    
    CRectF m_rect;
 };
+
+#endif //GMOCKCSCENEITEM_H

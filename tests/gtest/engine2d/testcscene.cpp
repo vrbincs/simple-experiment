@@ -9,6 +9,7 @@
 #include <csceneitem.h>
 
 #include "gmockcsceneitem.h"
+#include "csceneitemtestfactory.h"
 
 using ::testing::AtLeast;
 using ::testing::NiceMock;
@@ -21,35 +22,14 @@ public:
    {
    }
    
-   ~TestCScene()
-   {
-      for(auto it0=m_rootItems.begin(); it0!=m_rootItems.end(); it0++)
-      {
-         delete *it0;
-      }
-   }
-   
-   NiceMock<GMockCSceneItem> *createCSceneItem(CSceneItem *parent = NULL, const CRectF & rect = CRectF(0,0,0,0))
-   {
-      auto ret = new NiceMock<GMockCSceneItem>(rect, parent);
-      ret->DelegateToFake();
-      
-      if(parent == NULL)
-      {
-         m_rootItems.push_back(ret);
-      }
-      
-      return ret;
-   }
-   
-   std::deque<NiceMock<GMockCSceneItem> *> m_rootItems;
+   CSceneItemTestFactory m_itemFactory;
 };
 
 TEST_F(TestCScene, TestAddItem)
 {
-   auto sceneItem0      = createCSceneItem();
-   auto sceneChildItem1 = createCSceneItem(sceneItem0);
-   auto sceneChildItem2 = createCSceneItem(sceneItem0);
+   auto sceneItem0      = m_itemFactory.createMockItem();
+   auto sceneChildItem1 = m_itemFactory.createMockItem(sceneItem0);
+   auto sceneChildItem2 = m_itemFactory.createMockItem(sceneItem0);
    
    EXPECT_CALL(*sceneItem0, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(*sceneChildItem1, itemRegion()).Times(AtLeast(1));
@@ -62,13 +42,13 @@ TEST_F(TestCScene, TestAddItem)
 
 TEST_F(TestCScene, TestViewableItems)
 {
-   auto sceneItem0      = createCSceneItem();
-   auto sceneChildItem1 = createCSceneItem(sceneItem0);
-   auto sceneChildItem2 = createCSceneItem(sceneItem0);
+   auto sceneItem0      = m_itemFactory.createMockItem();
+   auto sceneChildItem1 = m_itemFactory.createMockItem(sceneItem0);
+   auto sceneChildItem2 = m_itemFactory.createMockItem(sceneItem0);
    
-   auto sceneItem1      = createCSceneItem();;
-   auto sceneChildItem3 = createCSceneItem(sceneItem1);
-   auto sceneChildItem4 = createCSceneItem(sceneItem1);
+   auto sceneItem1      = m_itemFactory.createMockItem();;
+   auto sceneChildItem3 = m_itemFactory.createMockItem(sceneItem1);
+   auto sceneChildItem4 = m_itemFactory.createMockItem(sceneItem1);
 
    sceneItem0->setRect(100, 100, 100, 100);
    sceneChildItem1->setRect(-200, -200, 100, 100);
@@ -95,9 +75,9 @@ TEST_F(TestCScene, TestViewableItemsWithSceneOffset)
 
 TEST_F(TestCScene, TestZIndex)
 {
-   auto sceneItem0 = createCSceneItem();
-   auto sceneItem1 = createCSceneItem();
-   auto sceneItem2 = createCSceneItem();
+   auto sceneItem0 = m_itemFactory.createMockItem();
+   auto sceneItem1 = m_itemFactory.createMockItem();
+   auto sceneItem2 = m_itemFactory.createMockItem();
    
    EXPECT_CALL(*sceneItem0, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(*sceneItem1, itemRegion()).Times(AtLeast(2));
@@ -127,12 +107,12 @@ TEST_F(TestCScene, TestZIndex)
 
 TEST_F(TestCScene, TestGetCollisionItems)
 {
-   auto sceneItem0 = createCSceneItem(NULL, CRectF(0,0,100,100));
-   auto sceneItem1 = createCSceneItem(NULL, CRectF(50,50,100,100));
-   auto sceneItem2 = createCSceneItem(NULL, CRectF(-50,-50,100,100));
-   auto sceneItem3 = createCSceneItem(NULL, CRectF(100,100,100,100));
-   auto sceneItem4 = createCSceneItem(NULL, CRectF(100,100,100,100));
-   auto sceneItem5 = createCSceneItem(NULL, CRectF(50,50,100,100));
+   auto sceneItem0 = m_itemFactory.createMockItem(NULL, CRectF(0,0,100,100));
+   auto sceneItem1 = m_itemFactory.createMockItem(NULL, CRectF(50,50,100,100));
+   auto sceneItem2 = m_itemFactory.createMockItem(NULL, CRectF(-50,-50,100,100));
+   auto sceneItem3 = m_itemFactory.createMockItem(NULL, CRectF(100,100,100,100));
+   auto sceneItem4 = m_itemFactory.createMockItem(NULL, CRectF(100,100,100,100));
+   auto sceneItem5 = m_itemFactory.createMockItem(NULL, CRectF(50,50,100,100));
    
    EXPECT_CALL(*sceneItem0, itemRegion()).Times(AtLeast(1));
    EXPECT_CALL(*sceneItem1, itemRegion()).Times(AtLeast(1));
@@ -176,10 +156,10 @@ TEST_F(TestCScene, TestGetCollisionItems)
 
 TEST_F(TestCScene, TestSetScenePosition)
 {
-   auto sceneItem0 = createCSceneItem(NULL, CRectF(0,0,100,100));
-   auto sceneItem1 = createCSceneItem(NULL, CRectF(100,100,100,100));
-   auto sceneItem2 = createCSceneItem(NULL, CRectF(200,200,100,100));
-   auto sceneItem3 = createCSceneItem(NULL, CRectF(800,600,100,100));
+   auto sceneItem0 = m_itemFactory.createMockItem(NULL, CRectF(0,0,100,100));
+   auto sceneItem1 = m_itemFactory.createMockItem(NULL, CRectF(100,100,100,100));
+   auto sceneItem2 = m_itemFactory.createMockItem(NULL, CRectF(200,200,100,100));
+   auto sceneItem3 = m_itemFactory.createMockItem(NULL, CRectF(800,600,100,100));
    
    addItem(sceneItem0);
    addItem(sceneItem1);

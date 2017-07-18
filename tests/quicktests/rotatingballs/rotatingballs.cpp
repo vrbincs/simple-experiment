@@ -11,7 +11,7 @@
 
 static CScene *scene = new CScene(CRectF(300,300,1200,1200), CPointF(0,0));
 
-class CBallItem : public CSceneItem
+class CBallItem: public CSceneItem
 {
 public:
    CBallItem(const std::string &filePath, CSceneItem *parent = NULL, double angleOffset = 0)
@@ -151,42 +151,66 @@ public:
    }
 };
 
+class CSceneItemFactory
+{
+public:
+   CSceneItem *create(const std::string &identifier,
+                      const std::string &resourcePath,
+                      CSceneItem *parent = NULL,
+                      double angle = 0)
+   {
+      if(identifier == "CBackground")
+      {
+         return new CBackground(resourcePath);
+      }
+      else if(identifier == "CBallItem")
+      {
+         return new CBallItem(resourcePath, parent, angle);
+      }
+      else
+      {
+         return NULL;
+      }
+   }
+};
+
 int main(int argc, char *argv[])
 {
+   CSceneItemFactory itemFactory;
    IEngineDevice *engineDevice = CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl);
    assert(engineDevice != NULL);
    
    engineDevice->showFps();
    
-   CBackground backgroundChecker("background.bmp");
-   CBallItem ball0("ball_big.bmp");
-   CBallItem ball1("ball_big.bmp");
-   CBallItem ball2("ball_big.bmp");
-   CBallItem ball3("ball_big.bmp");
-   CBallItem ballChild1("ball_small.bmp", &ball0);
-   CBallItem ballChild2("ball_small.bmp", &ball1);
-   CBallItem ballChild3("ball_small.bmp", &ball2);
-   CBallItem ballChild4("ball_small.bmp", &ball3);
-   CBallItem ballChild5("ball_small.bmp", &ball0, ((2*PI)/3));
-   CBallItem ballChild6("ball_small.bmp", &ball1, ((2*PI)/3));
-   CBallItem ballChild7("ball_small.bmp", &ball2, ((2*PI)/3));
-   CBallItem ballChild8("ball_small.bmp", &ball3, ((2*PI)/3));
-   CBallItem ballChild9("ball_small.bmp", &ball0, ((4*PI)/3));
-   CBallItem ballChild10("ball_small.bmp", &ball1,((4*PI)/3));
-   CBallItem ballChild11("ball_small.bmp", &ball2,((4*PI)/3));
-   CBallItem ballChild12("ball_small.bmp", &ball3,((4*PI)/3));
+   CBackground *backgroundChecker = (CBackground *)itemFactory.create("CBackground", "background.bmp");
+   CBallItem *ball0 = (CBallItem *)itemFactory.create("CBallItem", "ball_big.bmp");
+   CBallItem *ball1 = (CBallItem *)itemFactory.create("CBallItem", "ball_big.bmp");
+   CBallItem *ball2 = (CBallItem *)itemFactory.create("CBallItem", "ball_big.bmp");
+   CBallItem *ball3 = (CBallItem *)itemFactory.create("CBallItem", "ball_big.bmp");
+   CBallItem *ballChild1 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball0);
+   CBallItem *ballChild2 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball1);
+   CBallItem *ballChild3 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball2);
+   CBallItem *ballChild4 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball3);
+   CBallItem *ballChild5 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball0, ((2*PI)/3));
+   CBallItem *ballChild6 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball1, ((2*PI)/3));
+   CBallItem *ballChild7 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball2, ((2*PI)/3));
+   CBallItem *ballChild8 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball3, ((2*PI)/3));
+   CBallItem *ballChild9 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball0, ((4*PI)/3));
+   CBallItem *ballChild10 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball1,((4*PI)/3));
+   CBallItem *ballChild11 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball2,((4*PI)/3));
+   CBallItem *ballChild12 = (CBallItem *)itemFactory.create("CBallItem", "ball_small.bmp", ball3,((4*PI)/3));
    
-   ball0.setPosition(CPointF(-100,-100));
-   ball1.setPosition(CPointF(-100, 600));
-   ball2.setPosition(CPointF( 600, 600));
-   ball3.setPosition(CPointF( 600,-100));
+   ball0->setPosition(CPointF(-100,-100));
+   ball1->setPosition(CPointF(-100, 600));
+   ball2->setPosition(CPointF( 600, 600));
+   ball3->setPosition(CPointF( 600,-100));
    
-   backgroundChecker.setZIndex(-1);
-   scene->addItem(&backgroundChecker);
-   scene->addItem(&ball0);
-   scene->addItem(&ball1);
-   scene->addItem(&ball2);
-   scene->addItem(&ball3);
+   backgroundChecker->setZIndex(-1);
+   scene->addItem(backgroundChecker);
+   scene->addItem(ball0);
+   scene->addItem(ball1);
+   scene->addItem(ball2);
+   scene->addItem(ball3);
    
    std::shared_ptr<CTestEventListener> eventListenerPtr(new CTestEventListener());
    engineDevice->getEventManager()->registerListener(eventListenerPtr.get());
@@ -226,38 +250,44 @@ int main(int argc, char *argv[])
       
       scene->setScenePosition(CPointF(scenePosX, scenePosY));
       
-      if(ball0.getPosition().getX() >= 600)
+      if(ball0->getPosition().getX() >= 600)
       {
          speed = -1;
       }
-      else if(ball0.getPosition().getX() <= -100)
+      else if(ball0->getPosition().getX() <= -100)
       {
          speed = 1;
       }
 
       double moveStep = (ticks * speed);
-      ball0.move(moveStep,moveStep);
-      ball1.move(moveStep,-moveStep);
-      ball2.move(-moveStep,-moveStep);
-      ball3.move(-moveStep,moveStep);
+      ball0->move(moveStep,moveStep);
+      ball1->move(moveStep,-moveStep);
+      ball2->move(-moveStep,-moveStep);
+      ball3->move(-moveStep,moveStep);
       
       double rotationTick = ((float)engineDevice->getDeltaTicks()/(1000000))*PI;
       
-      ballChild1.rotate(150, rotationTick);
-      ballChild2.rotate(150, rotationTick);
-      ballChild3.rotate(150, rotationTick);
-      ballChild4.rotate(150, rotationTick);
-      ballChild5.rotate(150, rotationTick);
-      ballChild6.rotate(150, rotationTick);
-      ballChild7.rotate(150, rotationTick);
-      ballChild8.rotate(150, rotationTick);
-      ballChild9.rotate(150, rotationTick);
-      ballChild10.rotate(150, rotationTick);
-      ballChild11.rotate(150, rotationTick);
-      ballChild12.rotate(150, rotationTick);
+      ballChild1->rotate(150, rotationTick);
+      ballChild2->rotate(150, rotationTick);
+      ballChild3->rotate(150, rotationTick);
+      ballChild4->rotate(150, rotationTick);
+      ballChild5->rotate(150, rotationTick);
+      ballChild6->rotate(150, rotationTick);
+      ballChild7->rotate(150, rotationTick);
+      ballChild8->rotate(150, rotationTick);
+      ballChild9->rotate(150, rotationTick);
+      ballChild10->rotate(150, rotationTick);
+      ballChild11->rotate(150, rotationTick);
+      ballChild12->rotate(150, rotationTick);
       
       scene->redraw();
    }
+   
+   delete backgroundChecker;
+   delete ball0;
+   delete ball1;
+   delete ball2;
+   delete ball3;
    
    return 0;
 }

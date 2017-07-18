@@ -8,7 +8,7 @@ set ( testengine2d_VERSION_MINOR 0 )
 
 include_directories ( ${seEngine2d_SOURCE_DIR} )
 
-set(CMAKE_CXX_FLAGS "-Wall -Wno-long-long -Werror -pedantic -O0")
+#set(CMAKE_CXX_FLAGS "-Wall -Wno-long-long -Werror -pedantic -O0")
 
 pkg_check_modules ( GTEST REQUIRED gtest )
 pkg_check_modules ( GMOCK REQUIRED gmock )
@@ -18,7 +18,8 @@ find_package (Threads REQUIRED)
 add_executable ( testengine2d testcgobject.cpp
                               testcrect.cpp
                               testcscene.cpp
-                              testcsceneitem.cpp )
+                              testcsceneitem.cpp
+                              csceneitemtestfactory.cpp )
 
 target_link_libraries ( testengine2d ${GTEST_LIBRARIES}
                                      -lgmock

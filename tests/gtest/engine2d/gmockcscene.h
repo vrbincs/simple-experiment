@@ -1,3 +1,6 @@
+#ifndef GMOCKCSENE_H
+   #define GMOCKCSENE_H
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -13,3 +16,5 @@ public:
    
    MOCK_METHOD1(updateItem, void(CSceneItem *));
 };
+
+#endif // GMOCKCSENE_H
