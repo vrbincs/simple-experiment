@@ -12,7 +12,7 @@
 #include "cenginedevicelinux.h"
 #include "cpainttool.h"
 
-#include <cdigitool.h>
+#include <tools/cdigitool.h>
 
 #define FPS_TO_MICRO(fps) (1000000/((double)fps))
 

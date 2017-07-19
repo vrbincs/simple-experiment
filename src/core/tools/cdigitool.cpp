@@ -6,6 +6,7 @@
 #include <cpainttool.h>
 
 #include "cdigitool.h"
+#include "cxbmloader.h"
 
 extern uint32_t cdigitsbitmap_width;
 extern uint32_t cdigitsbitmap_height;
@@ -59,33 +60,6 @@ bool CDigiTool::drawDigits(CPaintTool &paintTool, uint32_t number)
 
 void CDigiTool::loadXBMPixmap()
 {
-   const uint32_t size = (cdigitsbitmap_width * cdigitsbitmap_height * 3);
-   uint8_t *pixels = new uint8_t[size];
-   memset(pixels, 0, size);
-   
-   uint8_t *pixelTmp = pixels;
-   uint8_t *pixelVal = cdigitsbitmap_bits;
-   
-   for(uint32_t i=0; i<((cdigitsbitmap_width * cdigitsbitmap_height) / 8); i++)
-   {
-      for(int j=0; j<8; j++)
-      {
-         if(((*pixelVal >> j) & 0x1) == 0)
-         {
-            *(pixelTmp++) = (m_colour.getRed());
-            *(pixelTmp++) = (m_colour.getGreen());
-            *(pixelTmp++) = (m_colour.getBlue());
-         }
-         else
-         {
-            pixelTmp += 3;
-         }
-      }
-      pixelVal++;
-   }
-   
-   m_pixmap = new CPixmap(pixels,
-                          cdigitsbitmap_width,
-                          cdigitsbitmap_height,
-                          24);
+   CXBMLoader xbmLoader(m_colour);
+   m_pixmap = xbmLoader.loadFromBuffer((void *)cdigitsbitmap_bits, cdigitsbitmap_width, cdigitsbitmap_height);
 }

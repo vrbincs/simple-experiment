@@ -25,11 +25,12 @@ set ( SOURCES cengine2d.cpp
               cevent.cpp
               ceventmanager.cpp
               ctransform.cpp
-              extra/cspritequeue.cpp )
+              extra/cspritequeue.cpp
+               )
 
-include_directories ( tools )
 set ( SOURCES ${SOURCES} tools/cdigitool.cpp
-                         tools/cdigitsbitmap.cpp )
+                         tools/cdigitsbitmap.cpp
+                         tools/cxbmloader.cpp )
 
 if (UNIX)
    include_directories ( ${SDL2_INCLUDE_DIRS} )

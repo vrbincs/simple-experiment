@@ -1,13 +1,22 @@
+#include <cpixmap.h>
+
 #include "cspritequeue.h"
 
-
-CSpriteQueue::CSpriteQueue(const CPixmap *pixmap)
+CSpriteQueue::CSpriteQueue(CPixmap *pixmap,
+                           uint32_t width,
+                           uint32_t height)
    : m_pixmap(pixmap),
      m_index(0),
      m_indexMax(0),
-     m_width(0),
-     m_height(0)
+     m_width(width),
+     m_height(height)
 {
+   if((pixmap->getWidth() % width) == 0 &&
+      (pixmap->getHeight() % height) == 0)
+   {
+      m_indexMax = ((pixmap->getWidth() / width) * 
+                    (pixmap->getHeight() / height));
+   }
 }
 
 CSpriteQueue::~CSpriteQueue()
@@ -38,13 +47,17 @@ uint16_t CSpriteQueue::spriteIndex() const
    return m_index;
 }
 
+uint16_t CSpriteQueue::spriteCount() const
+{
+   return m_indexMax;
+}
+
 CSizeI CSpriteQueue::getSize() const
 {
    return m_pixmap->getSize();
 }
    
-void CSpriteQueue::repaint(CPaintTool &paintTool, const CRectI &area)
+bool CSpriteQueue::getSprite(CPixmap **pixmap, CRectF &rect)
 {
-   paintTool.save();
-   paintTool.restore();
+   return false;
 }

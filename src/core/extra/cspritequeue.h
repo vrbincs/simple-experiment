@@ -2,26 +2,27 @@
    #define CSPRITEQUEUE_H
 
 #include <csceneitem.h>
-#include <cpixmap.h>
 #include <cpainttool.h>
 #include <csize.h>
+
+class CPixmap;
 
 class CSpriteQueue
 {
 public:
-   CSpriteQueue(const CPixmap *pixmap);
+   CSpriteQueue(CPixmap *pixmap, uint32_t width, uint32_t height);
    virtual ~CSpriteQueue();
    
    bool isValid() const;
    
    bool changeSprite(uint16_t index);
    uint16_t spriteIndex() const;
+   uint16_t spriteCount() const;
    
    CSizeI getSize() const;
-   
-   void repaint(CPaintTool &paintTool, const CRectI &area);
+   bool getSprite(CPixmap **pixmap, CRectF &rect);
 private:
-   const CPixmap *m_pixmap;
+   CPixmap *m_pixmap;
    uint16_t m_index;
    uint16_t m_indexMax;
    uint32_t m_width;
