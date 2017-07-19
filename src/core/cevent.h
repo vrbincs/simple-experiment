@@ -62,7 +62,7 @@ private:
    UMessage m_message;
    uint32_t m_timestamp;
    
-   friend class IEventSource;
+   friend class IEventFactory;
 };
 
 #endif // CEVENT_H

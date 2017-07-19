@@ -37,7 +37,7 @@
 #include <ivideodevice.h>
 #include <cevent.h>
 #include <ieventlistener.h>
-#include <ieventsource.h>
+#include <ieventfactory.h>
 #include <ceventmanager.h>
 #include <cpainttool.h>
 #include <cpixmap.h>

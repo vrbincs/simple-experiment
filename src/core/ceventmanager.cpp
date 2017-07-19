@@ -2,7 +2,7 @@
 
 #include "logging.h"
 
-#include "ieventsource.h"
+#include "ieventfactory.h"
 #include "ieventlistener.h"
 #include "cevent.h"
 #include "ceventmanager.h"
@@ -43,11 +43,11 @@ void CEventManager::pollEvents()
    }
 }
 
-void CEventManager::registerEventSource(IEventSource *eventSource)
+void CEventManager::registerEventSource(IEventFactory *eventFactory)
 {
-   if(eventSource)
+   if(eventFactory)
    {
-      m_eventSources.insert(eventSource);
+      m_eventSources.insert(eventFactory);
    }
    else
    {
@@ -55,11 +55,11 @@ void CEventManager::registerEventSource(IEventSource *eventSource)
    }
 }
 
-bool CEventManager::unregisterEventSource(IEventSource *eventSource)
+bool CEventManager::unregisterEventSource(IEventFactory *eventFactory)
 {
    for(auto it = m_eventSources.begin(); it != m_eventSources.end(); it++)
    {
-      if(*it == eventSource)
+      if(*it == eventFactory)
       {
          m_eventSources.erase(it);
          return true;

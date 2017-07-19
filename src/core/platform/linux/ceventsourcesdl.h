@@ -3,9 +3,9 @@
 
 #include <SDL.h>
 
-#include <ieventsource.h>
+#include <ieventfactory.h>
 
-class CEventSourceSDL : public IEventSource
+class CEventSourceSDL : public IEventFactory
 {
 public:
    CEventSourceSDL();

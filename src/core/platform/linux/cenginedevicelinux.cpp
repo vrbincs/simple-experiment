@@ -6,7 +6,7 @@
 
 #include "cvideodevicesdl.h"
 #include "ceventmanager.h"
-#include "ieventsource.h"
+#include "ieventfactory.h"
 #include "cevent.h"
 #include "ceventsourcesdl.h"
 #include "cenginedevicelinux.h"

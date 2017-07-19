@@ -1,14 +1,14 @@
-#ifndef IEVENTSOURCE_H
-   #define IEVENTSOURCE_H
+#ifndef IEVENTFACTORY_H
+   #define IEVENTFACTORY_H
 
 #include <list>
 
 #include <cevent.h>
 
-class IEventSource
+class IEventFactory
 {
 public:
-   virtual ~IEventSource(){}
+   virtual ~IEventFactory(){}
 
 protected:
    /**
@@ -26,11 +26,11 @@ protected:
    friend class CEventManager;
 };
 
-CEvent *IEventSource::createEvent(int type, 
-                                  const CEvent::UMessage &message,
-                                  uint32_t timestamp) const
+CEvent *IEventFactory::createEvent(int type, 
+                                   const CEvent::UMessage &message,
+                                   uint32_t timestamp) const
 {
    return new CEvent(type, message, timestamp);
 }
 
-#endif // IEVENTSOURCE_H
+#endif // IEVENTFACTORY_H

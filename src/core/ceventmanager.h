@@ -4,7 +4,7 @@
 #include <set>
 
 class IEventListener;
-class IEventSource;
+class IEventFactory;
 class CEvent;
 
 class CEventManager
@@ -22,19 +22,19 @@ public:
    
    /**
     * \brief registers a source where events are generated.
-    * \param[in] eventSource - a pointer the source where events are 
+    * \param[in] eventFactory - a pointer the source where events are 
     * generated
     */
-   void registerEventSource(IEventSource *eventSource);
+   void registerEventSource(IEventFactory *eventFactory);
    
    /**
     * \brief unregister an event source.
-    * \param[in] eventSource - a pointer the source where events are 
+    * \param[in] eventFactory - a pointer the source where events are 
     * generated
     * \return returns true if the system has been successdully removed
     * from the list, false otherwise.
     */
-   bool unregisterEventSource(IEventSource *);
+   bool unregisterEventSource(IEventFactory *);
    
    /**
     * \brief register a listener to which events will be posted to.
@@ -53,7 +53,7 @@ public:
    bool unregisterListener(IEventListener *listener);
 private:
    std::set<IEventListener *> m_listenersList;
-   std::set<IEventSource *> m_eventSources;
+   std::set<IEventFactory *> m_eventSources;
    
    void disposeEvent(CEvent *event);
 };
