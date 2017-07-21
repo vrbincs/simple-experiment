@@ -15,6 +15,8 @@ class CVideoDevicePseudo : public IVideoDevice
 {
 public:
    CVideoDevicePseudo(const CSizeI &resolution);
+   ~CVideoDevicePseudo();
+   
    DeviceType type() const override;
    IPaintSurface *createPaintSurface() override;
    IPaintDevice *createPaintDevice(IPaintSurface *paintSurface) const override;

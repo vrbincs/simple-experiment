@@ -74,6 +74,8 @@ public:
     * unlock after the access to pixel buffer is no longer needed.
     */
    virtual void unlock() = 0;
+   
+   virtual bool isNull() const = 0;
 private:
    /**
     * \brief pointer to the video device that has created the surface.

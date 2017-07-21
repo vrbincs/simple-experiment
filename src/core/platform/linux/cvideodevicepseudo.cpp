@@ -1,9 +1,20 @@
+#include "cpainttool.h"
 #include "cvideodevicepseudo.h"
+#include "cpaintdevicepseudo.h"
+#include "cpaintsurfacepseudo.h"
+
+static CPaintTool *l_paintTool = NULL;
 
 CVideoDevicePseudo::CVideoDevicePseudo(const CSizeI &resolution)
    : m_resolution(resolution)
 {
-   
+   l_paintTool = new CPaintTool(new CPaintDevicePseudo());
+}
+
+CVideoDevicePseudo::~CVideoDevicePseudo()
+{
+   delete l_paintTool;
+   l_paintTool = NULL;
 }
 
 IVideoDevice::DeviceType CVideoDevicePseudo::type() const
@@ -13,7 +24,7 @@ IVideoDevice::DeviceType CVideoDevicePseudo::type() const
 
 IPaintSurface *CVideoDevicePseudo::createPaintSurface()
 {
-   return NULL;
+   return new CPaintSurfacePseudo(this);
 }
 
 IPaintDevice *CVideoDevicePseudo::createPaintDevice(IPaintSurface *paintSurface) const
@@ -23,7 +34,7 @@ IPaintDevice *CVideoDevicePseudo::createPaintDevice(IPaintSurface *paintSurface)
 
 CPaintTool *CVideoDevicePseudo::getScreenPaintTool() const
 {
-   return NULL;
+   return l_paintTool;
 }
 
 bool CVideoDevicePseudo::start(const CColour *colour)

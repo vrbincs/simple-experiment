@@ -12,11 +12,12 @@ class CPaintSurfaceSDL : public IPaintSurface
 public:
    ~CPaintSurfaceSDL();
    
-   uint8_t getBitsPerPixels() const;
-   uint32_t getHeight() const;
-   uint32_t getWidth() const;
-   void lock();
-   void unlock();
+   uint8_t getBitsPerPixels() const override;
+   uint32_t getHeight() const override;
+   uint32_t getWidth() const override;
+   void lock() override;
+   void unlock() override;
+   bool isNull() const override;
    
    IVideoDevice *getVideoDevice() const;
    
@@ -40,9 +41,9 @@ private:
    bool allocateFromBuffer(uint8_t *pixelBuffer,
                            uint32_t width,
                            uint32_t height,
-                           uint8_t bpp);
+                           uint8_t bpp) override;
    bool allocateFromFile(const std::string &fileName,
-                        const std::string &type);
+                        const std::string &type) override;
    
    friend class CVideoDeviceSDL;
    friend class CPaintDeviceSDL;

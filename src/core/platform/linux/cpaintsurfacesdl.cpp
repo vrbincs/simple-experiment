@@ -136,6 +136,11 @@ void CPaintSurfaceSDL::unlock()
    }
 }
 
+bool CPaintSurfaceSDL::isNull() const
+{
+   return (m_sdlSurface == NULL);
+}
+
 IVideoDevice *CPaintSurfaceSDL::getVideoDevice() const
 {
    return m_videoDevice;
