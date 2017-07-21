@@ -19,18 +19,25 @@ class TestCSpriteQueue : public ::testing::Test
 {
 public:
    TestCSpriteQueue()
+      : m_device(NULL)
    {
-      CEngine2d::createDevice(IVideoDevice::DeviceTypeSdl,
-                              CSizeI(800, 600));
+      m_device = CEngine2d::createDevice(IVideoDevice::DeviceTypePseudo,
+                                         CSizeI(800, 600));
+
+      assertRequirements();
    }
    
    ~TestCSpriteQueue()
    {
-      IEngineDevice *engine = CEngine2d::instance();
-      if(engine)
+      if(m_device)
       {
-         engine->exit();
+         m_device->exit();
       }
+   }
+
+   void assertRequirements()
+   {
+      ASSERT_TRUE((m_device != NULL));
    }
    
    CPixmap * loadRawImageFromFile(const std::string &filePath,
@@ -45,6 +52,7 @@ public:
    }
    
    CXBMLoader imageLoader;
+   IEngineDevice *m_device;
 };
 
 TEST_F(TestCSpriteQueue, TestSpriteCount)
@@ -54,6 +62,7 @@ TEST_F(TestCSpriteQueue, TestSpriteCount)
                                           RESOURCE_CHECKER_HEIGHT,
                                           RESOURCE_CHECKER_DEPTH);
    ASSERT_TRUE((pixmap != NULL));
+   ASSERT_TRUE(!pixmap->isNull());
    
    CSpriteQueue spriteQueue(pixmap, 100, 100);
    

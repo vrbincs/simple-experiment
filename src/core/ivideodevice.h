@@ -45,6 +45,7 @@ class IVideoDevice
 public:
    enum DeviceType
    {
+      DeviceTypePseudo,
       DeviceTypeSdl
    };
    
@@ -54,7 +55,7 @@ public:
     * \brief returns the type of the device.
     * \return returns the type of the device.
     */
-   virtual DeviceType type() const = 0;   
+   virtual DeviceType type() const = 0;
    
    /**
     * \brief returns an instance of IPaintSurface.

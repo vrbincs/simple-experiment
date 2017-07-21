@@ -46,7 +46,9 @@ IEngineDevice *CEngine2d::createDevice(IVideoDevice::DeviceType renderType,
    {
       if(!pEngineDevice->setRenderer(renderType, resolution))
       {
-         LOGGER_WARN("The render type not supported on your engine device.");
+         LOGGER_WARN("The render type=" << renderType << " not supported on your device.");
+         pEngineDevice->exit();
+         return NULL;
       }
    }
    else

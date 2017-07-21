@@ -41,7 +41,8 @@ if (UNIX)
                             platform/linux/cpaintsurfacesdl.cpp
                             platform/linux/cvideodevicesdl.cpp
                             platform/linux/crenderdevicesdl.cpp 
-                            platform/linux/ceventsourcesdl.cpp)
+                            platform/linux/ceventsourcesdl.cpp
+                            platform/linux/cvideodevicepseudo.cpp)
    
    set ( LINK_LIBS ${LINK_LIBS}
                    ${SDL2_LIBRARIES}

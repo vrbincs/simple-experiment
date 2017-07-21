@@ -5,6 +5,7 @@
 #include "logging.h"
 
 #include "cvideodevicesdl.h"
+#include "cvideodevicepseudo.h"
 #include "ceventmanager.h"
 #include "ieventfactory.h"
 #include "cevent.h"
@@ -183,7 +184,12 @@ bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,
          return true;
       }
       break;
+      case IVideoDevice::DeviceTypePseudo:
+         m_videoDevice = new CVideoDevicePseudo(resolution);
+         return true;
+      break;
       default:
+         LOGGER_ERROR("The requested render type not supported. renderType=" << renderType);
       break;
    }
    
