@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <logging.h>
 #include <cengine2d.h>
 #include <cpixmap.h>
 #include <extra/cspritequeue.h>
@@ -19,12 +20,15 @@ class TestCSpriteQueue : public ::testing::Test
 {
 public:
    TestCSpriteQueue()
-      : m_device(NULL)
+      : m_device(NULL),
+        m_testPixmap(NULL),
+        m_testSpriteQueue(NULL)
+        
    {
       m_device = CEngine2d::createDevice(IVideoDevice::DeviceTypePseudo,
                                          CSizeI(800, 600));
-
-      assertRequirements();
+      
+      init();
    }
    
    ~TestCSpriteQueue()
@@ -33,11 +37,24 @@ public:
       {
          m_device->exit();
       }
+      
+      delete m_testSpriteQueue;
+      delete m_testPixmap;
    }
 
-   void assertRequirements()
+   void init()
    {
       ASSERT_TRUE((m_device != NULL));
+      
+      m_testPixmap = loadRawImageFromFile(RESOURCE_CHECKER_PATH, 
+                                          RESOURCE_CHECKER_WIDTH,
+                                          RESOURCE_CHECKER_HEIGHT,
+                                          RESOURCE_CHECKER_DEPTH);
+      ASSERT_TRUE((m_testPixmap != NULL));
+      ASSERT_TRUE(!m_testPixmap->isNull());
+      
+      m_testSpriteQueue = new CSpriteQueue(m_testPixmap, 100, 100);
+      ASSERT_TRUE(m_testSpriteQueue->isValid());
    }
    
    CPixmap * loadRawImageFromFile(const std::string &filePath,
@@ -53,19 +70,11 @@ public:
    
    CXBMLoader imageLoader;
    IEngineDevice *m_device;
+   CPixmap *m_testPixmap;
+   CSpriteQueue *m_testSpriteQueue;
 };
 
 TEST_F(TestCSpriteQueue, TestSpriteCount)
 {
-   CPixmap *pixmap = loadRawImageFromFile(RESOURCE_CHECKER_PATH, 
-                                          RESOURCE_CHECKER_WIDTH,
-                                          RESOURCE_CHECKER_HEIGHT,
-                                          RESOURCE_CHECKER_DEPTH);
-   ASSERT_TRUE((pixmap != NULL));
-   ASSERT_TRUE(!pixmap->isNull());
-   
-   CSpriteQueue spriteQueue(pixmap, 100, 100);
-   
-   ASSERT_TRUE(spriteQueue.isValid());
-   ASSERT_EQ(spriteQueue.spriteCount(), 6);
+   ASSERT_EQ(m_testSpriteQueue->spriteCount(), 6);
 }

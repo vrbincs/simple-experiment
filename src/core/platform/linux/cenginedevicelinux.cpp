@@ -37,7 +37,6 @@ public:
         m_digitool(NULL)
    {
       m_lastTick = getCurrentTicks();
-      LOGGER_INFO(m_targetFps);
    }
    
    ~CEngineDeviceLinuxPriv()

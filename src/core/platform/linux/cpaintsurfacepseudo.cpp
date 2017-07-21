@@ -10,6 +10,11 @@ CPaintSurfacePseudo::CPaintSurfacePseudo(CVideoDevicePseudo *videoDevice)
 {
 }
 
+CPaintSurfacePseudo::~CPaintSurfacePseudo()
+{
+   delete m_pixelBuffer;
+}
+
 uint8_t CPaintSurfacePseudo::getBitsPerPixels() const
 {
    return m_bpp;

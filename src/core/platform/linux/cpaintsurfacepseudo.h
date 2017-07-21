@@ -10,6 +10,7 @@ class CPaintSurfacePseudo : public IPaintSurface
 {
 public:
    CPaintSurfacePseudo(CVideoDevicePseudo *videoDevice = NULL);
+   ~CPaintSurfacePseudo();
    
    uint8_t getBitsPerPixels() const override;
    uint32_t getHeight() const override;
