@@ -1,6 +1,8 @@
 #ifndef CPOINT_H
    #define CPOINT_H
 
+#include <iostream>
+
 template<typename T>
 class CPoint
 {
@@ -42,6 +44,17 @@ public:
    inline CPoint<float> toFloat() const
    {
       return CPoint<float>(m_x, m_y);
+   }
+   
+   inline CPoint<int32_t> toInt() const
+   {
+      return CPoint<int32_t>(m_x, m_y);
+   }
+   
+   friend std::ostream &operator<<(std::ostream &os, const CPoint<T> &point)
+   {
+      os << "CPoint(" << point.m_x << "," << point.m_y << ")";
+      return os;
    }
    
    T m_x;

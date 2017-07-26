@@ -6,6 +6,7 @@
 #include <string>
 
 #include <csize.h>
+#include <cpoint.h>
 
 class IVideoDevice;
 class IPaintSurface;
@@ -27,6 +28,8 @@ public:
    int getBpp() const;
    
    bool isNull() const;
+   
+   uint32_t getPixelAt(const CPointI &pos);
 private:
    IPaintSurface *m_paintSurface;
    

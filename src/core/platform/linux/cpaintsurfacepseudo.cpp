@@ -1,3 +1,4 @@
+#include "logging.h"
 #include "cvideodevicepseudo.h"
 #include "cpaintsurfacepseudo.h"
 
@@ -41,6 +42,16 @@ void CPaintSurfacePseudo::unlock()
 bool CPaintSurfacePseudo::isNull() const
 {
    return (m_pixelBuffer == NULL);
+}
+
+uint32_t CPaintSurfacePseudo::getPixelAt(const CPointI &pos) const
+{
+   uint8_t depth = (m_bpp / 8);
+   uint32_t offset = (depth * (pos.getX() + pos.getY()));
+   uint8_t pixel = ((m_pixelBuffer + offset));
+   
+   LOGGER_INFO(pos << ":" << (int)offset << ":" << (int)depth << ":" << ((int)*(m_pixelBuffer + offset + 2)));
+   return pixel;
 }
 
 IVideoDevice *CPaintSurfacePseudo::getVideoDevice() const

@@ -10,7 +10,7 @@ class CPixmap;
 class CSpriteQueue
 {
 public:
-   CSpriteQueue(CPixmap *pixmap, uint32_t width, uint32_t height);
+   CSpriteQueue(CPixmap *pixmap, uint32_t spriteWidth, uint32_t spriteHeight);
    virtual ~CSpriteQueue();
    
    bool isValid() const;
@@ -25,8 +25,10 @@ private:
    CPixmap *m_pixmap;
    uint16_t m_index;
    uint16_t m_indexMax;
-   uint32_t m_width;
-   uint32_t m_height;
+   uint32_t m_spriteWidth;
+   uint32_t m_spriteHeight;
+   
+   CRectF m_rect;
 };
 
 #endif // CSPRITEQUEUE_H

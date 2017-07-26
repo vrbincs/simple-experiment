@@ -23,6 +23,8 @@ public:
    
    SDL_Surface *getSDLSurface() const;
    SDL_Texture *getSDLTexture() const;
+   
+   uint32_t getPixelAt(const CPointI &pos) const override;
 protected:
    CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
                     SDL_Surface *surface = NULL);

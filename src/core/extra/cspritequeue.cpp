@@ -3,20 +3,16 @@
 #include "cspritequeue.h"
 
 CSpriteQueue::CSpriteQueue(CPixmap *pixmap,
-                           uint32_t width,
-                           uint32_t height)
+                           uint32_t spriteWidth,
+                           uint32_t spriteHeight)
    : m_pixmap(pixmap),
      m_index(0),
      m_indexMax(0),
-     m_width(width),
-     m_height(height)
+     m_spriteWidth(spriteWidth),
+     m_spriteHeight(spriteHeight)
 {
-   if((pixmap->getWidth() % width) == 0 &&
-      (pixmap->getHeight() % height) == 0)
-   {
-      m_indexMax = ((pixmap->getWidth() / width) * 
-                    (pixmap->getHeight() / height));
-   }
+   m_indexMax = (pixmap->getWidth() / m_spriteWidth);
+   m_rect = CRectF(0,0,spriteWidth,spriteHeight);
 }
 
 CSpriteQueue::~CSpriteQueue()
@@ -25,16 +21,18 @@ CSpriteQueue::~CSpriteQueue()
 
 bool CSpriteQueue::isValid() const
 {
-   return (m_indexMax > 0);
+   return (m_pixmap != NULL);
 }
 
 bool CSpriteQueue::changeSprite(uint16_t index)
 {
    if(isValid())
    {
-      if(index <= m_indexMax)
+      if(index < m_indexMax)
       {
-         m_index = index;
+         m_index = index; 
+         m_rect.setPosition((m_index * m_spriteWidth), 0);
+                 
          return true;
       }
    }
@@ -59,5 +57,14 @@ CSizeI CSpriteQueue::getSize() const
    
 bool CSpriteQueue::getSprite(CPixmap **pixmap, CRectF &rect)
 {
-   return false;
+   if(isValid())
+   {
+      *pixmap = m_pixmap;
+      rect = m_rect;
+      return true;
+   }
+   else
+   {
+      return false;
+   }
 }

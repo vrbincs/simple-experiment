@@ -156,6 +156,16 @@ SDL_Texture *CPaintSurfaceSDL::getSDLTexture() const
    return m_sdlTexture;
 }
 
+uint32_t CPaintSurfaceSDL::getPixelAt(const CPointI &pos) const
+{
+   if(m_sdlTexture)
+   {
+      
+   }
+   
+   return 0;
+}
+
 void CPaintSurfaceSDL::freeSurface()
 {
    if(m_sdlSurface)
