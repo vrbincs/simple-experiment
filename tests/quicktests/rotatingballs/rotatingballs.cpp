@@ -216,8 +216,6 @@ int main(int argc, char *argv[])
    engineDevice->getEventManager()->registerListener(eventListenerPtr.get());
    
    scene->setBackgroundColor(CColour(0,50,50,255));
-   
-   CColour background(CColour(0,0,0,255));
    double speed = 1;
    double scenePosX = 0;
    double scenePosY = 0;

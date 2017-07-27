@@ -8,7 +8,7 @@ set ( testengine2d_VERSION_MINOR 0 )
 
 include_directories ( ${seEngine2d_SOURCE_DIR} )
 
-set(CMAKE_CXX_FLAGS "-Wall -Wno-long-long -Werror -pedantic -O0 -DRESOURCE_PATH=${PROJECT_SOURCE_DIR}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -Werror -pedantic -O0 -DRESOURCE_PATH=${PROJECT_SOURCE_DIR}")
 
 pkg_check_modules ( GTEST REQUIRED gtest )
 pkg_check_modules ( GMOCK REQUIRED gmock )

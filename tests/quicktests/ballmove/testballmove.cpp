@@ -56,14 +56,14 @@ int main(int argc, char *argv[])
    if(!engineDevice)
    {
       LOGGER_ERROR("Unable to create the engine device!");
-      return false;
+      return 1;
    }
    
    IVideoDevice *videoDevice = engineDevice->getVideoDevice();
    if(!videoDevice)
    {
       LOGGER_ERROR("No video device available.");
-      return false;
+      return 1;
    }
    
    engineDevice->showFps();

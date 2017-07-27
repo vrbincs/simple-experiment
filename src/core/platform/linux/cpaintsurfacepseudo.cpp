@@ -47,11 +47,11 @@ bool CPaintSurfacePseudo::isNull() const
 uint32_t CPaintSurfacePseudo::getPixelAt(const CPointI &pos) const
 {
    uint8_t depth = (m_bpp / 8);
-   uint32_t offset = (depth * (pos.getX() + pos.getY()));
-   uint8_t pixel = ((m_pixelBuffer + offset));
+   uint8_t offset = (depth * (pos.getX() + pos.getY()));
+   uint8_t *pixelOffset = ((m_pixelBuffer + offset));
    
    LOGGER_INFO(pos << ":" << (int)offset << ":" << (int)depth << ":" << ((int)*(m_pixelBuffer + offset + 2)));
-   return pixel;
+   return (uint32_t)*pixelOffset;
 }
 
 IVideoDevice *CPaintSurfacePseudo::getVideoDevice() const

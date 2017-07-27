@@ -1,3 +1,10 @@
+option(USE_CLANG "build application with clang" OFF)
+if(USE_CLANG)
+    SET (CMAKE_C_COMPILER      "/usr/bin/clang")
+    SET (CMAKE_CXX_COMPILER    "/usr/bin/clang++")
+    SET (CMAKE_CXX_FLAGS_INIT  "-std=c++11 -Wc++11-extensions")
+endif(USE_CLANG)
+
 cmake_minimum_required(VERSION 2.6)
 
 project (simple-experiment-engine-2d)
