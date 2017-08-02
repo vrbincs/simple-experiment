@@ -18,7 +18,7 @@ public:
    void lock() override;
    void unlock() override;
    bool isNull() const override;
-   uint32_t getPixelAt(const CPointI &pos) const override;
+   CColour getPixelAt(const CPointI &pos) const override;
 private:
    IVideoDevice *getVideoDevice() const override;
    bool allocateFromBuffer(uint8_t *pixelBuffer,

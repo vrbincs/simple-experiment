@@ -34,6 +34,7 @@
 
 #include <string>
 #include <crect.h>
+#include <ccolour.h>
 
 class CPixmap;
 class IVideoDevice;
@@ -77,7 +78,7 @@ public:
    
    virtual bool isNull() const = 0;
    
-   virtual uint32_t getPixelAt(const CPointI &pos) const = 0;
+   virtual CColour getPixelAt(const CPointI &pos) const = 0;
 private:
    /**
     * \brief pointer to the video device that has created the surface.

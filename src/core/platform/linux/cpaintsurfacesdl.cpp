@@ -3,6 +3,7 @@
 #include "logging.h"
 #include "cpaintsurfacesdl.h"
 #include "cvideodevicesdl.h"
+#include "ccolour.h"
 
 CPaintSurfaceSDL::CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
                                    SDL_Surface *surface)
@@ -156,14 +157,16 @@ SDL_Texture *CPaintSurfaceSDL::getSDLTexture() const
    return m_sdlTexture;
 }
 
-uint32_t CPaintSurfaceSDL::getPixelAt(const CPointI &pos) const
+CColour CPaintSurfaceSDL::getPixelAt(const CPointI &pos) const
 {
+   CColour colour;
+   
    if(m_sdlTexture)
    {
       
    }
    
-   return 0;
+   return colour;
 }
 
 void CPaintSurfaceSDL::freeSurface()

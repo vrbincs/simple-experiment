@@ -137,7 +137,7 @@ bool CPixmap::isNull() const
    return m_paintSurface ? false : true;
 }
 
-uint32_t CPixmap::getPixelAt(const CPointI &pos)
+CColour CPixmap::getPixelAt(const CPointI &pos)
 {
    return m_paintSurface->getPixelAt(pos);
 }
