@@ -26,6 +26,7 @@ set ( SOURCES cengine2d.cpp
               ceventmanager.cpp
               ctransform.cpp
               extra/cspritequeue.cpp
+              extra/cspriteitem.cpp
                )
 
 set ( SOURCES ${SOURCES} tools/cdigitool.cpp
