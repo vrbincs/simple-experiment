@@ -46,7 +46,8 @@ public:
    enum DeviceType
    {
       DeviceTypePseudo,
-      DeviceTypeSdl
+      DeviceTypeSdl,
+      DeviceTypeSoftware
    };
    
    virtual ~IVideoDevice(){}

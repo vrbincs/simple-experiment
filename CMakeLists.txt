@@ -13,7 +13,6 @@ else(DEBUG)
    SET (CMAKE_CXX_FLAGS  "-O3")
 endif(DEBUG)
 
-
 cmake_minimum_required(VERSION 2.6)
 
 project (simple-experiment-engine-2d)

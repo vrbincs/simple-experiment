@@ -3,7 +3,7 @@
 #include "logging.h"
 
 #include "cpixmap.h"
-#include "cpaintsurfacesdl.h"
+#include "ctexturesdl.h"
 #include "cvideodevicesdl.h"
 #include "crenderdevicesdl.h"
 
@@ -54,7 +54,7 @@ void CRenderDeviceSDL::drawSurface(const IPaintSurface &paintSurface,
                                    const CPointF &pos,
                                    const CRectF *srcRect)
 {
-   const CPaintSurfaceSDL *paintSurfaceSdl = dynamic_cast<const CPaintSurfaceSDL *>(&paintSurface);
+   const CTextureSDL *paintSurfaceSdl = dynamic_cast<const CTextureSDL *>(&paintSurface);
    
    if(paintSurfaceSdl)
    {

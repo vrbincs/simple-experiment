@@ -2,7 +2,7 @@
 
 #include "logging.h"
 
-#include "cpaintsurfacesdl.h"
+#include "ctexturesdl.h"
 #include "cpaintdevicesdl.h"
 #include "crenderdevicesdl.h"
 #include "cvideodevicesdl.h"
@@ -11,7 +11,7 @@
 
 static SDL_Window *l_sdlWindow = NULL;
 static SDL_Renderer *l_sdlRenderer = NULL;
-static CPaintTool *l_screenPaintTool = NULL;
+static CPaintTool *l_windowPainter = NULL;
 
 CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 {
@@ -67,13 +67,15 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 
    SDL_DisplayMode mode;
    SDL_GetCurrentDisplayMode(0, &mode);
-   l_screenPaintTool = new CPaintTool(new CRenderDeviceSDL(l_sdlRenderer));
-   if(l_screenPaintTool == NULL)
+   
+   l_windowPainter = new CPaintTool(new CRenderDeviceSDL(l_sdlRenderer));
+   if(l_windowPainter == NULL)
    {
       LOGGER_ERROR("Failed to create paint tool for the renderer.");
       return;
    }
-   l_screenPaintTool->setClipArea(CRectF(0,0,mode.w, mode.h));
+   
+   l_windowPainter->setClipArea(CRectF(0,0,mode.w, mode.h));
 }
 
 CVideoDeviceSDL::~CVideoDeviceSDL()
@@ -90,10 +92,10 @@ CVideoDeviceSDL::~CVideoDeviceSDL()
       l_sdlWindow = NULL;
    }
    
-   if(l_screenPaintTool)
+   if(l_windowPainter)
    {
-      delete l_screenPaintTool;
-      l_screenPaintTool = NULL;
+      delete l_windowPainter;
+      l_windowPainter = NULL;
    }
    
    SDL_Quit();
@@ -106,7 +108,7 @@ IVideoDevice::DeviceType CVideoDeviceSDL::type() const
 
 IPaintSurface *CVideoDeviceSDL::createPaintSurface()
 {
-   return new CPaintSurfaceSDL(this);
+   return new CTextureSDL(this);
 }
 
 IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *paintSurface) const
@@ -116,14 +118,14 @@ IPaintDevice *CVideoDeviceSDL::createPaintDevice(IPaintSurface *paintSurface) co
 
 CPaintTool *CVideoDeviceSDL::getScreenPaintTool() const
 {
-   return l_screenPaintTool;
+   return l_windowPainter;
 }
 
 bool CVideoDeviceSDL::start(const CColour *colour)
 {
-   if(l_screenPaintTool)
+   if(l_windowPainter)
    {
-      l_screenPaintTool->save();
+      l_windowPainter->save();
    }
    
    if(l_sdlRenderer && colour)
@@ -139,7 +141,7 @@ bool CVideoDeviceSDL::end()
    {
       SDL_RenderPresent(l_sdlRenderer);
       
-      l_screenPaintTool->restore();
+      l_windowPainter->restore();
       return true;
    }
    else
