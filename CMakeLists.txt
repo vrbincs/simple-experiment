@@ -1,15 +1,21 @@
 option(USE_CLANG "build application with clang" OFF)
 if(USE_CLANG)
-    SET (CMAKE_C_COMPILER      "/usr/bin/clang")
-    SET (CMAKE_CXX_COMPILER    "/usr/bin/clang++")
-    SET (CMAKE_CXX_FLAGS_INIT  "-std=c++11 -Wc++11-extensions")
+   SET (CMAKE_C_COMPILER      "/usr/bin/clang")
+   SET (CMAKE_CXX_COMPILER    "/usr/bin/clang++")
+   SET (CMAKE_CXX_FLAGS_INIT  "-std=c++11 -Wc++11-extensions")
 endif(USE_CLANG)
+
+option(DEBUG "build in debug mode" OFF)
+if(DEBUG)
+   SET (CMAKE_BUILD_TYPE Debug)
+   SET (CMAKE_CXX_FLAGS  "-O0")
+else(DEBUG)
+   SET (CMAKE_CXX_FLAGS  "-O3")
+endif(DEBUG)
 
 cmake_minimum_required(VERSION 2.6)
 
 project (simple-experiment-engine-2d)
-
-set(CMAKE_BUILD_TYPE Debug)
 
 add_subdirectory(src/core)
 add_subdirectory(tests/gtest/engine2d)
