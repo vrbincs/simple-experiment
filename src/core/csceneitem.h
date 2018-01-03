@@ -53,8 +53,16 @@ public:
     */
    CPointF getPos() const;
    
-   
+   /**
+    * \brief returns relative position to the parent
+    * \return returns relative position to the parent
+    */
    CPointF getPosition() const;
+   
+   /**
+    * \brief returns reference to relative position to the parent
+    * \return returns reference to relative position to the parent
+    */
    CPointF &getPosition();
    void setPosition(const CPointF &pos);
    
@@ -99,16 +107,16 @@ protected:
    
    virtual bool onEvent(const CEvent &event);
 private:
+   /**
+    * \brief Copying scene items is not allowed.
+    */
+   CSceneItem(const CSceneItem &) {}
+
    CSceneItem *m_parent;
    CSceneItemPriv *m_sceneItemPriv;
    CPointF m_position;
    
    friend class CScene;
-   /**
-    * \brief Copy constructor is disable as we do not want an object to be part
-    * two different composite objects
-    */
-   CSceneItem(const CSceneItem &copyObj);
    
    void setScene(CScene *scene);
    void repaintAll(CPaintTool *paintTool, const CRectF &updateRegion);
