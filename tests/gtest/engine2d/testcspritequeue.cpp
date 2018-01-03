@@ -72,11 +72,9 @@ public:
                          CPixmap *pixmap,
                          const CPointF &pos)
    {
-      uint32_t pixel = pixmap->getPixelAt(pos.toInt());
+      CColour pixel = pixmap->getPixelAt(pos.toInt());
       
-      if(((pixel & 0xFF0000) >> 16) == colour.getRed() &&
-         ((pixel & 0x00FF00) >>  8) == colour.getGreen() &&
-         ((pixel & 0x0000FF)      ) == colour.getBlue())
+      if(pixel == colour)
       {
          return true;
       }
@@ -122,7 +120,7 @@ TEST_F(TestCSpriteQueue, TestChangeSprite)
    
    EXPECT_TRUE(m_testSpriteQueue->changeSprite(5));
    EXPECT_TRUE(m_testSpriteQueue->getSprite(&sprite, spriteRect));
-   EXPECT_TRUE(checkPixelColour(CColour(0,0,0), sprite, spriteRect.getPosition()));
+   EXPECT_TRUE(checkPixelColour(CColour(255,255,255), sprite, spriteRect.getPosition()));
    EXPECT_EQ(spriteRect.getWidth(), 100);
    EXPECT_EQ(spriteRect.getHeight(), 100);
    EXPECT_EQ(spriteRect.getX(), 500);

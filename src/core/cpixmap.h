@@ -7,6 +7,7 @@
 
 #include <csize.h>
 #include <cpoint.h>
+#include <ccolour.h>
 
 class IVideoDevice;
 class IPaintSurface;
@@ -29,7 +30,7 @@ public:
    
    bool isNull() const;
    
-   uint32_t getPixelAt(const CPointI &pos);
+   CColour getPixelAt(const CPointI &pos);
 private:
    IPaintSurface *m_paintSurface;
    
