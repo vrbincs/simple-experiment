@@ -50,6 +50,19 @@ public:
    virtual ~IEngineDevice(){}
    
    /**
+    * \brief select the rendering backend. This function is used by the
+    * CEngine2d object.
+    * 
+    * \param[in] renderType - the type of the rendering back-end
+    * \param[in] resolution - selected resolution
+    * 
+    * \return returns true if the selected renderer has been
+    * successfully initialzed; false otherwise.
+    */
+   virtual bool init(IVideoDevice::DeviceType renderType,
+                     const CSizeI &resolution) = 0;
+   
+   /**
     * \brief the purpose of this function is to maintain a steady frame
     * rate. A call to this function should be made in every iteration of
     * the main game loop.
@@ -95,18 +108,6 @@ public:
     */
    static IEngineDevice *instance();
 private:
-   /**
-    * \brief select the rendering backend. This function is used by the
-    * CEngine2d object.
-    * 
-    * \param[in] renderType - the type of the rendering back-end
-    * \param[in] resolution - selected resolution
-    * 
-    * \return returns true if the selected renderer has been
-    * successfully initialzed; false otherwise.
-    */
-   virtual bool setRenderer(IVideoDevice::DeviceType renderType,
-                            const CSizeI &resolution) = 0;
    
    friend class CEngine2d;
 };

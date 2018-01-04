@@ -39,7 +39,7 @@ if (UNIX)
    
    set ( SOURCES ${SOURCES} platform/linux/cenginedevicelinux.cpp
                             platform/linux/cpaintdevicesdl.cpp
-                            platform/linux/cpaintsurfacesdl.cpp
+                            platform/linux/ctexturesdl.cpp
                             platform/linux/cvideodevicesdl.cpp
                             platform/linux/crenderdevicesdl.cpp 
                             platform/linux/ceventsourcesdl.cpp

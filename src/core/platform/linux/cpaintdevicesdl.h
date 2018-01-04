@@ -6,6 +6,7 @@
 #include <ipaintdevice.h>
 
 class IPaintSurface;
+class CTextureSDL;
 
 class CPaintDeviceSDL : public IPaintDevice
 {
@@ -25,7 +26,7 @@ public:
    
    bool end();
 private:
-   CPaintSurfaceSDL *m_pDestSurface;
+   CTextureSDL *m_pDestSurface;
    SDL_Renderer *m_pSdlRenderer;
    
    inline void setSdlRect(SDL_Rect &sdlRect,

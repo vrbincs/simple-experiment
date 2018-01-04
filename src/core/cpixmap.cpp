@@ -62,6 +62,10 @@ CPixmap::CPixmap(const std::string &fileName, const std::string &fileType)
       
       free();
    }
+   else
+   {
+      LOGGER_ERROR("Unable to acquire a video device.");
+   }
 }
 
 CPixmap::~CPixmap()

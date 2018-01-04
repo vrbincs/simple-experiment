@@ -1,5 +1,5 @@
-#ifndef CPAINTSURFACESDL_H
-   #define CPAINTSURFACESDL_H
+#ifndef CTEXTURESDL_H
+   #define CTEXTURESDL_H
 
 #include <SDL.h>
 
@@ -7,10 +7,10 @@
 
 class CVideoDeviceSDL;
 
-class CPaintSurfaceSDL : public IPaintSurface
+class CTextureSDL : public IPaintSurface
 {
 public:
-   ~CPaintSurfaceSDL();
+   ~CTextureSDL();
    
    uint8_t getBitsPerPixels() const override;
    uint32_t getHeight() const override;
@@ -19,27 +19,23 @@ public:
    void unlock() override;
    bool isNull() const override;
    
-   IVideoDevice *getVideoDevice() const;
+   IVideoDevice *getVideoDevice() const override;
    
-   SDL_Surface *getSDLSurface() const;
    SDL_Texture *getSDLTexture() const;
-   
    CColour getPixelAt(const CPointI &pos) const override;
 protected:
-   CPaintSurfaceSDL(CVideoDeviceSDL *videoDevice,
+   CTextureSDL(CVideoDeviceSDL *videoDevice,
                     SDL_Surface *surface = NULL);
    
    void freeSurface();
 private:
    CVideoDeviceSDL *m_videoDevice;
-   SDL_Surface *m_sdlSurface;
    SDL_Texture *m_sdlTexture;
    uint32_t m_width;
    uint32_t m_height;
    uint8_t m_bpp;
-   uint8_t *m_pixelBuffer;
    
-   bool createTexture();
+   bool convertSurfaceToTexture(SDL_Surface *surface);
    bool allocateFromBuffer(uint8_t *pixelBuffer,
                            uint32_t width,
                            uint32_t height,
@@ -51,4 +47,4 @@ private:
    friend class CPaintDeviceSDL;
 };
 
-#endif // CPAINTSURFACESDL_H
+#endif // CTEXTURESDL_H

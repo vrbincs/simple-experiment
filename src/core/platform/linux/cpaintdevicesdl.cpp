@@ -1,7 +1,7 @@
 #include "logging.h"
 
 #include "cpixmap.h"
-#include "cpaintsurfacesdl.h"
+#include "ctexturesdl.h"
 #include "cpaintdevicesdl.h"
 #include "cvideodevicesdl.h"
 
@@ -9,7 +9,7 @@ CPaintDeviceSDL::CPaintDeviceSDL(IPaintSurface *destSurface)
    : m_pDestSurface(NULL),
      m_pSdlRenderer(NULL)
 {
-   m_pDestSurface = dynamic_cast<CPaintSurfaceSDL *>(destSurface);
+   m_pDestSurface = dynamic_cast<CTextureSDL *>(destSurface);
    
    if(m_pDestSurface == NULL)
    {
@@ -34,7 +34,7 @@ CPaintDeviceSDL::~CPaintDeviceSDL()
 
 bool CPaintDeviceSDL::start(IPaintSurface *destSurface)
 {
-   m_pDestSurface = dynamic_cast<CPaintSurfaceSDL *>(destSurface);
+   m_pDestSurface = dynamic_cast<CTextureSDL *>(destSurface);
    
    if(m_pDestSurface != NULL)
    {

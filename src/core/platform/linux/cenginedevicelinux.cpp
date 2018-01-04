@@ -164,8 +164,8 @@ CEventManager *CEngineDeviceLinux::getEventManager()
    return m_eventManager;
 }
 
-bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,
-                                     const CSizeI &resolution)
+bool CEngineDeviceLinux::init(IVideoDevice::DeviceType renderType,
+                              const CSizeI &resolution)
 {
    releaseVideoDevice();
    
