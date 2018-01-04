@@ -13,8 +13,20 @@ static SDL_Window *l_sdlWindow = NULL;
 static SDL_Renderer *l_sdlRenderer = NULL;
 static CPaintTool *l_screenPaintTool = NULL;
 
-CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
+static CVideoDeviceSDL *l_videoDeviceInst = NULL;
+
+CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution,
+                                 const std::map<std::string, std::string> &params,
+                                 bool &ok)
 {
+   ok = false;
+   
+   if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
+   {
+      LOGGER_ERROR("Unable to initialize SDL. err=" << SDL_GetError());
+      return;
+   }
+   
    if(l_sdlWindow != NULL)
    {
       LOGGER_ERROR("SDL windows has already been initialized.");
@@ -67,13 +79,16 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution)
 
    SDL_DisplayMode mode;
    SDL_GetCurrentDisplayMode(0, &mode);
+   
    l_screenPaintTool = new CPaintTool(new CRenderDeviceSDL(l_sdlRenderer));
    if(l_screenPaintTool == NULL)
    {
       LOGGER_ERROR("Failed to create paint tool for the renderer.");
       return;
    }
+   
    l_screenPaintTool->setClipArea(CRectF(0,0,mode.w, mode.h));
+   ok = true;
 }
 
 CVideoDeviceSDL::~CVideoDeviceSDL()
@@ -146,6 +161,38 @@ bool CVideoDeviceSDL::end()
    {
       return false;
    }
+}
+
+CVideoDeviceSDL *CVideoDeviceSDL::create(const CSizeI &resolution,
+                                         const std::map<std::string, std::string> &params,
+                                         bool *ok)
+{
+   bool t_ok = true;
+   
+   if(l_videoDeviceInst)
+   {
+      t_ok = false;
+      LOGGER_ERROR("Unable to create CVideoDeviceSDL instance. An instance already exists.");
+   }
+   else
+   {
+      l_videoDeviceInst = new CVideoDeviceSDL(resolution, params, t_ok);
+      
+      if(!t_ok)
+      {
+         delete l_videoDeviceInst;
+         l_videoDeviceInst = NULL;
+         
+         LOGGER_ERROR("Error whilst initializatin of the video backend.");
+      }
+   }
+   
+   if(ok)
+   {
+      *ok = t_ok;
+   }
+   
+   return l_videoDeviceInst;
 }
 
 SDL_Renderer *CVideoDeviceSDL::getSDLRenderer() const

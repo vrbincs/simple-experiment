@@ -1,6 +1,7 @@
 #ifndef CVIDEODEVICESDL_H
    #define CVIDEODEVICESDL_H
 
+#include <map>
 #include <SDL.h>
 
 #include <ivideodevice.h>
@@ -13,7 +14,6 @@ class CPixmap;
 class CVideoDeviceSDL : public IVideoDevice
 {
 public:
-   CVideoDeviceSDL(const CSizeI &resolution);
    ~CVideoDeviceSDL();
    
    DeviceType type() const;
@@ -25,7 +25,15 @@ public:
    
    bool start(const CColour *colour = NULL);
    bool end();
+   
+   static CVideoDeviceSDL *create(const CSizeI &resolution,
+                                  const std::map<std::string, std::string> &params = std::map<std::string, std::string>(),
+                                  bool *ok = NULL); 
 private:
+   CVideoDeviceSDL(const CSizeI &resolution,
+                   const std::map<std::string, std::string> &params,
+                   bool &ok);
+
    void clearRenderBuffer(const CColour &colour = CColour(0,0,0,255));
 };
 

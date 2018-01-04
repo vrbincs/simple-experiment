@@ -173,13 +173,7 @@ bool CEngineDeviceLinux::setRenderer(IVideoDevice::DeviceType renderType,
    {
       case IVideoDevice::DeviceTypeSdl:
       {
-         if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
-         {
-            LOGGER_ERROR("Unable to initialize SDL. err=" << SDL_GetError());
-            return false;
-         }
-         
-         m_videoDevice = new CVideoDeviceSDL(resolution);
+         m_videoDevice = CVideoDeviceSDL::create(resolution);
          return true;
       }
       break;
