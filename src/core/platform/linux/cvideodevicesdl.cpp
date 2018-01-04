@@ -88,6 +88,7 @@ CVideoDeviceSDL::CVideoDeviceSDL(const CSizeI &resolution,
    }
    
    l_windowPainter->setClipArea(CRectF(0,0,mode.w, mode.h));
+   ok = true;
 }
 
 CVideoDeviceSDL::~CVideoDeviceSDL()
