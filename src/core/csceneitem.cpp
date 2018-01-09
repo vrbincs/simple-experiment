@@ -181,6 +181,24 @@ bool CSceneItem::intersectsRect(const CRectF &rect,
    return itersectedItems.size();
 }
 
+bool CSceneItem::hasDescendant(CSceneItem *descendant) const
+{
+   if(descendant == this)
+   {
+      return true;
+   }
+   
+   for(auto it = childIteratorBegin(); it != childIteratorEnd(); it++)
+   {
+      if((*it)->hasDescendant(descendant))
+      {
+         return true;
+      }
+   }
+   
+   return false;
+}
+
 void CSceneItem::update()
 {
    CScene *scene = getScene();
@@ -208,6 +226,11 @@ bool CSceneItem::onEvent(const CEvent &event)
 void CSceneItem::setScene(CScene *scene)
 {
    m_sceneItemPriv->m_scene = scene;
+   
+   for(auto it = childIteratorBegin(); it != childIteratorEnd(); it++)
+   {
+      (*it)->setScene(scene);
+   }
 }
 
 void CSceneItem::repaintAll(CPaintTool *paintTool, const CRectF &updateRegion)

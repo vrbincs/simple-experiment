@@ -19,7 +19,7 @@ CScene::~CScene()
    removeAll();
 }
 
-void CScene::addItem(CSceneItem *item)
+bool CScene::addItem(CSceneItem *item)
 {
    if(item)
    {
@@ -36,6 +36,8 @@ void CScene::addItem(CSceneItem *item)
          
          // Update item on the screen.
          updateItem(item);
+         
+         return true;
       }
       else
       {
@@ -46,6 +48,8 @@ void CScene::addItem(CSceneItem *item)
    {
       LOGGER_WARN("Attempt to add an invalid item.");
    }
+   
+   return false;
 }
 
 bool CScene::removeItem(CSceneItem *item)
@@ -79,11 +83,14 @@ void CScene::removeAll()
 
 bool CScene::itemExists(CSceneItem *item)
 {
-   for(auto it0=m_items.begin(); it0!=m_items.end(); it0++)
+   for(auto it0 = m_items.begin(); it0 != m_items.end(); it0++)
    {
-      if(it0->second.find(item) != it0->second.end())
+      for(auto it1 = it0->second.begin(); it1 != it0->second.end(); it1++)
       {
-         return true;
+         if((*it1)->hasDescendant(item))
+         {
+            return true;
+         }
       }
    }
    

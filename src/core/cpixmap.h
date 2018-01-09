@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <cstddef>
 #include <string>
+#include <stdexcept>
 
 #include <csize.h>
 #include <cpoint.h>
@@ -19,7 +20,7 @@ public:
    CPixmap(uint8_t *pixelBuffer, int width, int height, int bpp = 32);
    CPixmap(uint8_t *pixelBuffer, const CSizeI &size, int bpp = 32);
    CPixmap(IPaintSurface *paintSurface);
-   CPixmap(const std::string &fileName, const std::string &fileType);
+   CPixmap(const std::string &fileName, const std::string &fileType) throw();
    
    virtual ~CPixmap();
    

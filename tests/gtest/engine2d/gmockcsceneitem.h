@@ -43,6 +43,12 @@ public:
       ON_CALL(*this, itemRegion()).WillByDefault(Invoke(this, &GMockCSceneItem::getItemRegion));
       ON_CALL(*this, onEvent(_)).WillByDefault(Invoke(this, &GMockCSceneItem::mockOnEvent));
    }
+   
+   CScene *getScene() const
+   {
+      return CSceneItem::getScene();
+   }
+   
 protected:
    MOCK_METHOD2(repaint, void(CPaintTool *paintTool, const CRectF &updateRegion));
    

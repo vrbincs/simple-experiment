@@ -85,6 +85,12 @@ public:
     * rectangle.
     */
    bool intersectsRect(const CRectF &rect, std::deque<CSceneItem *> &intersectedItems);
+   
+   /**
+    * \brief returns true if \p descendant is a descendant of the item.
+    * \return returns true if \p descendant is a descendant of the item.
+    */
+   bool hasDescendant(CSceneItem *descendant) const;
 protected:
    /**
     * \brief This is the exciting part of the object where all painting

@@ -177,3 +177,27 @@ TEST_F(TestCScene, TestSetScenePosition)
    setScenePosition(CPointF(300,300));
    EXPECT_EQ(getViewableItems(0).size(), 1);
 }
+
+TEST_F(TestCScene, TestItemExists)
+{
+   auto sceneItem0 = m_itemFactory.createMockItem(NULL, CRectF(0,0,100,100));
+   auto sceneItem0Child0 = m_itemFactory.createMockItem(sceneItem0, CRectF(0,0,100,100));
+   auto sceneItem0Child1 = m_itemFactory.createMockItem(sceneItem0, CRectF(0,0,100,100));
+   
+   EXPECT_TRUE(addItem(sceneItem0));
+   EXPECT_FALSE(addItem(sceneItem0));
+   EXPECT_FALSE(addItem(sceneItem0Child0));
+   EXPECT_FALSE(addItem(sceneItem0Child1));
+}
+
+TEST_F(TestCScene, TestDescendantArePartOfScene)
+{
+    auto sceneItem0 = m_itemFactory.createMockItem(NULL, CRectF(0,0,100,100));
+    auto sceneItem0Child0 = m_itemFactory.createMockItem(sceneItem0, CRectF(0,0,100,100));
+    auto sceneItem1Child0 = m_itemFactory.createMockItem(sceneItem0Child0, CRectF(0,0,100,100));
+    
+    EXPECT_TRUE(addItem(sceneItem0));
+    EXPECT_TRUE(sceneItem0->getScene() != NULL);
+    EXPECT_TRUE(sceneItem0Child0->getScene() != NULL);
+    EXPECT_TRUE(sceneItem1Child0->getScene() != NULL);
+}

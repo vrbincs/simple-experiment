@@ -40,7 +40,7 @@ CPixmap::CPixmap(IPaintSurface *paintSurface)
 {
 }
 
-CPixmap::CPixmap(const std::string &fileName, const std::string &fileType)
+CPixmap::CPixmap(const std::string &fileName, const std::string &fileType) throw()
 {
    IVideoDevice *videoDevice = acquireVideoDevice();
    
@@ -64,7 +64,7 @@ CPixmap::CPixmap(const std::string &fileName, const std::string &fileType)
    }
    else
    {
-      LOGGER_ERROR("Unable to acquire a video device.");
+      throw std::runtime_error("Unable to acquire a video device.");
    }
 }
 
