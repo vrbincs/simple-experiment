@@ -39,7 +39,7 @@
 #include <ivideodevice.h>
 
 class IVideoDevice;
-class CEventManager;
+class IEventFactory;
 
 class IEngineDevice
 {
@@ -92,11 +92,9 @@ public:
    virtual IVideoDevice *getVideoDevice() = 0;
    
    /**
-    * \brief get a pointer to the event manager.
-    * \return returns a pointer to the event manager.
+    * \brief show/hide FPS counter on the top-left corner
+    * \param[in] show: show/hide FPS counter
     */
-   virtual CEventManager *getEventManager() = 0;
-   
    virtual void showFps(bool show = true) = 0;
    
    /**
@@ -107,9 +105,12 @@ public:
     * \return returns a pointer of IEngineDevice
     */
    static IEngineDevice *instance();
-private:
-   
+
+   virtual IEventFactory *getKeyEventFactory() = 0;
+protected:
+   friend class IKeyListener;
    friend class CEngine2d;
+   
 };
 
 #endif // IENGINEDEVICE_H

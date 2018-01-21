@@ -16,6 +16,7 @@ include_directories ( "${PROJECT_SOURCE_DIR}" )
  
 
 set ( SOURCES cengine2d.cpp
+              celement.cpp
               cpainttool.cpp
               cpixmap.cpp
               csceneitem.cpp
@@ -23,11 +24,11 @@ set ( SOURCES cengine2d.cpp
               csceneview.cpp
               ccolour.cpp
               cevent.cpp
-              ceventmanager.cpp
               ctransform.cpp
+              input/ckeylistener.cpp
               extra/cspritequeue.cpp
               extra/cspriteitem.cpp
-               )
+              )
 
 set ( SOURCES ${SOURCES} tools/cdigitool.cpp
                          tools/cdigitsbitmap.cpp
@@ -41,8 +42,8 @@ if (UNIX)
                             platform/linux/cpaintdevicesdl.cpp
                             platform/linux/ctexturesdl.cpp
                             platform/linux/cvideodevicesdl.cpp
-                            platform/linux/crenderdevicesdl.cpp 
-                            platform/linux/ceventsourcesdl.cpp
+                            platform/linux/crenderdevicesdl.cpp
+                            platform/linux/ckeyeventfactorysdl.cpp
                             platform/linux/cvideodevicepseudo.cpp
                             platform/linux/cpaintsurfacepseudo.cpp
                             platform/linux/cpaintdevicepseudo.cpp)

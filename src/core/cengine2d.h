@@ -38,9 +38,10 @@
 #include <cevent.h>
 #include <ieventlistener.h>
 #include <ieventfactory.h>
-#include <ceventmanager.h>
 #include <cpainttool.h>
 #include <cpixmap.h>
+#include <celement.h>
+#include <input/ckeylistener.h>
 
 #include <csceneitem.h>
 #include <cscene.h>

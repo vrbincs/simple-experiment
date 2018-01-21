@@ -12,10 +12,11 @@ class CSceneItem;
 #include <cpoint.h>
 #include <csize.h>
 #include <ccolour.h>
+#include <celement.h>
 
 class CEvent;
 
-class CScene
+class CScene : public CElement
 {
 public:
    CScene(const CRectF &windowRect, 

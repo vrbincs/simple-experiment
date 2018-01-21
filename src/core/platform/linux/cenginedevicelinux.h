@@ -7,7 +7,7 @@
 class CEventManager;
 class CEngineDeviceLinuxPriv;
 
-class CEngineDeviceLinux : public IEngineDevice, public IEventListener
+class CEngineDeviceLinux : public IEngineDevice
 {
 public:
    CEngineDeviceLinux();
@@ -18,20 +18,17 @@ public:
    
    uint64_t getDeltaTicks() const;
    
-   IVideoDevice *getVideoDevice();
-   CEventManager *getEventManager();
+   IVideoDevice *getVideoDevice() override;
    
    bool init(IVideoDevice::DeviceType renderType,
-             const CSizeI &resolution);
+             const CSizeI &resolution) override;
 
-   bool onEvent(const CEvent &event);
-   
-   void showFps(bool show = true);
+   void showFps(bool show = true) override;   
+protected:
+   IEventFactory *getKeyEventFactory() override;
 private:
    CEngineDeviceLinuxPriv *m_engineDevicePriv;
    IVideoDevice *m_videoDevice;
-   CEventSourceSDL *m_eventSourceSDL;
-   CEventManager *m_eventManager;   
    bool m_engineRunning;
    bool m_showFps;
    void releaseVideoDevice();

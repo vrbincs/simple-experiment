@@ -1,25 +1,27 @@
 #include <SDL.h>
 
 #include "logging.h"
-#include "ceventsourcesdl.h"
+#include "ckeyeventfactorysdl.h"
 
-CEventSourceSDL::CEventSourceSDL()
+static int getKeyCode(int sdlScanCode);
+
+IEventFactory *CKeyEventFactorySDL::m_instance = NULL;
+
+CKeyEventFactorySDL::CKeyEventFactorySDL()
 {
+   
 }
 
-CEventSourceSDL::~CEventSourceSDL()
-{
-}
-
-void CEventSourceSDL::acquireEvents(std::list<CEvent *> &events)
+void CKeyEventFactorySDL::poll()
 {
    SDL_Event eventSdl;
+   
    while(SDL_PollEvent(&eventSdl))
    {
       CEvent *event = createCEventFromSDLEvent(eventSdl);
       if(event)
       {
-         events.push_back(event);
+         dispatch(event);
       }
       else
       {
@@ -28,7 +30,17 @@ void CEventSourceSDL::acquireEvents(std::list<CEvent *> &events)
    }
 }
 
-CEvent *CEventSourceSDL::createCEventFromSDLEvent(SDL_Event &sdlEvent)
+IEventFactory *CKeyEventFactorySDL::instance()
+{
+   if(!m_instance)
+   {
+      m_instance = new CKeyEventFactorySDL();
+   }
+   
+   return m_instance;
+}
+
+CEvent *CKeyEventFactorySDL::createCEventFromSDLEvent(SDL_Event &sdlEvent)
 {
    CEvent::UMessage msg;
    int type;
@@ -52,11 +64,10 @@ CEvent *CEventSourceSDL::createCEventFromSDLEvent(SDL_Event &sdlEvent)
       break;
    }
    
-   CEvent *event = createEvent(type, msg, timestamp);
-   return event;
+   return createEvent(type, msg, timestamp);
 }
 
-int CEventSourceSDL::getKeyCode(int sdlScanCode)
+int getKeyCode(int sdlScanCode)
 {
    switch(sdlScanCode)
    {

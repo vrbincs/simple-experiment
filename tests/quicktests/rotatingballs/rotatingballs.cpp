@@ -11,7 +11,7 @@
 
 static CScene *scene = new CScene(CRectF(300,300,1200,1200), CPointF(0,0));
 
-class CBallItem: public CSceneItem
+class CBallItem: public CSceneItem, public CElement
 {
 public:
    CBallItem(const std::string &filePath, CSceneItem *parent = NULL, double angleOffset = 0)
@@ -81,7 +81,7 @@ private:
 
 };
 
-class CBackground : public CSceneItem
+class CBackground : public CSceneItem, public CElement
 {
 public:
    CBackground(const std::string &bmpPath)
@@ -116,38 +116,69 @@ static bool m_rightDown = false;
 static bool m_upDown    = false;
 static bool m_downDown  = false;
 
-class CTestEventListener : public IEventListener
+class CTestEventListener : public CKeyListener
 {
 public:
-   bool onEvent(const CEvent &event)
+   bool keyDown(const CEvent *event)
    {
-      bool isKeyDown = (event.type() == CEvent::EventTypeKeyDown);
-      
-      if(isKeyDown || event.type() == CEvent::EventTypeKeyUp )
+      if(event->message().keyCode == CEvent::KeyEscape)
       {
-         if(event.message().keyCode == CEvent::KeyEscape)
-         {
-            m_exitProgram = true;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowLeft)
-         {
-            m_leftDown = isKeyDown;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowRight)
-         {
-            m_rightDown = isKeyDown;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowUp)
-         {
-            m_upDown = isKeyDown;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowDown)
-         {
-            m_downDown = isKeyDown;
-         }
+         LOGGER_INFO(event->message().keyCode);
+         m_exitProgram = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowLeft)
+      {
+         m_leftDown = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowRight)
+      {
+         m_rightDown = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowUp)
+      {
+         m_upDown = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowDown)
+      {
+         m_downDown = true;
+      }
+      else
+      {
+         return false;
       }
       
-      return false;
+      return true;
+   }
+   
+   bool keyUp(const CEvent *event)
+   {
+      if(event->message().keyCode == CEvent::KeyEscape)
+      {
+         LOGGER_INFO(event->message().keyCode);
+         m_exitProgram = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowLeft)
+      {
+         m_leftDown = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowRight)
+      {
+         m_rightDown = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowUp)
+      {
+         m_upDown = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowDown)
+      {
+         m_downDown = false;
+      }
+      else
+      {
+         return false;
+      }
+      
+      return true;
    }
 };
 
@@ -212,8 +243,8 @@ int main(int argc, char *argv[])
    scene->addItem(ball2);
    scene->addItem(ball3);
    
-   std::shared_ptr<CTestEventListener> eventListenerPtr(new CTestEventListener());
-   engineDevice->getEventManager()->registerListener(eventListenerPtr.get());
+   std::unique_ptr<CTestEventListener> eventListenerPtr(new CTestEventListener());
+   scene->addListener(eventListenerPtr.get());
    
    scene->setBackgroundColor(CColour(0,50,50,255));
    double speed = 1;

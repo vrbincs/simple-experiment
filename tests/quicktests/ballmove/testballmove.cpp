@@ -4,6 +4,8 @@
 #include <cmath>
 #include <logging.h>
 
+#include <input/ckeylistener.h>
+
 static bool l_endProgram = false;   
 static double ballx = 0;
 static double bally = 0;
@@ -13,39 +15,75 @@ static bool m_rightDown = false;
 static bool m_upDown    = false;
 static bool m_downDown  = false;
 #include <unistd.h>
-class CTestEventListener : public IEventListener
+
+class CTestEventListener : public CKeyListener
 {
 public:
-   bool onEvent(const CEvent &event)
+   CTestEventListener()
    {
-      bool isKeyDown = (event.type() == CEvent::EventTypeKeyDown);
-      
-      if(isKeyDown || event.type() == CEvent::EventTypeKeyUp )
+      connect();
+   }
+   
+   bool keyDown(const CEvent *event)
+   {
+      if(event->message().keyCode == CEvent::KeyEscape)
       {
-         if(event.message().keyCode == CEvent::KeyEscape)
-         {
-            LOGGER_INFO(event.message().keyCode);
-            l_endProgram = true;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowLeft)
-         {
-            m_leftDown = isKeyDown;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowRight)
-         {
-            m_rightDown = isKeyDown;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowUp)
-         {
-            m_upDown = isKeyDown;
-         }
-         else if(event.message().keyCode == CEvent::KeyArrowDown)
-         {
-            m_downDown = isKeyDown;
-         }
+         LOGGER_INFO(event->message().keyCode);
+         l_endProgram = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowLeft)
+      {
+         m_leftDown = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowRight)
+      {
+         m_rightDown = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowUp)
+      {
+         m_upDown = true;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowDown)
+      {
+         m_downDown = true;
+      }
+      else
+      {
+         return false;
       }
       
-      return false;
+      return true;
+   }
+   
+   bool keyUp(const CEvent *event)
+   {
+      if(event->message().keyCode == CEvent::KeyEscape)
+      {
+         LOGGER_INFO(event->message().keyCode);
+         l_endProgram = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowLeft)
+      {
+         m_leftDown = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowRight)
+      {
+         m_rightDown = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowUp)
+      {
+         m_upDown = false;
+      }
+      else if(event->message().keyCode == CEvent::KeyArrowDown)
+      {
+         m_downDown = false;
+      }
+      else
+      {
+         return false;
+      }
+      
+      return true;
    }
 };
 
@@ -66,13 +104,9 @@ int main(int argc, char *argv[])
       return 1;
    }
    
+   CTestEventListener keyEventListener;
+   
    engineDevice->showFps();
-   
-   // Register event receiver
-   CEventManager *eventManager = engineDevice->getEventManager();
-   
-   std::shared_ptr<CTestEventListener> eventListenerPtr(new CTestEventListener());
-   eventManager->registerListener(eventListenerPtr.get());
    
    CPixmap ball("ball.bmp", "bmp");
    if(ball.isNull())
@@ -82,8 +116,9 @@ int main(int argc, char *argv[])
    }
    
    double speed = 0.00050;
+   
    while(engineDevice->run() && !l_endProgram)
-   {      
+   {
       CPaintTool *painter = videoDevice->getScreenPaintTool();
       
       double ticks = ((double)engineDevice->getDeltaTicks());
@@ -109,8 +144,6 @@ int main(int argc, char *argv[])
    }
    
    LOGGER_INFO("Exiting the main game loop");
-
-   eventManager->unregisterListener(eventListenerPtr.get());
    engineDevice->exit();
    
    return 0;

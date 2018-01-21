@@ -6,12 +6,11 @@
 
 #include "cvideodevicesdl.h"
 #include "cvideodevicepseudo.h"
-#include "ceventmanager.h"
 #include "ieventfactory.h"
 #include "cevent.h"
-#include "ceventsourcesdl.h"
 #include "cenginedevicelinux.h"
 #include "cpainttool.h"
+#include "ckeyeventfactorysdl.h"
 
 #include <tools/cdigitool.h>
 
@@ -29,12 +28,15 @@ public:
    uint32_t m_currentFps;
    CDigiTool *m_digitool;
    
+   IEventFactory *m_keyEventFactory;
+   
    CEngineDeviceLinuxPriv()
       : m_targetFps(FPS_TO_MICRO(60)),
         m_lastTick(0),
         m_deltaTicks(m_targetFps),
         m_currentFps(m_targetFps),
-        m_digitool(NULL)
+        m_digitool(NULL),
+        m_keyEventFactory(new CKeyEventFactorySDL())
    {
       m_lastTick = getCurrentTicks();
    }
@@ -42,6 +44,7 @@ public:
    ~CEngineDeviceLinuxPriv()
    {
       delete m_digitool;
+      delete m_keyEventFactory;
    }
    
    uint64_t getCurrentTicks()
@@ -99,26 +102,13 @@ public:
 CEngineDeviceLinux::CEngineDeviceLinux()
    : m_engineDevicePriv(new CEngineDeviceLinuxPriv()),
      m_videoDevice(NULL),
-     m_eventSourceSDL(new CEventSourceSDL()),
-     m_eventManager(new CEventManager()),
      m_engineRunning(true),
      m_showFps(false)
 {
-   m_eventManager->registerEventSource(m_eventSourceSDL);
-   m_eventManager->registerListener(this);
 }
 
 CEngineDeviceLinux::~CEngineDeviceLinux()
 {
-   m_eventManager->unregisterListener(this);
-   m_eventManager->unregisterEventSource(m_eventSourceSDL);
-   
-   delete m_eventManager;
-   m_eventManager = NULL;
-   
-   delete m_eventSourceSDL;
-   m_eventSourceSDL = NULL;
-   
    releaseVideoDevice();
    
    delete m_engineDevicePriv;
@@ -135,7 +125,10 @@ bool CEngineDeviceLinux::run()
       
       m_videoDevice->end();
       m_engineDevicePriv->maintainFPS();
-      m_eventManager->pollEvents();
+      
+      // Poll keyboard events
+      m_engineDevicePriv->m_keyEventFactory->poll();
+      
       m_videoDevice->start(&l_backgroundColour);
       return true;
    }
@@ -157,11 +150,6 @@ uint64_t CEngineDeviceLinux::getDeltaTicks() const
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()
 {
    return m_videoDevice;
-}
-
-CEventManager *CEngineDeviceLinux::getEventManager()
-{
-   return m_eventManager;
 }
 
 bool CEngineDeviceLinux::init(IVideoDevice::DeviceType renderType,
@@ -189,20 +177,14 @@ bool CEngineDeviceLinux::init(IVideoDevice::DeviceType renderType,
    return false;
 }
 
-bool CEngineDeviceLinux::onEvent(const CEvent &event)
-{
-   if(event.type() == CEvent::EventTypeTerminate)
-   {
-      m_engineRunning = false;
-      return true;
-   }
-   
-   return false;
-}
-
 void CEngineDeviceLinux::showFps(bool show)
 {
    m_showFps = show;
+}
+
+IEventFactory *CEngineDeviceLinux::getKeyEventFactory()
+{
+   return m_engineDevicePriv->m_keyEventFactory;
 }
 
 void CEngineDeviceLinux::releaseVideoDevice()
