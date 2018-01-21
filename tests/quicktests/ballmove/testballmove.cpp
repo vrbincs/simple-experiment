@@ -26,24 +26,24 @@ public:
    
    bool keyDown(const CEvent *event)
    {
-      if(event->message().keyCode == CEvent::KeyEscape)
+      if(event->message().keyCode == CEvent::Key_Escape)
       {
          LOGGER_INFO(event->message().keyCode);
          l_endProgram = true;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowLeft)
+      else if(event->message().keyCode == CEvent::Key_ArrowLeft)
       {
          m_leftDown = true;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowRight)
+      else if(event->message().keyCode == CEvent::Key_ArrowRight)
       {
          m_rightDown = true;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowUp)
+      else if(event->message().keyCode == CEvent::Key_ArrowUp)
       {
          m_upDown = true;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowDown)
+      else if(event->message().keyCode == CEvent::Key_ArrowDown)
       {
          m_downDown = true;
       }
@@ -57,24 +57,24 @@ public:
    
    bool keyUp(const CEvent *event)
    {
-      if(event->message().keyCode == CEvent::KeyEscape)
+      if(event->message().keyCode == CEvent::Key_Escape)
       {
          LOGGER_INFO(event->message().keyCode);
          l_endProgram = false;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowLeft)
+      else if(event->message().keyCode == CEvent::Key_ArrowLeft)
       {
          m_leftDown = false;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowRight)
+      else if(event->message().keyCode == CEvent::Key_ArrowRight)
       {
          m_rightDown = false;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowUp)
+      else if(event->message().keyCode == CEvent::Key_ArrowUp)
       {
          m_upDown = false;
       }
-      else if(event->message().keyCode == CEvent::KeyArrowDown)
+      else if(event->message().keyCode == CEvent::Key_ArrowDown)
       {
          m_downDown = false;
       }

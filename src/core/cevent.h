@@ -18,12 +18,12 @@ public:
    
    enum
    {
-      KeyEscape       = 41,
-      KeySpace        = 44,
-      KeyArrowRight   = 79,
-      KeyArrowLeft    = 80,
-      KeyArrowDown    = 81,
-      KeyArrowUp      = 82,
+      Key_Escape       = 41,
+      Key_Space        = 44,
+      Key_ArrowRight   = 79,
+      Key_ArrowLeft    = 80,
+      Key_ArrowDown    = 81,
+      Key_ArrowUp      = 82,
    };
    
    union UMessage

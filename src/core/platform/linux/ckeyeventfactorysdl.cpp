@@ -72,22 +72,22 @@ int getKeyCode(int sdlScanCode)
    switch(sdlScanCode)
    {
       case SDL_SCANCODE_ESCAPE:
-         return CEvent::KeyEscape;
+         return CEvent::Key_Escape;
       break;
       case SDL_SCANCODE_SPACE:
-         return CEvent::KeySpace;
+         return CEvent::Key_Space;
       break;
       case SDL_SCANCODE_RIGHT:
-         return CEvent::KeyArrowRight;
+         return CEvent::Key_ArrowRight;
       break;
       case SDL_SCANCODE_LEFT:
-         return CEvent::KeyArrowLeft;
+         return CEvent::Key_ArrowLeft;
       break;
       case SDL_SCANCODE_DOWN:
-         return CEvent::KeyArrowDown;
+         return CEvent::Key_ArrowDown;
       break;
       case SDL_SCANCODE_UP:
-         return CEvent::KeyArrowUp;
+         return CEvent::Key_ArrowUp;
       break;
    }
    return sdlScanCode;

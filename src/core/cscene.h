@@ -23,18 +23,55 @@ public:
           const CPointF &scenePosition = CPointF(0,0));
    
    ~CScene();
+   
    /**
     * \brief adds an item to the scene.
+    * \param[in] item: pointer to a scene item;
+    * 
+    * \return returns true, if the \p item was successfully added to
+    * the scene; false otherwise. An item already in scene hierachy will
+    * not be added again and this function will return false.
     */
    bool addItem(CSceneItem *item);
+   
+   /**
+    * \brief removed an item from the scene.
+    * \param[in] item: pointer to a scene item;
+    * 
+    * \return returns true if the \p item was successfully removed from
+    * the scene; false otherwise.
+    */
    bool removeItem(CSceneItem *item);
+   
+   /**
+    * \brief remove all items from the scene.
+    */
    void removeAll();
    
+   /**
+    * \brief traverse over the graph in order to find the requested item.
+    * \param[in] item: pointer to a scene item.
+    * 
+    * \return returns true if item exists; false otherwise.
+    */
    bool itemExists(CSceneItem *item);
    
+   /**
+    * \brief get position of the scene window on the screen.
+    * \brief returns position of the scene window on the screen.
+    */
    CPointF getPosition() const;
+   
+   /**
+    * \brief get size of the scene window.
+    * \brief returns size of the scene window.
+    */
    CSizeF getSize() const;
    
+   /**
+    * \brief set scene position
+    * \param[in] scenePosition: scene position
+    */
    void setScenePosition(const CPointF &scenePosition);
    
    /**

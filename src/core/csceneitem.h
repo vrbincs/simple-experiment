@@ -37,19 +37,20 @@ public:
    
    /**
     * \brief set parent
-    * \return return true if the child was added successfully to the
+    * \return returns true if the child was added successfully to the
     * parent; false, otherwise.
     */
    bool setParent(CSceneItem *parent);
    
    /**
-    * \brief return a pointer to the parent object;
-    * \return return a pointer to the parent object;
+    * \brief returns a pointer to the parent object;
+    * \return returns a pointer to the parent object;
     */
    CSceneItem *getParent() const;
       
    /**
-    * \brief return relative position from the top parent
+    * \brief returns relative position to the top parent
+    * \return returns relative position to the top parent
     */
    CPointF getPos() const;
    
