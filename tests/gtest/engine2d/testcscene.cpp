@@ -5,6 +5,8 @@
 #include <gmock/gmock.h>
 
 #include <logging.h>
+LOGGING_INIT("CEngine2D")
+
 #include <cscene.h>
 #include <csceneitem.h>
 
@@ -130,9 +132,13 @@ TEST_F(TestCScene, TestGetCollisionItems)
    addItem(sceneItem4);
    addItem(sceneItem5);
    
-   std::deque<CSceneItem *> collisionList0 = getCollisionItems(sceneItem0);
-   std::deque<CSceneItem *> collisionList1 = getCollisionItems(sceneItem1);
-   std::deque<CSceneItem *> collisionList2 = getCollisionItems(sceneItem2);
+   std::vector<CSceneItem *> collisionList0;
+   std::vector<CSceneItem *> collisionList1;
+   std::vector<CSceneItem *> collisionList2;
+   
+   getCollisionItems(sceneItem0, collisionList0);
+   getCollisionItems(sceneItem1, collisionList1);
+   getCollisionItems(sceneItem2, collisionList2);
    
    ASSERT_EQ(collisionList0.size(), 2);
    ASSERT_EQ(collisionList1.size(), 3);

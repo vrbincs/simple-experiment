@@ -2,6 +2,8 @@
 #include <SDL.h>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
+
 #include "ctexturesdl.h"
 #include "cvideodevicesdl.h"
 #include "ccolour.h"

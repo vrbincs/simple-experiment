@@ -32,6 +32,9 @@
 #include <cstddef>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
+
+
 #include "cengine2d.h"
 
 CEngine2d::~CEngine2d()

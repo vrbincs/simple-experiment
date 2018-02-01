@@ -23,8 +23,8 @@ protected:
     */
    virtual bool onEvent(const CEvent *event) = 0;
 
-   virtual void connect() = 0;
-   virtual void disconnect() = 0;
+   virtual void connect() {}
+   virtual void disconnect() {}
 };
 
 #endif // IEVENTLISTENER_H

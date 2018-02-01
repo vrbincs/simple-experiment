@@ -2,6 +2,8 @@
 #include <fstream>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
+
 #include "cpixmap.h"
 #include "ccolour.h"
 

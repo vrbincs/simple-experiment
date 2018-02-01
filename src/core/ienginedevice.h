@@ -40,6 +40,7 @@
 
 class IVideoDevice;
 class IEventFactory;
+class IGameDelegate;
 
 class IEngineDevice
 {
@@ -70,7 +71,9 @@ public:
     * \return returns false when the program should terminate; true
     * otherwise.
     */
-   virtual bool run() = 0;
+   virtual void run() = 0;
+   
+   virtual void registerGameDelegate(IGameDelegate *gameDelegate) = 0;
    
    /**
     * \brief Call to this function will exit the engine and free-up all
@@ -83,6 +86,8 @@ public:
     * \return returns number of miliseconds from the last cycle.
     */
    virtual uint64_t getDeltaTicks() const = 0;
+   
+   virtual uint64_t getTimestamp() const = 0;
    
    /**
     * \brief returns a pointer to the video device.

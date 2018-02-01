@@ -35,12 +35,13 @@
    #define IVIDEODEVICE_H
 
 #include <ccolour.h>
+#include <celement.h>
 
 class IPaintSurface;
 class IPaintDevice;
 class CPaintTool;
 
-class IVideoDevice
+class IVideoDevice : public CElement
 {
 public:
    enum DeviceType

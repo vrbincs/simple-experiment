@@ -1,6 +1,7 @@
 #include <SDL_ttf.h>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
 
 #include "cpixmap.h"
 #include "ctexturesdl.h"

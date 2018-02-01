@@ -3,6 +3,7 @@
 #include <cstddef>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
 
 #include "cvideodevicesdl.h"
 #include "cvideodevicepseudo.h"
@@ -11,36 +12,43 @@
 #include "cenginedevicelinux.h"
 #include "cpainttool.h"
 #include "ckeyeventfactorysdl.h"
+#include "igamedelegate.h"
 
 #include <tools/cdigitool.h>
 
 #define FPS_TO_MICRO(fps) (1000000/((double)fps))
 
 static IEngineDevice *l_engineDeviceInstance = NULL;
-static CColour l_backgroundColour;
+
+const int TICKS_PER_SECOND = 30;
+const int SKIP_TICKS = 1000000 / TICKS_PER_SECOND;
+const int MAX_CYCLES_SKIP = 5;
+const int FPS = (1000000 / 60);
 
 class CEngineDeviceLinuxPriv
 {
 public:
-   const uint32_t m_targetFps;
-   uint64_t m_lastTick;
+   uint64_t m_tickCount;
    uint64_t m_deltaTicks;
-   uint32_t m_currentFps;
    CDigiTool *m_digitool;
    
+   uint64_t m_simulationTicks;
+   
    IEventFactory *m_keyEventFactory;
+   IGameDelegate *m_gameDelegate;
+   
+   CColour m_backgroundColour;
    
    CEngineDeviceLinuxPriv()
-      : m_targetFps(FPS_TO_MICRO(60)),
-        m_lastTick(0),
-        m_deltaTicks(m_targetFps),
-        m_currentFps(m_targetFps),
+      : m_deltaTicks(0),
         m_digitool(NULL),
-        m_keyEventFactory(new CKeyEventFactorySDL())
+        m_keyEventFactory(new CKeyEventFactorySDL()),
+        m_gameDelegate(NULL)
    {
-      m_lastTick = getCurrentTicks();
+      m_simulationTicks = m_tickCount = getCurrentTicks();
    }
    
+         
    ~CEngineDeviceLinuxPriv()
    {
       delete m_digitool;
@@ -51,7 +59,7 @@ public:
    {
       uint64_t ticks = 0;
       struct timespec tp;
-      clock_gettime(CLOCK_MONOTONIC, &tp);
+      clock_gettime(CLOCK_REALTIME, &tp);
       
       ticks = ((uint64_t)tp.tv_sec * 1000000) + (tp.tv_nsec / 1000);
       return ticks;
@@ -59,28 +67,21 @@ public:
    
    inline uint64_t getDeltaTicks() const
    {
-      return m_deltaTicks;
+      return FPS;
    }
    
-   void maintainFPS()
+   inline void cycle() 
    {
+      // We want to maintain constant FPS
       uint64_t currentTicks = getCurrentTicks();
-      uint64_t nextTicks = (m_lastTick + m_currentFps);
-      uint64_t sleepDuration = 1;
+      uint64_t ticksAhead = (m_tickCount + FPS);
       
-      if(currentTicks < nextTicks)
+      if(ticksAhead > currentTicks)
       {
-         sleepDuration = (nextTicks - currentTicks);
-      }
-      else
-      {
-         nextTicks += (currentTicks - nextTicks);
+         //usleep((ticksAhead - currentTicks));
       }
       
-      m_deltaTicks = (nextTicks - m_lastTick);
-      m_lastTick = nextTicks;
-      
-      usleep(sleepDuration);
+      m_tickCount = currentTicks;
    }
    
    void drawFps()
@@ -96,6 +97,19 @@ public:
          m_digitool->drawDigits(*paintTool, 1000000/getDeltaTicks());
       }
       paintTool->restore();
+   }
+   
+   
+   void updateLogic()
+   {
+      if(m_gameDelegate)
+      {
+         while(m_simulationTicks < m_tickCount)
+         {
+            m_simulationTicks += SKIP_TICKS;
+            m_gameDelegate->processLogic(SKIP_TICKS);
+         }
+      }
    }
 };
 
@@ -114,37 +128,50 @@ CEngineDeviceLinux::~CEngineDeviceLinux()
    delete m_engineDevicePriv;
 }
 
-bool CEngineDeviceLinux::run()
+void CEngineDeviceLinux::run()
 {
-   if(m_engineRunning && m_videoDevice)
+   m_engineRunning = true;
+   
+   while(m_engineRunning && m_videoDevice)
    {
-      if(m_showFps)
-      {
-         m_engineDevicePriv->drawFps();
-      }
-      
-      m_videoDevice->end();
-      m_engineDevicePriv->maintainFPS();
+      m_engineDevicePriv->cycle();
       
       // Poll keyboard events
       m_engineDevicePriv->m_keyEventFactory->poll();
       
-      m_videoDevice->start(&l_backgroundColour);
-      return true;
+      // Update game logic
+      m_engineDevicePriv->updateLogic();
+      
+      // render graphics
+      m_videoDevice->start();
+      if(m_engineDevicePriv->m_gameDelegate)
+      {
+         m_engineDevicePriv->m_gameDelegate->render();
+         
+         if(m_showFps)
+         {
+            m_engineDevicePriv->drawFps();
+         }
+      }
+      m_videoDevice->end();
    }
    
-   return false;
+   m_engineRunning = false;
 }
 
 void CEngineDeviceLinux::exit()
 {
-   delete l_engineDeviceInstance;
-   l_engineDeviceInstance = NULL;
+   m_engineRunning = false;
 }
 
 uint64_t CEngineDeviceLinux::getDeltaTicks() const
 {
    return m_engineDevicePriv->getDeltaTicks();
+}
+
+uint64_t CEngineDeviceLinux::getTimestamp() const
+{
+   return m_engineDevicePriv->getCurrentTicks();
 }
 
 IVideoDevice *CEngineDeviceLinux::getVideoDevice()
@@ -180,6 +207,11 @@ bool CEngineDeviceLinux::init(IVideoDevice::DeviceType renderType,
 void CEngineDeviceLinux::showFps(bool show)
 {
    m_showFps = show;
+}
+
+void CEngineDeviceLinux::registerGameDelegate(IGameDelegate *gameDelegate)
+{
+   m_engineDevicePriv->m_gameDelegate = gameDelegate;
 }
 
 IEventFactory *CEngineDeviceLinux::getKeyEventFactory()

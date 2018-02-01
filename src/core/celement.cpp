@@ -1,6 +1,9 @@
 #include <cassert>
 #include <string>
 
+#include <logging.h>
+LOGGING_INIT("CEngine2D")
+
 #include "ienginedevice.h"
 #include "ieventlistener.h"
 
@@ -22,6 +25,7 @@ std::string CElement::getId() const
 
 void CElement::addListener(IEventListener *listener)
 {
+   LOGGER_TRACE("Adding listener. listener=" << listener);
    m_listeners.push_back(listener);
    listener->connect();
 }
@@ -33,23 +37,30 @@ void CElement::removeListener(IEventListener *listener)
 
 void CElement::clearListener(IEventListener *listener)
 {
-   for(auto it=m_listeners.begin(); it != m_listeners.end(); it++)
+   if(listener)
    {
-      if(*it == listener)
+      for(auto it=m_listeners.begin(); it != m_listeners.end(); it++)
       {
-         listener->disconnect();
-         m_listeners.erase(it);
-         
-         break;
+         if(*it == listener)
+         {
+            listener->disconnect();
+            m_listeners.erase(it);
+            
+            break;
+         }
       }
+   }
+   else
+   {
+      LOGGER_ERROR("Pointer to listener is NULL.");
    }
 }
 
 void CElement::clearAllListeners()
 {
-   for(auto it=m_listeners.begin(); it != m_listeners.end(); it++)
+   for(auto it=m_listeners.begin(); it != m_listeners.end();)
    {
       (*it)->disconnect();
-      m_listeners.erase(it);
+      it = m_listeners.erase(it);
    }
 }

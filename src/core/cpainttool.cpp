@@ -1,6 +1,7 @@
 #include <stack>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
 
 #include "ivideodevice.h"
 #include "ipaintsurface.h"
@@ -23,7 +24,7 @@ public:
    CRectF clipRect(CPointF &position,
                    const CRectF &srcRect)
    {
-      CRectF clipped = srcRect;
+      CRectF clipped = CRectF(0,0,srcRect.getWidth(), srcRect.getHeight());
       position += m_paintToolSettings.m_transform.getPosition();
       clipped.translate(position);
       
@@ -191,6 +192,7 @@ void CPaintTool::drawPixmap(const CPixmap &pixmap,
       
       CPointF posTmp = pos;
       CRectF clippedRect = m_paintToolPriv->clipRect(posTmp, sourceRect);
+      
       m_pPaintDevice->drawSurface(*pixmap.getPaintSurface(), 
                                   posTmp,
                                   &clippedRect);

@@ -38,6 +38,7 @@
 #include <cevent.h>
 #include <ieventlistener.h>
 #include <ieventfactory.h>
+#include <igamedelegate.h>
 #include <cpainttool.h>
 #include <cpixmap.h>
 #include <celement.h>

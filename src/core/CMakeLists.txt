@@ -16,6 +16,7 @@ include_directories ( "${PROJECT_SOURCE_DIR}" )
  
 
 set ( SOURCES cengine2d.cpp
+              logging.cpp
               celement.cpp
               cpainttool.cpp
               cpixmap.cpp

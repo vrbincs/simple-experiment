@@ -3,7 +3,7 @@
 
 #include <crect.h>
 #include <set>
-#include <deque>
+#include <vector>
 
 class CPaintTool;
 class CSceneItemPriv;
@@ -85,7 +85,7 @@ public:
     * \return returns true if more than one item intersects with the
     * rectangle.
     */
-   bool intersectsRect(const CRectF &rect, std::deque<CSceneItem *> &intersectedItems);
+   bool intersectsRect(const CRectF &rect, std::vector<CSceneItem *> &intersectedItems);
    
    /**
     * \brief returns true if \p descendant is a descendant of the item.

@@ -5,19 +5,19 @@ if(USE_CLANG)
    SET (CMAKE_CXX_FLAGS_INIT  "-std=c++11 -Wc++11-extensions")
 endif(USE_CLANG)
 
-option(DEBUG "build in debug mode" OFF)
+option(DEBUG "build in debug mode" ON)
 if(DEBUG)
    SET (CMAKE_BUILD_TYPE Debug)
-   SET (CMAKE_CXX_FLAGS  "-O0")
+   SET (CMAKE_CXX_FLAGS  "-O0 -g")
 else(DEBUG)
    SET (CMAKE_CXX_FLAGS  "-O3")
 endif(DEBUG)
 
-cmake_minimum_required(VERSION 2.6)
-
+cmake_minimum_required(VERSION 3.0)
 project (simple-experiment-engine-2d)
 
 add_subdirectory(src/core)
 add_subdirectory(tests/gtest/engine2d)
 add_subdirectory(tests/quicktests/ballmove)
 add_subdirectory(tests/quicktests/rotatingballs)
+add_subdirectory(tests/giana/src)

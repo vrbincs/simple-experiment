@@ -1,6 +1,7 @@
 #include <SDL.h>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
 
 #include "ctexturesdl.h"
 #include "cpaintdevicesdl.h"

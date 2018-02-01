@@ -1,4 +1,5 @@
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
 
 #include "ienginedevice.h"
 #include "cevent.h"
@@ -252,9 +253,8 @@ void CScene::setBackgroundColor(const CColour &bgColour)
    m_bgColour = bgColour;
 }
 
-std::deque<CSceneItem *> CScene::getCollisionItems(CSceneItem *item)
+void CScene::getCollisionItems(CSceneItem *item, std::vector<CSceneItem *> &collided)
 {
-   std::deque<CSceneItem *> collidedItems;
    CRectF itemRegion = item->itemRegion();
    
    auto items_it = m_items.find(item->getZIndex());
@@ -265,10 +265,8 @@ std::deque<CSceneItem *> CScene::getCollisionItems(CSceneItem *item)
       {
          if(item != *it0)
          {
-            (*it0)->intersectsRect(itemRegion, collidedItems);
+            (*it0)->intersectsRect(itemRegion, collided);
          }
       }
    }
-   
-   return collidedItems;
 }

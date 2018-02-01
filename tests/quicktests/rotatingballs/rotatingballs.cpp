@@ -3,7 +3,8 @@
 #include <cmath>
 #include <memory>
 
-#include "logging.h"
+#include <logging.h>
+LOGGING_INIT("CEngine2D")
 
 #include <cengine2d.h>
 
@@ -250,7 +251,7 @@ int main(int argc, char *argv[])
    double speed = 1;
    double scenePosX = 0;
    double scenePosY = 0;
-   while(engineDevice->run())
+   while(/*engineDevice->run()*/true)
    {
       if(m_exitProgram)
       {

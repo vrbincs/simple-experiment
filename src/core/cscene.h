@@ -5,7 +5,6 @@ class CSceneItem;
 
 #include <map>
 #include <set>
-#include <deque>
 #include <vector>
 
 #include <crect.h>
@@ -82,7 +81,7 @@ public:
    
    void setBackgroundColor(const CColour &bgColour);
    
-   std::deque<CSceneItem *> getCollisionItems(CSceneItem *);
+   void getCollisionItems(CSceneItem *item, std::vector<CSceneItem *> &collided);
    
    friend class CSceneItem;
 protected:

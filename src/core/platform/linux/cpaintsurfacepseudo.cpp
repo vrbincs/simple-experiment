@@ -1,4 +1,6 @@
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
+
 #include "cvideodevicepseudo.h"
 #include "cpaintsurfacepseudo.h"
 

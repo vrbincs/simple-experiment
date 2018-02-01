@@ -2,6 +2,7 @@
    #define CELEMENT_H
 
 #include <vector>
+#include <string>
 
 class IEventListener;
 
@@ -16,6 +17,7 @@ public:
    void addListener(IEventListener *listener);
    void removeListener(IEventListener *listener);
 
+   virtual void cycle(uint32_t delta){}
 private:   
    std::vector<IEventListener *> m_listeners;
    

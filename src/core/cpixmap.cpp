@@ -1,4 +1,5 @@
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
 
 #include "cengine2d.h"
 #include "ipaintsurface.h"

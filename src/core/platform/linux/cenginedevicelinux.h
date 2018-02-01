@@ -13,17 +13,20 @@ public:
    CEngineDeviceLinux();
    virtual ~CEngineDeviceLinux();
    
-   bool run();
-   void exit();
+   void run() override;
+   void exit() override;
    
-   uint64_t getDeltaTicks() const;
+   uint64_t getDeltaTicks() const override;
+   uint64_t getTimestamp() const override;
    
    IVideoDevice *getVideoDevice() override;
    
    bool init(IVideoDevice::DeviceType renderType,
              const CSizeI &resolution) override;
 
-   void showFps(bool show = true) override;   
+   void showFps(bool show = true) override;  
+   
+   void registerGameDelegate(IGameDelegate *gameDelegate) override; 
 protected:
    IEventFactory *getKeyEventFactory() override;
 private:

@@ -2,6 +2,8 @@
 #include <string>
 
 #include <logging.h>
+LOGGING_INIT("CEngine2D")
+
 #include <cpixmap.h>
 #include <cpainttool.h>
 

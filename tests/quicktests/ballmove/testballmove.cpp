@@ -2,7 +2,9 @@
 
 #include <cengine2d.h>
 #include <cmath>
+
 #include <logging.h>
+LOGGING_INIT("CEngine2D")
 
 #include <input/ckeylistener.h>
 
@@ -117,7 +119,7 @@ int main(int argc, char *argv[])
    
    double speed = 0.00050;
    
-   while(engineDevice->run() && !l_endProgram)
+  // while(engineDevice->run() && !l_endProgram)
    {
       CPaintTool *painter = videoDevice->getScreenPaintTool();
       

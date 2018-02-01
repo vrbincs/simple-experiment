@@ -1,4 +1,5 @@
 #include <logging.h>
+LOGGING_INIT("CEngine2D")
 
 #include "cspritequeue.h"
 #include "cspriteitem.h"

@@ -1,6 +1,8 @@
 #include <SDL.h>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
+
 #include "ckeyeventfactorysdl.h"
 
 static int getKeyCode(int sdlScanCode);

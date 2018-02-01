@@ -51,6 +51,12 @@ public:
       return CPoint<int32_t>(m_x, m_y);
    }
    
+   inline void move(T x, T y)
+   {
+      m_x += x;
+      m_y += y;
+   }
+   
    friend std::ostream &operator<<(std::ostream &os, const CPoint<T> &point)
    {
       os << "CPoint(" << point.m_x << "," << point.m_y << ")";

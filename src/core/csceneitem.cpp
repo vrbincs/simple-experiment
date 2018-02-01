@@ -1,6 +1,7 @@
 #include <set>
 
 #include "logging.h"
+LOGGING_INIT("CEngine2D")
 
 #include "cevent.h"
 #include "cscene.h"
@@ -163,7 +164,7 @@ bool CSceneItem::intersectsRect(const CRectF &rect)
 }
 
 bool CSceneItem::intersectsRect(const CRectF &rect, 
-                                std::deque<CSceneItem *> &itersectedItems)
+                                std::vector<CSceneItem *> &itersectedItems)
 {
    CRectF region = itemRegion();
    region.setPosition(getPos());
