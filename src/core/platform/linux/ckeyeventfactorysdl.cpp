@@ -11,7 +11,6 @@ IEventFactory *CKeyEventFactorySDL::m_instance = NULL;
 
 CKeyEventFactorySDL::CKeyEventFactorySDL()
 {
-   
 }
 
 void CKeyEventFactorySDL::poll()

@@ -28,7 +28,7 @@ const int FPS = (1000000 / 60);
 class CEngineDeviceLinuxPriv
 {
 public:
-   uint64_t m_tickCount;
+   uint64_t m_currentTicks;
    uint64_t m_deltaTicks;
    CDigiTool *m_digitool;
    
@@ -45,7 +45,7 @@ public:
         m_keyEventFactory(new CKeyEventFactorySDL()),
         m_gameDelegate(NULL)
    {
-      m_simulationTicks = m_tickCount = getCurrentTicks();
+      m_simulationTicks = m_currentTicks = getCurrentTicks();
    }
    
          
@@ -67,21 +67,14 @@ public:
    
    inline uint64_t getDeltaTicks() const
    {
-      return FPS;
+      return m_deltaTicks;
    }
    
    inline void cycle() 
    {
-      // We want to maintain constant FPS
-      uint64_t currentTicks = getCurrentTicks();
-      uint64_t ticksAhead = (m_tickCount + FPS);
-      
-      if(ticksAhead > currentTicks)
-      {
-         //usleep((ticksAhead - currentTicks));
-      }
-      
-      m_tickCount = currentTicks;
+      uint64_t ticks = getCurrentTicks();
+      m_deltaTicks = ticks - m_currentTicks;
+      m_currentTicks = ticks;
    }
    
    void drawFps()
@@ -94,7 +87,14 @@ public:
          {
             m_digitool = new CDigiTool(CColour(150,0,0,255));
          }
-         m_digitool->drawDigits(*paintTool, 1000000/getDeltaTicks());
+         
+         uint64_t fps = 0;
+         if(m_deltaTicks > 0)
+         {
+            fps = (1000000 / m_deltaTicks);
+         }
+         
+         m_digitool->drawDigits(*paintTool, fps);
       }
       paintTool->restore();
    }
@@ -104,7 +104,7 @@ public:
    {
       if(m_gameDelegate)
       {
-         while(m_simulationTicks < m_tickCount)
+         while(m_simulationTicks < m_currentTicks)
          {
             m_simulationTicks += SKIP_TICKS;
             m_gameDelegate->processLogic(SKIP_TICKS);
