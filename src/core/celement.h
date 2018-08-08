@@ -17,7 +17,9 @@ public:
    void addListener(IEventListener *listener);
    void removeListener(IEventListener *listener);
 
-   virtual void cycle(uint32_t delta){}
+   //virtual void cycle(uint32_t delta){}
+protected:
+   
 private:   
    std::vector<IEventListener *> m_listeners;
    

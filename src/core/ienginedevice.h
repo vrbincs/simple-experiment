@@ -35,12 +35,14 @@
    #define IENGINEDEVICE_H
 
 #include <list>
+#include <set>
 #include <csize.h>
 #include <ivideodevice.h>
 
 class IVideoDevice;
 class IEventFactory;
 class IGameDelegate;
+class CElement;
 
 class IEngineDevice
 {
@@ -113,9 +115,21 @@ public:
 
    virtual IEventFactory *getKeyEventFactory() = 0;
 protected:
-   friend class IKeyListener;
+   friend class CElement;
    friend class CEngine2d;
    
+   inline void registerElement(CElement *)
+   {
+      
+   }
+   
+   inline void unregisterElement(CElement *)
+   {
+      
+   }
+   
+private:
+   std::set<CElement *> m_elements;
 };
 
 #endif // IENGINEDEVICE_H

@@ -17,9 +17,69 @@ public:
    
    virtual ~CStreamWrap(){}
    
+   inline void check()
+   {
+   }
+   
+   inline CStreamWrap &operator<<(const char *string)
+   {
+      *stream << string;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const std::string &string)
+   {
+      *stream << string;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const char chr)
+   {
+      *stream << chr;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const int val)
+   {
+      *stream << val;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const unsigned int val)
+   {
+      *stream << val;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const double val)
+   {
+      *stream << val;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const long long val)
+   {
+      *stream << val;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const long unsigned val)
+   {
+      *stream << val;
+      return *this;
+   }
+   
+   inline CStreamWrap &operator<<(const void *val)
+   {
+      *stream << val;
+      return *this;
+   }
+   
    std::ostream *stream;
    int refCount;
 };
+
+typedef std::shared_ptr<CStreamWrap> CStreamWrapPtr;
 
 class COFStreamWrap : public CStreamWrap
 {
@@ -35,13 +95,11 @@ public:
       delete stream;
    }
    
-   static CStreamWrap *create(std::ofstream *stream)
+   static CStreamWrapPtr create(std::ofstream *stream)
    {
-      return new COFStreamWrap(stream);
+      return CStreamWrapPtr(new COFStreamWrap(stream));
    }
 };
-
-typedef std::shared_ptr<CStreamWrap> CStreamWrapPtr;
 
 static CStreamWrapPtr stdoutWrap(new CStreamWrap(&std::cout));
 static std::map<std::string, CStreamWrapPtr> getModulesFromSettings();
@@ -111,7 +169,7 @@ CStreamWrapPtr setModuleFilePriv(const char *module,
    
       if(filestream_ptr->is_open())
       {
-         CStreamWrapPtr streamInfoPtr(COFStreamWrap::create(filestream_ptr.release()));
+         CStreamWrapPtr streamInfoPtr = COFStreamWrap::create(filestream_ptr.release());
          modMap.insert(std::pair<std::string, CStreamWrapPtr>(module, streamInfoPtr));
          
          return streamInfoPtr;
@@ -136,54 +194,54 @@ std::map<std::string, CStreamWrapPtr> getModulesFromSettings()
 
 Logger &Logger::operator<<(const char *string)
 {
-   *m_streamInfo->stream << string;
+   *m_streamInfo << string;
    return *this;
 }
 
 Logger &Logger::operator<<(const std::string &string)
 {
-   *m_streamInfo->stream << string;
+   *m_streamInfo << string;
    return *this;
 }
 
 Logger &Logger::operator<<(const char chr)
 {
-   *m_streamInfo->stream << chr;
+   *m_streamInfo << chr;
    return *this;
 }
 
 Logger &Logger::operator<<(const int val)
 {
-   *m_streamInfo->stream << val;
+   *m_streamInfo << val;
    return *this;
 }
 
 Logger &Logger::operator<<(const unsigned int val)
 {
-   *m_streamInfo->stream << val;
+   *m_streamInfo << val;
    return *this;
 }
 
 Logger &Logger::operator<<(const double val)
 {
-   *m_streamInfo->stream << val;
+   *m_streamInfo << val;
    return *this;
 }
 
 Logger &Logger::operator<<(const long long val)
 {
-   *m_streamInfo->stream << val;
+   *m_streamInfo << val;
    return *this;
 }
 
 Logger &Logger::operator<<(const long unsigned val)
 {
-   *m_streamInfo->stream << val;
+   *m_streamInfo << val;
    return *this;
 }
 
 Logger &Logger::operator<<(const void *val)
 {
-   *m_streamInfo->stream << val;
+   *m_streamInfo << val;
    return *this;
 }
